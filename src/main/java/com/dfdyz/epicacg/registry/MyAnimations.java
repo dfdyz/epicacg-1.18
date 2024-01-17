@@ -8,15 +8,18 @@ import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.InteractionHand;
 import org.slf4j.Logger;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationProperty;
+import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.TrailInfo;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.forgeevent.AnimationRegistryEvent;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Armatures;
@@ -331,10 +334,7 @@ public class MyAnimations {
         //auto5:右手，antic:0.15F,contact:0.2F
         //auto5:左手，antic:0.2F,contact:0.3F
         SAO_DUAL_SWORD_AUTO6 = new BasicAttackAnimation(0.05F, "biped/sao_dual_sword/sao_dual_sword_auto6", biped,
-                new AttackAnimation.Phase(0.0F, 0.1F, 0.2F, 0.2F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.0F, 0.1F, 0.2F, 0.2F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolL, null)
+                new AttackAnimation.Phase(0.0F, 0.1F, 0.1F, 0.2F, 0.2F, Float.MAX_VALUE, false, InteractionHand.MAIN_HAND, BothHand())
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
@@ -348,10 +348,7 @@ public class MyAnimations {
         //auto6:右手，antic:0.1F,contact:0.2F
         //auto6:左手，antic:0.1F,contact:0.2F
         SAO_DUAL_SWORD_AUTO7 = new BasicAttackAnimation(0.05F, "biped/sao_dual_sword/sao_dual_sword_auto7", biped,
-                new AttackAnimation.Phase(0.0F, 0.01F, 0.1F, 0.2F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.0F, 0.01F, 0.1F, 0.2F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolL, null)
+                new AttackAnimation.Phase(0.0F, 0.01F, 0.01F, 0.1F, 0.2F, Float.MAX_VALUE, false, InteractionHand.MAIN_HAND, BothHand())
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.31F)
@@ -367,16 +364,10 @@ public class MyAnimations {
         //auto7:右手，antic:0.01F,contact:0.1F
         //autO7:左手，antic:0.01F,contact:0.1F
         SAO_DUAL_SWORD_AUTO8 = new BasicAttackAnimation(0.05F, "biped/sao_dual_sword/sao_dual_sword_auto8", biped,
-                new AttackAnimation.Phase(0.0F, 0.05F, 0.1F, 0.15F, 0.15F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                new AttackAnimation.Phase(0.0F, 0.05F, 0.05F, 0.1F, 0.15F, 0.15F, false, InteractionHand.MAIN_HAND, BothHand())
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.85F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.0F, 0.05F, 0.1F, 0.15F, 0.15F, InteractionHand.MAIN_HAND, biped.toolL, null)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.85F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.15F, 0.15F, 0.2F, 0.2F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.85F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.15F, 0.15F, 0.2F, 0.2F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolL, null)
+                new AttackAnimation.Phase(0.15F, 0.15F, 0.15F, 0.2F, 0.2F, Float.MAX_VALUE, false, InteractionHand.MAIN_HAND, BothHand())
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.85F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.4F)
@@ -394,10 +385,7 @@ public class MyAnimations {
         //auto8:右手，antic:0.05F,contact:0.1F\antic:0.15F,contact:0.2F(单手两段攻击)
         //autO8:左手，antic:0.05F,contact:0.1F\antic:0.15F,contact:0.2F(单手两段攻击)
         SAO_DUAL_SWORD_AUTO9 = new BasicAttackAnimation(0.05F,  "biped/sao_dual_sword/sao_dual_sword_auto9", biped,
-                new AttackAnimation.Phase(0.0F, 0.01F, 0.1F, 0.2F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
-                new AttackAnimation.Phase(0.0F, 0.01F, 0.1F, 0.2F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolL, null)
+                new AttackAnimation.Phase(0.0F, 0.01F, 0.01F , 0.1F, 0.2F, Float.MAX_VALUE, false, InteractionHand.MAIN_HAND, BothHand())
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.05F))
@@ -411,7 +399,7 @@ public class MyAnimations {
                 ));
         //auto9:右手，antic:0.01F,contact:0.1F
         //autO9:左手，antic:0.01F,contact:0.1F
-        SAO_DUAL_SWORD_AUTO10 = new BasicAttackAnimation(0.05F, 0.01F, 0.1F, 0.2F, WeaponCollider.SAO_SWORD_DUAL_AUTO10, biped.rootJoint, "biped/sao_dual_sword/sao_dual_sword_auto10", biped)
+        SAO_DUAL_SWORD_AUTO10 = new BasicAttackAnimation(0.05F, 0.01F, 0.1F, 0.2F,null, biped.toolR, "biped/sao_dual_sword/sao_dual_sword_auto10", biped)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.45F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.05F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
@@ -419,50 +407,51 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.0f,0.15f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
-        SAO_DUAL_SWORD_AUTO11 = new BasicAttackAnimation(0.05F, 0.01F,0.1F, 0.3F, WeaponCollider.SAO_SWORD_AIR, biped.rootJoint, "biped/sao_dual_sword/sao_dual_sword_auto11", biped)
+        SAO_DUAL_SWORD_AUTO11 = new BasicAttackAnimation(0.05F, 0.01F,0.1F, 0.3F, null, biped.toolR, "biped/sao_dual_sword/sao_dual_sword_auto11", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.08F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.0f,0.15f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
-        SAO_DUAL_SWORD_AUTO12 = new BasicAttackAnimation(0.05F, 0.01F, 0.1F, 0.5F, WeaponCollider.SAO_SWORD_AIR, biped.rootJoint, "biped/sao_dual_sword/sao_dual_sword_auto12", biped)
+        SAO_DUAL_SWORD_AUTO12 = new BasicAttackAnimation(0.05F, 0.01F, 0.1F, 0.5F, null, biped.toolR, "biped/sao_dual_sword/sao_dual_sword_auto12", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.1F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.0f,0.15f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
-        SAO_DUAL_SWORD_DASH = new DashAttackAnimation(0.02F, "biped/sao_dual_sword/sao_dual_sword_dash", biped,
+        SAO_DUAL_SWORD_DASH = new BasicAttackAnimation(0.02F, "biped/sao_dual_sword/sao_dual_sword_dash", biped,
                 new AttackAnimation.Phase(0.0F, 0.07F, 0.6F, 0.7F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN),
                 new AttackAnimation.Phase(0.7F, 0.75F, 0.9F, 0.9F,  Float.MAX_VALUE, InteractionHand.OFF_HAND, biped.toolL, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN),
                 new AttackAnimation.Phase(0.82F, 0.84F, 1.02F, 1.1666F,  Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
-                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN))
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, null)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed( 2.1f))
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.65f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.65f,0.95f, 7, biped.toolL, InteractionHand.OFF_HAND),
-                        newTF(0.75f,1.05f, 7, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0.0f,0.65f, 10, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.65f,0.95f, 10, biped.toolL, InteractionHand.OFF_HAND),
+                        newTF(0.75f,1.05f, 10, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
 
@@ -500,6 +489,10 @@ public class MyAnimations {
         //System.out.println(je);
 
         return TrailInfo.deserialize(je);
+    }
+
+    public static List<Pair<Joint, Collider>> BothHand(){
+        return List.of(Pair.of(Armatures.BIPED.toolR, null), Pair.of(Armatures.BIPED.toolL, null));
     }
 
     public static CamAnim Yoimiya;
