@@ -1,0 +1,27 @@
+{
+    "targets": [
+        "swap"
+    ],
+    "passes": [
+        {
+            "name": "epicaddon:invert",
+            "intarget": "minecraft:main",
+            "outtarget": "swap",
+            "uniforms": [
+                {
+                    "name": "CCCC",
+                    "values": [ 0.3 ]
+                },
+                {
+                    "name": "PPPP",
+                    "values": [ 1.0 ]
+                }
+            ]
+        },
+        {
+            "name": "blit",
+            "intarget": "swap",
+            "outtarget": "minecraft:main"
+        }
+    ]
+}

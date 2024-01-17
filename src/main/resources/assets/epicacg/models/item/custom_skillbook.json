@@ -1,0 +1,21 @@
+{
+    "parent": "item/generated",
+    "textures":
+    {
+        "layer0" : "epicfight:item/skillbook"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "epicacg:skill": 1
+            },
+            "model": "epicacg:item/custom_skillbook_dualblade"
+        },
+        {
+            "predicate": {
+                "epicacg:skill": 2
+            },
+            "model": "epicacg:item/custom_skillbook_rapier"
+        }
+    ]
+}
