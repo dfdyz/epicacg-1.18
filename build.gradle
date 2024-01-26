@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '18.5.19.3'
+version = '18.5.19.4'
 group = 'com.dfdyz.epicacg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'epicacg'
 

@@ -1,5 +1,6 @@
 package com.dfdyz.epicacg.client.render.pipeline;
 
+import com.dfdyz.epicacg.registry.PostEffects;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
@@ -71,7 +72,7 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
     }
 
     public static RenderTarget createTempTarget(RenderTarget screenTarget) {
-        RenderTarget rendertarget = new TextureTarget(screenTarget.width, screenTarget.height, true, false);
+        RenderTarget rendertarget = new TextureTarget(screenTarget.width, screenTarget.height, true, ON_OSX);
         rendertarget.setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
         rendertarget.clear(ON_OSX);
         //if (screenTarget.isStencilEnabled()) { rendertarget.enableStencil(); }
@@ -83,6 +84,36 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
     }
 
     public abstract PostParticlePipelines.Pipeline getPipeline();
+
+    public static void DepthCull(RenderTarget source, RenderTarget DepthBuffer, RenderTarget output){
+        //RenderTarget blur = createTempTarget(source);
+        //RenderTarget blur2 = createTempTarget(source);
+
+        PostEffects.depth_cull.process(source, output,
+                (effect) ->
+                {
+                    effect.setSampler("SrcDepth",
+                            source::getDepthTextureId);
+                    effect.setSampler("GlobalDepth",
+                            DepthBuffer::getColorTextureId);
+                });
+
+        //blur1.destroyBuffers();
+        //blur2.destroyBuffers();
+    }
+
+    public static void Blit(RenderTarget source, RenderTarget output){
+        //RenderTarget blur = createTempTarget(source);
+        //RenderTarget blur2 = createTempTarget(source);
+
+        PostEffects.blit.process(source, output,
+                (effect) ->
+                {}
+        );
+
+        //blur1.destroyBuffers();
+        //blur2.destroyBuffers();
+    }
 
     public String toString() {
         return renderTypeID.toString();

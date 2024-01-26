@@ -68,7 +68,6 @@ public class SAOBasicAtkPatch  extends BasicAttack {
 
                 SkillContainer wp = executer.getSkill(SkillSlots.WEAPON_INNATE);
 
-
                 if (dashAttack) {
                     if(wp != null && wp.getSkill() == MySkills.SAO_SINGLESWORD_INTERNAL && wp.getDataManager().getDataValue(SAOSingleSwordInternal.LOCKED)){
                         comboCounter = comboSize - 2;

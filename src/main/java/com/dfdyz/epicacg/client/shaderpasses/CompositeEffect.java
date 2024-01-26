@@ -1,4 +1,4 @@
-package com.dfdyz.epicacg.client.postpasses;
+package com.dfdyz.epicacg.client.shaderpasses;
 
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.server.packs.resources.ResourceManager;

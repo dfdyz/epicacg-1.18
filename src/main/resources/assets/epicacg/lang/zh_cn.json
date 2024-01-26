@@ -28,7 +28,14 @@
   "skill.epicacg.sao_single_sword_guard_skill.tooltip": "用剑格挡",
   "skill.epicacg.sao_single_sword_guard_skill": "单手剑-格挡 %s",
 
-  "skill.epicfight.sao_single_sword.category": "单手用直剑",
+  "skill.epicacg.sao_single_sword.category": "单手用直剑",
+
+  "skill.epicacg.single_sword_sa": "",
+  "skill.epicacg.single_sword_sa.tooltip": "",
+
+  "skill.epicacg.gs_yoimiya_sa": "弓弦之舞",
+  "skill.epicacg.gs_yoimiya_sa.tooltip": "腾空并向下释放烟花，造成大量伤害",
+
 
   "key.epicacg.gui": "史诗战斗ACG附属包",
   "key.epicacg.switch_skill": "技能选择(按住并滚动滚轮)"

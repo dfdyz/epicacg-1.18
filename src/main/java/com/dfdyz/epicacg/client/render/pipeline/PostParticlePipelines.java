@@ -1,13 +1,14 @@
 package com.dfdyz.epicacg.client.render.pipeline;
 
-import com.dfdyz.epicacg.command.ClientCommands;
 import com.google.common.collect.Queues;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Queue;
 
 import static com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType.createTempTarget;
+import static net.minecraft.client.Minecraft.ON_OSX;
 
 public class PostParticlePipelines {
     //public static final HashMap<ResourceLocation, RenderTarget> TempTargets = Maps.newHashMap();
@@ -37,6 +38,7 @@ public class PostParticlePipelines {
         }
 
         close();
+        TargetManager.ReleaseAll();
     }
 
     protected static boolean Active = false;
@@ -63,30 +65,35 @@ public class PostParticlePipelines {
     public static abstract class Pipeline{
         protected boolean called = false;
         protected boolean started = false;
-        protected RenderTarget sourceTarget;
+        protected RenderTarget bufferTarget;
+        protected final ResourceLocation name;
+
+        public Pipeline(ResourceLocation name){
+            this.name = name;
+        }
 
         public void start(){
             if(started){
                 if(Active){
                     //ClientCommands.Debug();
-                    sourceTarget.copyDepthFrom(getSource());
+                    bufferTarget.copyDepthFrom(getSource());
                 }
-                sourceTarget.bindWrite(false);
+                bufferTarget.bindWrite(false);
             }
             else {
-                if(sourceTarget != null){
-                    sourceTarget.destroyBuffers();
+                if(bufferTarget == null){
+                    bufferTarget = TargetManager.getTarget(name);
+                    bufferTarget.clear(ON_OSX);
                 }
 
                 RenderTarget main = getSource();
-                sourceTarget = createTempTarget(main);
                 if(Active){
                     //System.out.println("push")
-                    sourceTarget.copyDepthFrom(main);
+                    bufferTarget.copyDepthFrom(main);
                 }
                 //System.out.println("push");
                 PostEffectQueue.add(this);
-                sourceTarget.bindWrite(false);
+                bufferTarget.bindWrite(false);
                 started = true;
             }
         }
@@ -101,14 +108,14 @@ public class PostParticlePipelines {
         public void suspend(){
             if(Active){
                 //System.out.println("aaaaa");
-                sourceTarget.unbindWrite();
-                sourceTarget.unbindRead();
+                bufferTarget.unbindWrite();
+                bufferTarget.unbindRead();
                 RenderTarget rt = getSource();
-                rt.copyDepthFrom(sourceTarget);
+                rt.copyDepthFrom(bufferTarget);
                 rt.bindWrite(false);
             }
             else {
-                sourceTarget.clear(Minecraft.ON_OSX);
+                bufferTarget.clear(Minecraft.ON_OSX);
                 getSource().bindWrite(false);
             }
 
@@ -117,8 +124,7 @@ public class PostParticlePipelines {
         public abstract void PostEffectHandler();
         public final void HandlePostEffect(){
             if(called) PostEffectHandler();
-            sourceTarget.destroyBuffers();
-            sourceTarget = null;
+            bufferTarget = null;
             started = false;
             called = false;
         }

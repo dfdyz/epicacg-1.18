@@ -185,7 +185,7 @@ public class MyAnimations {
         SAO_SCYTHE_WALK = new MovementAnimation(true, "biped/battle_scythe/living/battle_scythe_walk", biped);
         SAO_SINGLE_SWORD_GUARD = new StaticAnimation(0.25F, true, "biped/skill/sao_single_sword_guard", biped);
 
-        BATTLE_SCYTHE_AUTO1 = new BasicAttackAnimation(0.08F, 0.2F, 0.4F, 0.5F, WeaponCollider.SAO_SWORD, biped.toolR, "biped/battle_scythe/battle_scythe_auto1", biped)
+        BATTLE_SCYTHE_AUTO1 = new BasicAttackAnimation(0.08F, 0.2F, 0.4F, 0.5F, null, biped.toolR, "biped/battle_scythe/battle_scythe_auto1", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
@@ -195,7 +195,7 @@ public class MyAnimations {
                         )
                 );
 
-        BATTLE_SCYTHE_AUTO2 = new BasicAttackAnimation(0.08F, 0.2F, 0.3F, 0.4F, WeaponCollider.SAO_SWORD, biped.toolR, "biped/battle_scythe/battle_scythe_auto2", biped)
+        BATTLE_SCYTHE_AUTO2 = new BasicAttackAnimation(0.08F, 0.2F, 0.3F, 0.4F, null, biped.toolR, "biped/battle_scythe/battle_scythe_auto2", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
@@ -205,7 +205,7 @@ public class MyAnimations {
                         )
                 );
 
-        BATTLE_SCYTHE_AUTO3 = new BasicAttackAnimation(0.04F, 0.3F, 0.4F, 0.55F, WeaponCollider.SAO_SWORD, biped.toolR, "biped/battle_scythe/battle_scythe_auto3", biped)
+        BATTLE_SCYTHE_AUTO3 = new BasicAttackAnimation(0.04F, 0.3F, 0.4F, 0.55F, null, biped.toolR, "biped/battle_scythe/battle_scythe_auto3", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
@@ -216,16 +216,16 @@ public class MyAnimations {
                 );
 
         BATTLE_SCYTHE_AUTO4 = new BasicAttackAnimation(0.06F,  "biped/battle_scythe/battle_scythe_auto4", biped,
-                new AttackAnimation.Phase(0.0F, 0.1F, 0.15F, 0.2F, 0.2F, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD)
+                new AttackAnimation.Phase(0.0F, 0.1F, 0.15F, 0.2F, 0.2F, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
-                new AttackAnimation.Phase(0.2F, 0.3F, 0.35F, 0.4F, 0.4F, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD)
+                new AttackAnimation.Phase(0.2F, 0.3F, 0.35F, 0.4F, 0.4F, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
-                new AttackAnimation.Phase(0.4F, 0.5F, 0.55F, 0.6F, 0.6F, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD)
+                new AttackAnimation.Phase(0.4F, 0.5F, 0.55F, 0.6F, 0.6F, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
-                new AttackAnimation.Phase(0.6F, 0.9F, 1F, 1.1F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD)
+                new AttackAnimation.Phase(0.6F, 0.9F, 1F, 1.1F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
@@ -237,7 +237,7 @@ public class MyAnimations {
                         )
                 );
 
-        BATTLE_SCYTHE_AUTO5 = new BasicAttackAnimation(0.06F, 0.25F, 0.4F, 0.8F, WeaponCollider.SAO_SWORD, biped.toolR, "biped/battle_scythe/battle_scythe_auto5", biped)
+        BATTLE_SCYTHE_AUTO5 = new BasicAttackAnimation(0.06F, 0.25F, 0.4F, 0.8F, null, biped.toolR, "biped/battle_scythe/battle_scythe_auto5", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
@@ -248,13 +248,13 @@ public class MyAnimations {
                 );
 
         BATTLE_SCYTHE_DASH = new BasicAttackAnimation(0.1F,  "biped/battle_scythe/battle_scythe_dash", biped,
-                new AttackAnimation.Phase(0.0F, 0.1F, 0.15F, 0.2F, 0.2F, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD_HUGE_R)
+                new AttackAnimation.Phase(0.0F, 0.1F, 0.15F, 0.2F, 0.2F, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
-                new AttackAnimation.Phase(0.2F, 0.3F, 0.35F, 0.4F, 0.4F, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD_HUGE_R)
+                new AttackAnimation.Phase(0.2F, 0.3F, 0.35F, 0.4F, 0.4F, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
-                new AttackAnimation.Phase(0.4F, 0.5F, 0.6F, 0.85F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, WeaponCollider.SAO_SWORD_HUGE_R)
+                new AttackAnimation.Phase(0.4F, 0.5F, 0.6F, 0.85F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)

@@ -1,19 +1,18 @@
 #version 150
 
-uniform sampler2D DiffuseSampler; //up
-uniform sampler2D DiffuseSampler2; //down
-
-uniform float UpAlpha;
+uniform sampler2D DiffuseSampler; //particle
+uniform sampler2D DiffuseSampler2; //original
 
 in vec2 texCoord;
 out vec4 fragColor;
 
 void main(){
-    vec4 down = texture(DiffuseSampler2, texCoord);
-    vec4 up = texture(DiffuseSampler, texCoord);
+    vec4 orig = texture(DiffuseSampler2, texCoord);
+    vec4 part = texture(DiffuseSampler, texCoord);
 
+    float alp =  part.a * part.a;
     fragColor = vec4(
-        up.rgb * UpAlpha + down.rgb * (1 - UpAlpha)
-    , down.a > 0 ? down.a : UpAlpha * up.a);
+        part.rgb * part.a + orig.rgb * (1 - alp)
+    , 1);
     //fragColor = vec4(cut.x > 0.1 ? vec3(1,1,1) : col.rgb,1);
 }

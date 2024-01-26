@@ -27,10 +27,15 @@
   "skill.epicacg.sao_single_sword_guard_skill.tooltip": "Use Single-hand to guard.",
   "skill.epicacg.sao_single_sword_guard_skill": "Single-hand Sword Guard\nAvailable Weapon Types : %s",
 
-  "skill.epicfight.sao_single_sword.category": "SINGLE SWORD",
+  "skill.epicacg.sao_single_sword.category": "SINGLE SWORD",
 
   "epicfight.skill_slot.sao_single_sword": "SINGLE SWORD SYSTEM",
 
+  "skill.epicacg.single_sword_sa": "",
+  "skill.epicacg.single_sword_sa.tooltip": "",
+
+  "skill.epicacg.gs_yoimiya_sa": "Dance of Bow",
+  "skill.epicacg.gs_yoimiya_sa.tooltip": "",
 
   "key.epicacg.gui": "EFM ACG AddonPack",
   "key.epicacg.switch_skill": "SkillSwitching(Hold and Rolling the mid button)"

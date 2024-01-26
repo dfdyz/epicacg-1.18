@@ -111,7 +111,6 @@ public class MySkills {
         SAO_BASICATK_PATCH = event.build(EpicACG.MODID,"sao_basic_attack_patch");
         SAO_SINGLESWORD_INTERNAL = event.build(EpicACG.MODID, "sao_single_sword_internal");
         SAO_SINGLESWORD_SA = event.build(EpicACG.MODID, "single_sword_sa");
-
     }
 
 }

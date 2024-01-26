@@ -1,4 +1,4 @@
-package com.dfdyz.epicacg.client.postpasses;
+package com.dfdyz.epicacg.client.shaderpasses;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -6,7 +6,9 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
+import net.minecraft.server.packs.resources.ResourceManager;
 
+import java.io.IOException;
 import java.util.function.Consumer;
 
 public class PostEffectBase {
@@ -15,7 +17,9 @@ public class PostEffectBase {
         this.effect = effect;
     }
 
-
+    public PostEffectBase(String resourceLocation, ResourceManager resmgr) throws IOException {
+        this(new EffectInstance(resmgr, resourceLocation));
+    }
 
     protected void setParameter(EffectInstance effect, RenderTarget inTarget, RenderTarget outTarget){
 
