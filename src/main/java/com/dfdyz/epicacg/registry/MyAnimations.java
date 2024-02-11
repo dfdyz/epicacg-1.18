@@ -598,26 +598,31 @@ public class MyAnimations {
                         )
                 );
 
-        SAO_RAPIER_DASH  = new DashAttackAnimation(0F, 0.2F, 0.1F, 0.3F, 0.4F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_dash", biped)
+        SAO_RAPIER_DASH  = new BasicAttackAnimation(0F, 0.2F, 0.1F, 0.3F, 0.4F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_dash", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(14.7F))
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
-                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT);
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0, 0.3F));
 
-        SAO_RAPIER_AIR  = new DashAttackAnimation(0.12F, 0.133F, 0.05F, 0.2F, 0.3F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_air", biped)
+        SAO_RAPIER_AIR  = new BasicAttackAnimation(0.12F, 0.133F, 0.05F, 0.2F, 0.3F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_air", biped)
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
-                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT);
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0, 0.2F));
 
-        SAO_RAPIER_SPECIAL_DASH  = new DashAttackAnimation(0.1F, 0.3F, 0.05F, 4.8333F, 5.0F, WeaponCollider.SAO_RAPIER_DASH, biped.rootJoint, "biped/sao_rapier_dash_long", biped)
+        SAO_RAPIER_SPECIAL_DASH  = new BasicAttackAnimation(0.1F, 0.3F, 0.05F, 4.8333F, 5.0F, WeaponCollider.SAO_RAPIER_DASH, biped.rootJoint, "biped/sao_rapier_dash_long", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(14.7F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(114514))
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.21F)
@@ -626,6 +631,9 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0, 4.8333F))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0, (ep, anim, objs) -> {
                             if(ep instanceof PlayerPatch){

@@ -80,7 +80,6 @@ public class MySkills {
                         .setResource(Skill.Resource.NONE)
                 , EpicACG.MODID, "gs_bow_internal");
 
-
         SkillManager.register(TagSkill::new,
                 TagSkill.createBuilder(
                         new ResourceLocation(EpicACG.MODID,"sao_single_sword"),
@@ -103,8 +102,7 @@ public class MySkills {
                                 new ResourceLocation(EpicACG.MODID, "weapon_skill_rapier"))
                         .setResource(WEAPON_INNATE_ENERGY)
                         .setCategory(SkillCategories.WEAPON_INNATE)
-                        .setAnimations(MyAnimations.SAO_RAPIER_SPECIAL_DASH)
-                        //.setAnimation2(MyAnimations.SAO_RAPIER_SPECIAL_DASH)
+                        .setAnimation(new ResourceLocation(EpicACG.MODID, "biped/sao_rapier_dash_long"))
                 , EpicACG.MODID, "weapon_skill_rapier");
 
         SkillManager.register(SAOSingleSwordInternal::new,

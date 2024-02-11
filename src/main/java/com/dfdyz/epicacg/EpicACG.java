@@ -52,10 +52,12 @@ public class EpicACG
         EpicACGSkillCategories.ENUM_MANAGER.loadPreemptive(EpicACGSkillCategories.class);
         EpicACGSkillSlot.ENUM_MANAGER.loadPreemptive(EpicACGSkillSlot.class);
         WeaponTypes.EpicACGWeaponCategories.ENUM_MANAGER.loadPreemptive(WeaponTypes.EpicACGWeaponCategories.class);
+        WeaponTypes.EpicACGStyles.ENUM_MANAGER.loadPreemptive(WeaponTypes.EpicACGStyles.class);
 
         Items.ITEMS.register(bus);
         Entities.ENTITIES.register(bus);
         Particles.PARTICLES.register(bus);
+        MobEffects.EFFECTS.register(bus);
 
         bus.register(Netmgr.CHANNEL);
         // Register the enqueueIMC method for modloading

@@ -150,8 +150,8 @@ public class RapierSpicialAttackSkill extends SimpleWeaponSASkill implements IMu
             return this;
         }
 
-        public Builder setAnimations(StaticAnimation attackAnimation) {
-            this.setAnimations(attackAnimation.getLocation());
+        public Builder setAnimation(ResourceLocation attackAnimation) {
+            super.setAnimations(attackAnimation);
             return this;
         }
     }
