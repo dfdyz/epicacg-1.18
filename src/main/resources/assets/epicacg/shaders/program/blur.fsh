@@ -20,12 +20,18 @@ void main(){
     float fSigma = float(Radius);
     float weightSum = gaussianPdf(0.0, fSigma);
     vec4 diffuseSum = texture(DiffuseSampler, texCoord) * weightSum;
+    //diffuseSum.a = (diffuseSum.a > 0.f ? 1.f : 0.f) * weightSum;
+
     for( int i = 1; i < Radius; i ++) {
         float x = float(i);
         float w = gaussianPdf(x, fSigma);
         vec2 uvOffset = BlurDir * invSize * x;
         vec4 sample1 = texture(DiffuseSampler, texCoord + uvOffset);
         vec4 sample2 = texture(DiffuseSampler, texCoord - uvOffset);
+
+        //sample1.a = 1;
+        //sample2.a = 1;
+
         diffuseSum += (sample1 + sample2) * w;
         weightSum += 2.0 * w;
     }

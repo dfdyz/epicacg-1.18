@@ -5,11 +5,8 @@ import java.util.Optional;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
 import com.dfdyz.epicacg.utils.RenderUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -17,15 +14,12 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector4f;
 
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -130,9 +124,10 @@ public class BloomTrailParticle extends TextureSheetParticle {
             }
         }
 
-        if (this.trailInfo.fadeTime > 0.0F && this.trailInfo.endTime < animPlayer.getElapsedTime()) {
+        /*
+        if (this.trailInfo.endTime < animPlayer.getElapsedTime()) {
             return;
-        }
+        }*/
 
         double xd = Math.pow(this.entitypatch.getOriginal().getX() - this.entitypatch.getOriginal().xo, 2);
         double yd = Math.pow(this.entitypatch.getOriginal().getY() - this.entitypatch.getOriginal().yo, 2);
@@ -239,7 +234,7 @@ public class BloomTrailParticle extends TextureSheetParticle {
         EpicACGRenderType.BLOOM_TRAIL.callPipeline();
 
         //get texture
-        RenderUtils.SetCurrentTexture(this.trailInfo.texturePath);
+        RenderUtils.GLSetTexture(this.trailInfo.texturePath);
 
         PoseStack poseStack = new PoseStack();
         int light = this.getLightColor(partialTick);
@@ -254,11 +249,7 @@ public class BloomTrailParticle extends TextureSheetParticle {
         float fading = 1.0F;
 
         if (this.animationEnd) {
-            if (this.trailInfo.fadeTime > 0.0F) {
-                fading = ((float)this.lifetime / (float)this.trailInfo.trailLifetime);
-            } else {
-                fading = Mth.clamp((this.lifetime + (1.0F - partialTick)) / this.trailInfo.trailLifetime, 0.0F, 1.0F);
-            }
+            fading = Mth.clamp((this.lifetime + (1.0F - partialTick)) / this.trailInfo.trailLifetime, 0.0F, 1.0F);
         }
 
         float partialStartEdge = interval * (startEdge % 1.0F);
@@ -278,13 +269,19 @@ public class BloomTrailParticle extends TextureSheetParticle {
             pos3.transform(matrix4f);
             pos4.transform(matrix4f);
 
-            float alphaFrom = Mth.clamp(from, 0.0F, 1.0F);
-            float alphaTo = Mth.clamp(to, 0.0F, 1.0F);
+            //float alphaFrom = Mth.clamp(from, 0.0F, 1.0F);
+            //float alphaTo = Mth.clamp(to, 0.0F, 1.0F);
 
-            vertexConsumer.vertex(pos1.x(), pos1.y(), pos1.z()).color(this.rCol, this.gCol, this.bCol, this.alpha * alphaFrom * fading).uv(from, 1.0F).uv2(light).endVertex();
-            vertexConsumer.vertex(pos2.x(), pos2.y(), pos2.z()).color(this.rCol, this.gCol, this.bCol, this.alpha * alphaFrom * fading).uv(from, 0.0F).uv2(light).endVertex();
-            vertexConsumer.vertex(pos3.x(), pos3.y(), pos3.z()).color(this.rCol, this.gCol, this.bCol, this.alpha * alphaTo * fading).uv(to, 0.0F).uv2(light).endVertex();
-            vertexConsumer.vertex(pos4.x(), pos4.y(), pos4.z()).color(this.rCol, this.gCol, this.bCol, this.alpha * alphaTo * fading).uv(to, 1.0F).uv2(light).endVertex();
+            float alphaFrom = Mth.clamp(Mth.clamp(from, 0.0F, 1.0F) * this.alpha * fading, 0f, 1f);
+            float alphaTo = Mth.clamp(Mth.clamp(to, 0.0F, 1.0F) * this.alpha * fading, 0f, 1f);
+
+            alphaFrom = Mth.sqrt(alphaFrom);
+            alphaTo = Mth.sqrt(alphaTo);
+
+            vertexConsumer.vertex(pos1.x(), pos1.y(), pos1.z()).color(this.rCol, this.gCol, this.bCol, alphaFrom).uv(from, 1.0F).uv2(light).endVertex();
+            vertexConsumer.vertex(pos2.x(), pos2.y(), pos2.z()).color(this.rCol, this.gCol, this.bCol, alphaFrom).uv(from, 0.0F).uv2(light).endVertex();
+            vertexConsumer.vertex(pos3.x(), pos3.y(), pos3.z()).color(this.rCol, this.gCol, this.bCol, alphaTo).uv(to, 0.0F).uv2(light).endVertex();
+            vertexConsumer.vertex(pos4.x(), pos4.y(), pos4.z()).color(this.rCol, this.gCol, this.bCol, alphaTo).uv(to, 1.0F).uv2(light).endVertex();
 
             from += interval;
             to += interval;

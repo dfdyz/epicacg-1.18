@@ -2,6 +2,7 @@ package com.dfdyz.epicacg.registry;
 
 import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.particle.BloomTrailParticle;
+import com.dfdyz.epicacg.client.particle.EntityAfterImgParticleEx;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle2;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle3;
@@ -42,7 +43,7 @@ public class Particles {
     public static final RegistryObject<SimpleParticleType> SPARKS_SPLASH = PARTICLES.register("sparks_splash",() -> new SimpleParticleType(true));
     public static final RegistryObject<HitParticleType> SPARKS_SPLASH_HIT = PARTICLES.register("sparks_splash_hit",() -> new HitParticleType(true, HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, MyHitParticleType.Atker2Tar));
 
-
+    public static final RegistryObject<SimpleParticleType> ENTITY_AFTER_IMG_EX = PARTICLES.register("after_image_ex",() -> new SimpleParticleType(true));
     @OnlyIn(Dist.CLIENT)
     public static void registryParticles(ParticleFactoryRegisterEvent event){
         ParticleEngine PE = Minecraft.getInstance().particleEngine;
@@ -63,5 +64,6 @@ public class Particles {
         PE.register(BLOOD_THIRSTY.get(), new MyTextureSheetParticle.BloodThirstyProvider());
         PE.register(SPARKS_SPLASH.get(), SparksSplashParticle.Provider::new);
         PE.register(SPARKS_SPLASH_HIT.get(), SparksSplashHitParticle.Provider::new);
+        PE.register(ENTITY_AFTER_IMG_EX.get(), EntityAfterImgParticleEx.Provider::new);
     }
 }

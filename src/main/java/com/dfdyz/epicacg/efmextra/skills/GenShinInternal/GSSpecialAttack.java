@@ -1,6 +1,7 @@
 package com.dfdyz.epicacg.efmextra.skills.GenShinInternal;
 
 
+import com.dfdyz.epicacg.efmextra.skills.SimpleWeaponSASkill;
 import com.dfdyz.epicacg.utils.SkillUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
@@ -23,7 +24,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import java.util.List;
 import java.util.Map;
 
-public class GSSpecialAttack extends SimpleWeaponInnateSkill {
+public class GSSpecialAttack extends SimpleWeaponSASkill {
     public GSSpecialAttack(Builder builder) {
         super(builder);
     }
@@ -31,13 +32,13 @@ public class GSSpecialAttack extends SimpleWeaponInnateSkill {
     @Override
     public boolean canExecute(PlayerPatch<?> executer) {
         if (executer.isLogicalClient()) {
-            return (executer.getSkill(SkillSlots.WEAPON_INNATE).isFull() || ((Player)executer.getOriginal()).isCreative())
+            return (executer.getSkill(SkillSlots.WEAPON_INNATE).isFull() || (executer.getOriginal()).isCreative())
                     && !(executer.isUnstable())
                     && Math.abs(executer.getOriginal().getDeltaMovement().y) <= 0.3f
                     && closedGround(executer);
         } else {
             return SkillUtils.getMainHandSkill(executer) == this
-                    && ((Player)executer.getOriginal()).getVehicle() == null
+                    && (executer.getOriginal()).getVehicle() == null
                     && (!executer.getSkill(SkillSlots.WEAPON_INNATE).isActivated() || this.activateType == ActivateType.TOGGLE)
                     && !(executer.isUnstable())
                     && Math.abs(executer.getOriginal().getDeltaMovement().y) <= 0.3f
@@ -51,14 +52,5 @@ public class GSSpecialAttack extends SimpleWeaponInnateSkill {
         Level level = executer.getOriginal().level;
         BlockHitResult result = level.clip(clipContext);
         return result.getType() == HitResult.Type.BLOCK;
-    }
-
-    @Override
-    public List<Component> getTooltipOnItem(ItemStack itemStack, CapabilityItem cap, PlayerPatch<?> playerCap) {
-        List<Component> list = Lists.newArrayList();
-        String traslatableText = this.getTranslationKey();
-        list.add((new TranslatableComponent(traslatableText)).withStyle(ChatFormatting.WHITE).append((new TextComponent(String.format("[%.0f]", this.consumption))).withStyle(ChatFormatting.AQUA)));
-        list.add((new TranslatableComponent(traslatableText + ".tooltip")).withStyle(ChatFormatting.DARK_GRAY));
-        return list;
     }
 }

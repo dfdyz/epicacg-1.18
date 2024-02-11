@@ -1,5 +1,7 @@
 package com.dfdyz.epicacg.registry;
 
+import com.dfdyz.epicacg.EpicACG;
+import com.dfdyz.epicacg.efmextra.skills.EpicACGSkillSlot;
 import com.dfdyz.epicacg.efmextra.weapon.GenShinBow;
 import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
 import com.mojang.datafixers.util.Pair;
@@ -14,12 +16,15 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.Style;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public class WeaponTypes {
@@ -68,7 +73,7 @@ public class WeaponTypes {
                         MyAnimations.BATTLE_SCYTHE_AUTO4,
                         MyAnimations.BATTLE_SCYTHE_AUTO5,
                         MyAnimations.BATTLE_SCYTHE_DASH, Animations.SPEAR_TWOHAND_AIR_SLASH)
-                .innateSkill(CapabilityItem.Styles.TWO_HAND,(itemStack) -> EpicFightSkills.SWEEPING_EDGE)
+                .innateSkill(CapabilityItem.Styles.TWO_HAND,(itemStack) -> MySkills.BATTLE_SCYTHE_SA)
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, MyAnimations.SAO_SCYTHE_IDLE)
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, MyAnimations.SAO_SCYTHE_WALK)
@@ -83,25 +88,24 @@ public class WeaponTypes {
         WeaponCapability.Builder builder = WeaponCapability.builder()
                 .category(EpicACGWeaponCategories.SINGLE_SWORD)
                 .styleProvider((playerpatch) -> {
-                    //if(playerpatch instanceof PlayerPatch){
+                    if(playerpatch instanceof PlayerPatch){
                         if(playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicACGWeaponCategories.SINGLE_SWORD
-                                //&& ((PlayerPatch)playerpatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill() != null
-                                //&& ((PlayerPatch)playerpatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_dual_sword_skill")
+                                && ((PlayerPatch)playerpatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill() != null
+                                && ((PlayerPatch)playerpatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_dual_sword_skill")
                         ){
                             return EpicACGStyles.SAO_DUAL_SWORD;
                         }
-                        /*
-                        if(((PlayerPatch)playerpatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill() != null
-                                && ((PlayerPatch)playerpatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_rapier_skill")){
+
+                        if(((PlayerPatch)playerpatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill() != null
+                                && ((PlayerPatch)playerpatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_rapier_skill")){
                             return EpicACGStyles.SAO_RAPIER;
-                        }*/
-                    //}
-                    /*
+                        }
+                    }
                     else if (playerpatch instanceof HumanoidMobPatch) {
                         Set<String> tags = playerpatch.getOriginal().getTags();
                         for (String tag : tags) {
                             String[] arg = tag.split(":");
-                            if(arg.length > 2 && arg[0] == EpicAddon.MODID){
+                            if(arg.length > 2 && arg[0] == EpicACG.MODID){
                                 if(arg[1] == "sao_single_sword"){
                                     switch (arg[3]){
                                         case "dual_sword":
@@ -118,7 +122,6 @@ public class WeaponTypes {
                         return EpicACGStyles.SAO_SINGLE_SWORD;
                     }
 
-                     */
                     return EpicACGStyles.SAO_SINGLE_SWORD;
                 })
                 .passiveSkill(MySkills.SAO_SINGLESWORD_INTERNAL)
@@ -130,7 +133,6 @@ public class WeaponTypes {
                         Animations.SWORD_AUTO3,
                         Animations.SWORD_DASH, Animations.SWORD_DASH,
                         Animations.SWORD_AIR_SLASH)
-                /*
                 .newStyleCombo(EpicACGStyles.SAO_RAPIER,
                         MyAnimations.SAO_RAPIER_AUTO1,
                         MyAnimations.SAO_RAPIER_AUTO2,
@@ -139,7 +141,6 @@ public class WeaponTypes {
                         MyAnimations.SAO_RAPIER_AUTO5,
                         MyAnimations.SAO_RAPIER_DASH, MyAnimations.SAO_RAPIER_DASH,
                         MyAnimations.SAO_RAPIER_AIR)
-                 */
                 .newStyleCombo(EpicACGStyles.SAO_DUAL_SWORD,
                         MyAnimations.SAO_DUAL_SWORD_AUTO1,
                         MyAnimations.SAO_DUAL_SWORD_AUTO2,
@@ -153,26 +154,18 @@ public class WeaponTypes {
                         MyAnimations.SAO_DUAL_SWORD_AUTO10,
                         MyAnimations.SAO_DUAL_SWORD_AUTO11,
                         MyAnimations.SAO_DUAL_SWORD_AUTO12,
-                        /*
-                        MyAnimations.SAO_DUAL_SWORD_AUTO13,
-                        MyAnimations.SAO_DUAL_SWORD_AUTO14,
-                        MyAnimations.SAO_DUAL_SWORD_AUTO15,
-                        MyAnimations.SAO_DUAL_SWORD_AUTO16,
-                         */
                         MyAnimations.SAO_DUAL_SWORD_DASH, Animations.SPEAR_DASH,
                         Animations.GREATSWORD_AIR_SLASH)
                 .innateSkill(EpicACGStyles.SAO_SINGLE_SWORD,(itemstack) ->  MySkills.SAO_SINGLESWORD_SA)
                 .innateSkill(EpicACGStyles.SAO_DUAL_SWORD,(itemstack) ->  EpicFightSkills.DANCING_EDGE)
-                //.innateSkill(EpicACGStyles.SAO_RAPIER,(itemstack) ->  MySkills.WEAPON_SKILL_RAPIER)
+                .innateSkill(EpicACGStyles.SAO_RAPIER, (itemstack) ->  MySkills.WEAPON_SKILL_RAPIER)
                 .livingMotionModifier(EpicACGStyles.SAO_SINGLE_SWORD, LivingMotions.IDLE, Animations.BIPED_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_SINGLE_SWORD, LivingMotions.BLOCK, MyAnimations.SAO_SINGLE_SWORD_GUARD)
-                /*
                 .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.BLOCK, MyAnimations.SAO_SINGLE_SWORD_GUARD)
                 .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.IDLE, MyAnimations.SAO_RAPIER_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.WALK, MyAnimations.SAO_RAPIER_WALK)
-                .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.RUN, MyAnimations.SAO_RAPIER_RUN)*/
-                //.livingMotionModifier(EpicAddonStyles.SAO_RAPIER, LivingMotions.KNEEL, MyAnimations.SAO_RAPIER_IDLE)
-                //.livingMotionModifier(EpicAddonStyles.SAO_RAPIER_LOCKED, LivingMotions.BLOCK, MyAnimations.SAO_SINGLE_SWORD_GUARD)
+                .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.RUN, MyAnimations.SAO_RAPIER_RUN)
+                .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.KNEEL, MyAnimations.SAO_RAPIER_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.IDLE, MyAnimations.SAO_DUAL_SWORD_HOLD)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.WALK, MyAnimations.SAO_DUAL_SWORD_HOLD)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.CHASE, MyAnimations.SAO_DUAL_SWORD_HOLD)
@@ -185,16 +178,16 @@ public class WeaponTypes {
                 .weaponCombinationPredicator((entitypatch) -> {
                     boolean tag = false;
                     if (entitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicACGWeaponCategories.SINGLE_SWORD){
-                        tag = true;
-                        /*
+                        //tag = true;
+
                         if(entitypatch instanceof PlayerPatch){
 
-                            if (((PlayerPatch)entitypatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill() != null
-                                    && ((PlayerPatch)entitypatch).getSkill(EpicAddonSkillSlots.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_dual_sword_skill")){
+                            if (((PlayerPatch)entitypatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill() != null
+                                    && ((PlayerPatch)entitypatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_dual_sword_skill")){
                                 tag = true;
                             }
 
-                        }*/
+                        }
                     }
                     return tag;
                 });
@@ -223,8 +216,8 @@ public class WeaponTypes {
     public enum EpicACGStyles implements Style {
         SAO_DUAL_SWORD(true),
         //SAO_DUAL_SWORD_LOCKED(true),
-        SAO_SINGLE_SWORD(true);
-        //SAO_RAPIER(true);
+        SAO_SINGLE_SWORD(true),
+        SAO_RAPIER(true);
 
         //SAO_RAPIER_LOCKED(false);
 

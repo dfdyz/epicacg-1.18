@@ -7,9 +7,9 @@ import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.GSBowInternal;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.GSFallAttack;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.GSSpecialAttack;
 import com.dfdyz.epicacg.efmextra.skills.MutiSpecialSkill;
-import com.dfdyz.epicacg.efmextra.skills.SAO.SAOBasicAtkPatch;
-import com.dfdyz.epicacg.efmextra.skills.SAO.SAOSingleSwordInternal;
-import com.dfdyz.epicacg.efmextra.skills.SAO.SingleSwordSASkills;
+import com.dfdyz.epicacg.efmextra.skills.SAO.*;
+import com.dfdyz.epicacg.efmextra.skills.SimpleWeaponSASkill;
+import com.dfdyz.epicacg.efmextra.skills.TagSkill;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -18,6 +18,7 @@ import yesman.epicfight.api.forgeevent.SkillBuildEvent;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
+import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 
 import static yesman.epicfight.skill.Skill.Resource.WEAPON_INNATE_ENERGY;
 
@@ -34,7 +35,12 @@ public class MySkills {
     public static Skill SAO_BASICATK_PATCH;
     public static Skill SAO_SINGLESWORD_SA;
 
+    public static Skill BATTLE_SCYTHE_SA;
 
+    public static Skill SAO_DUALSWORD;
+    public static Skill SAO_SINGLESWORD;
+    public static Skill SAO_RAPIER_A;
+    public static Skill WEAPON_SKILL_RAPIER;
     public static Skill GS_YOIMIYA_SPECIALATK;
     public static void registerSkills() {
         SkillManager.register(MutiSpecialSkill::new,
@@ -74,6 +80,33 @@ public class MySkills {
                         .setResource(Skill.Resource.NONE)
                 , EpicACG.MODID, "gs_bow_internal");
 
+
+        SkillManager.register(TagSkill::new,
+                TagSkill.createBuilder(
+                        new ResourceLocation(EpicACG.MODID,"sao_single_sword"),
+                        EpicACGSkillCategories.SAO_SINGLE_SWORD
+                ).setCreativeTab(Items.ITEM_TAB)
+                , EpicACG.MODID, "sao_single_sword");
+        SkillManager.register(DualBladeSkill::new,
+                DualBladeSkill.createBuilder(new ResourceLocation(EpicACG.MODID,"sao_dual_sword_skill"))
+                        .setCreativeTab(Items.ITEM_TAB)
+                , EpicACG.MODID, "sao_dual_sword_skill");
+
+
+        SkillManager.register(RapierSkill::new,
+                RapierSkill.createBuilder(new ResourceLocation(EpicACG.MODID,"sao_rapier_skill"))
+                        .setCreativeTab(Items.ITEM_TAB)
+                , EpicACG.MODID, "sao_rapier_skill");
+
+        SkillManager.register(RapierSpicialAttackSkill::new,
+                RapierSpicialAttackSkill.createBuilder(
+                                new ResourceLocation(EpicACG.MODID, "weapon_skill_rapier"))
+                        .setResource(WEAPON_INNATE_ENERGY)
+                        .setCategory(SkillCategories.WEAPON_INNATE)
+                        .setAnimations(MyAnimations.SAO_RAPIER_SPECIAL_DASH)
+                        //.setAnimation2(MyAnimations.SAO_RAPIER_SPECIAL_DASH)
+                , EpicACG.MODID, "weapon_skill_rapier");
+
         SkillManager.register(SAOSingleSwordInternal::new,
                 SAOSingleSwordInternal.createBuilder()
                         .setCategory(SkillCategories.WEAPON_PASSIVE)
@@ -94,6 +127,13 @@ public class MySkills {
                         .setCategory(SkillCategories.WEAPON_INNATE)
                 , EpicACG.MODID, "single_sword_sa");
 
+        SkillManager.register(SimpleWeaponSASkill::new,
+                (SimpleWeaponInnateSkill.Builder) SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder()
+                        .setAnimations(new ResourceLocation(EpicACG.MODID,"biped/battle_scythe/battle_scythe_sa1"))
+                        .setResource(WEAPON_INNATE_ENERGY)
+                        .setRegistryName(new ResourceLocation(EpicACG.MODID, "battle_scythe_sa"))
+                , EpicACG.MODID, "battle_scythe_sa");
+
     }
 
 
@@ -111,6 +151,14 @@ public class MySkills {
         SAO_BASICATK_PATCH = event.build(EpicACG.MODID,"sao_basic_attack_patch");
         SAO_SINGLESWORD_INTERNAL = event.build(EpicACG.MODID, "sao_single_sword_internal");
         SAO_SINGLESWORD_SA = event.build(EpicACG.MODID, "single_sword_sa");
+
+        BATTLE_SCYTHE_SA = event.build(EpicACG.MODID, "battle_scythe_sa");
+
+        SAO_SINGLESWORD = event.build(EpicACG.MODID, "sao_single_sword");
+        SAO_DUALSWORD = event.build(EpicACG.MODID, "sao_dual_sword_skill");
+        SAO_RAPIER_A = event.build(EpicACG.MODID,"sao_rapier_skill");
+        WEAPON_SKILL_RAPIER = event.build(EpicACG.MODID, "weapon_skill_rapier");
+
     }
 
 }

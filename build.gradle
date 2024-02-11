@@ -179,7 +179,7 @@ dependencies {
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-    implementation fg.deobf("libs:EpicFight:18.5.19")
+    implementation fg.deobf("libs:EpicFight:18.5.21")
     //implementation fg.deobf("maven.modrinth:rubidium:0.5.6")
     //aimplementation fg.deobf("maven.modrinth:oculus:${iris_version}")
     // Examples using mod jars from ./libs

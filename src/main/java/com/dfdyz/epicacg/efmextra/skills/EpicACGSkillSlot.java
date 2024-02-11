@@ -5,7 +5,8 @@ import yesman.epicfight.skill.SkillCategory;
 import yesman.epicfight.skill.SkillSlot;
 
 public enum EpicACGSkillSlot implements SkillSlot {
-    SKILL_SELECTOR(EpicACGSkillCategories.MutiSpecialAttack);
+    SKILL_SELECTOR(EpicACGSkillCategories.MutiSpecialAttack),
+    SAO_SINGLE_SWORD(EpicACGSkillCategories.SAO_SINGLE_SWORD);
     SkillCategory category;
     int id;
 

@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderUtils {
-    public static void SetCurrentTexture(ResourceLocation texture){
+    public static void GLSetTexture(ResourceLocation texture){
         TextureManager texturemanager = Minecraft.getInstance().getTextureManager();
         AbstractTexture abstracttexture = texturemanager.getTexture(texture);
         RenderSystem.bindTexture(abstracttexture.getId());

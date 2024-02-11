@@ -14,11 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import static net.minecraft.client.Minecraft.ON_OSX;
 
@@ -44,7 +41,7 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
         RenderSystem.depthMask(true);
         RenderSystem.setShader(this::getShader);
 
-        if(texture != null) RenderUtils.SetCurrentTexture(texture);
+        if(texture != null) RenderUtils.GLSetTexture(texture);
 
         getPipeline().start();
         setupBufferBuilder(bufferBuilder);

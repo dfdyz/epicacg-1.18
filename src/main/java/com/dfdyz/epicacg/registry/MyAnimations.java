@@ -4,6 +4,7 @@ import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.camera.CamAnim;
 import com.dfdyz.epicacg.efmextra.anims.*;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.skillevents.YoimiyaSkillFunction;
+import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.SAOSkillAnimUtils;
 import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.google.common.collect.Lists;
@@ -11,23 +12,27 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import org.slf4j.Logger;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationProperty;
-import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.TrailInfo;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.forgeevent.AnimationRegistryEvent;
+import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.awt.*;
 import java.util.List;
+
+import static com.dfdyz.epicacg.utils.MoveCoordFuncUtils.TraceLockedTargetEx;
 
 public class MyAnimations {
     public static List<CamAnim> CamAnimRegistry = Lists.newArrayList();
@@ -53,7 +58,9 @@ public class MyAnimations {
     public static StaticAnimation BATTLE_SCYTHE_AUTO4;
     public static StaticAnimation BATTLE_SCYTHE_AUTO5;
     public static StaticAnimation BATTLE_SCYTHE_DASH;
+    public static StaticAnimation BATTLE_SCYTHE_SA1;
 
+    //Dual blade
     public static StaticAnimation SAO_DUAL_SWORD_HOLD;
     public static StaticAnimation SAO_DUAL_SWORD_NORMAL;
     public static StaticAnimation SAO_DUAL_SWORD_RUN;
@@ -73,9 +80,23 @@ public class MyAnimations {
     public static StaticAnimation SAO_DUAL_SWORD_AUTO12;
     public static StaticAnimation SAO_DUAL_SWORD_DASH;
 
+
+    public static StaticAnimation SAO_RAPIER_IDLE;
+    public static StaticAnimation SAO_RAPIER_WALK;
+    public static StaticAnimation SAO_RAPIER_RUN;
+    public static StaticAnimation SAO_RAPIER_AUTO1;
+    public static StaticAnimation SAO_RAPIER_AUTO2;
+    public static StaticAnimation SAO_RAPIER_AUTO3;
+    public static StaticAnimation SAO_RAPIER_AUTO4;
+    public static StaticAnimation SAO_RAPIER_AUTO5;
+    public static StaticAnimation SAO_RAPIER_AIR;
+    public static StaticAnimation SAO_RAPIER_SPECIAL_DASH;
+    public static StaticAnimation SAO_RAPIER_DASH;
+    public static StaticAnimation SAO_RAPIER_SA2;
+
     public static void registerAnimations(AnimationRegistryEvent event) {
         Logger LOGGER = LogUtils.getLogger();
-        LOGGER.info("EpicAddon AnimLoadingEvent");
+        LOGGER.info("EpicACG AnimLoadingEvent");
         event.getRegistryMap().put(EpicACG.MODID, MyAnimations::register);
     }
 
@@ -134,7 +155,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2.4f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
-                            CameraEvents.SetAnim(Yoimiya, ep.getOriginal(), true);
+                            CameraEvents.SetAnim(YOIMIYA_SA, ep.getOriginal(), true);
                         }, AnimationEvent.Side.CLIENT),
                         AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
                             YoimiyaSkillFunction.YoimiyaSAFirework(ep);
@@ -191,7 +212,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,1.85f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,1.85f, 8, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
 
@@ -201,7 +222,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,1.45f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,1.45f, 8, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
 
@@ -211,7 +232,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,1.55f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,1.55f, 8, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
 
@@ -233,7 +254,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,2.28f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,2.28f, 10, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
 
@@ -243,7 +264,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,1.65f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,1.65f, 8, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
 
@@ -262,9 +283,78 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                                newTF(0f,1.17f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                                newTF(0f,1.17f, 10, biped.toolR, InteractionHand.MAIN_HAND)
                         )
                 );
+
+
+        BATTLE_SCYTHE_SA1 = new BasicAttackAnimation(0.05F,  "biped/battle_scythe/battle_scythe_sa1", biped,
+                new AttackAnimation.Phase(0.0F, 0.1833F, 0.2666F, 0.35F, 0.355F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+                new AttackAnimation.Phase(0.355F, 0.4333F, 0.4833F, 0.5416F, 0.5416F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+                new AttackAnimation.Phase(0.5416F, 0.58F, 0.6667F, 0.6667F, 0.6667F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+
+                new AttackAnimation.Phase(0.6667F, 0.7666F, 0.8833F, 0.8833F, 0.8833F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+                new AttackAnimation.Phase(0.8833F, 0.8833F, 1.05F, 1.05F, 1.05F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+                new AttackAnimation.Phase(1.05F, 1.05F, 1.15F, 1.6F, 1.6F, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT),
+
+                new AttackAnimation.Phase(1.6F, 1.65F, 1.7666F, 1.9666F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NEUTRALIZE)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.BLACK_KNIGHT)
+                //.addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0f)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0f, 1.7f))
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, null)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, TraceLockedTargetEx(3))
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(0.7f))
+                .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
+                        AnimationEvent.TimeStampedEvent.create(0.4833f, (entitypatch, anim, objs) -> {
+                            Entity entity = entitypatch.getOriginal();
+                            entitypatch.getOriginal().level
+                                    .addParticle(Particles.ENTITY_AFTER_IMG_EX.get(),
+                                            Double.longBitsToDouble(entity.getId()),
+                                            Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getNamespaceId()), Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getId()),
+                                            0.5, Double.longBitsToDouble(new Color(84, 16, 167, 50).getRGB()), Double.longBitsToDouble(35));
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(0.6666f, (entitypatch, anim, objs) -> {
+                            Entity entity = entitypatch.getOriginal();
+                            entitypatch.getOriginal().level
+                                    .addParticle(Particles.ENTITY_AFTER_IMG_EX.get(),
+                                            Double.longBitsToDouble(entity.getId()),
+                                            Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getNamespaceId()), Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getId()),
+                                            0.67f, Double.longBitsToDouble(new Color(84, 16, 167, 50).getRGB()), Double.longBitsToDouble(30));
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(1.4666f, (entitypatch, anim, objs) -> {
+                            Entity entity = entitypatch.getOriginal();
+                            entitypatch.getOriginal().level
+                                    .addParticle(Particles.ENTITY_AFTER_IMG_EX.get(),
+                                            Double.longBitsToDouble(entity.getId()),
+                                            Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getNamespaceId()), Double.longBitsToDouble(BATTLE_SCYTHE_SA1.getId()),
+                                            1.4666f, Double.longBitsToDouble(new Color(84, 16, 167, 50).getRGB()), Double.longBitsToDouble(20));
+                        }, AnimationEvent.Side.CLIENT)
+                })
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                        newTF(0.1833F,0.2666F, 8, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.4333F,0.4833F, 6, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.5800F,0.6667F, 6, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.7666F,1.05F, 8, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(1.6500F,1.7666F, 6, biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
 
 
         SAO_DUAL_SWORD_HOLD = new StaticAnimation(true, "biped/living/sao_dual_sword_hold", biped);
@@ -277,7 +367,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0f,0.35f, 7, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0f,0.35f, 5, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
         SAO_DUAL_SWORD_AUTO2 = new BasicAttackAnimation(0.05F, 0.01F, 0.2F, 0.2F, InteractionHand.OFF_HAND ,null, biped.toolL, "biped/sao_dual_sword/sao_dual_sword_auto2", biped)
@@ -286,7 +376,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0f,0.2f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0f,0.2f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
 
         SAO_DUAL_SWORD_AUTO3 = new BasicAttackAnimation(0.05F, 0.01F, 0.2F, 0.2F, InteractionHand.OFF_HAND ,null, biped.toolL, "biped/sao_dual_sword/sao_dual_sword_auto3", biped)
@@ -295,7 +385,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0f,0.2f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0f,0.2f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
 
         SAO_DUAL_SWORD_AUTO4 = new BasicAttackAnimation(0.05F, "biped/sao_dual_sword/sao_dual_sword_auto4", biped,
@@ -310,8 +400,8 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0f,0.2f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.1f,0.35f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0f,0.2f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.1f,0.35f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto4:右手，antic:0.05F,contact:0.15F
         //auto4:左手，antic:0.15F,contact:0.3F
@@ -328,8 +418,8 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.1f,0.25f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.15f,0.35f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.1f,0.25f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.15f,0.35f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto5:右手，antic:0.15F,contact:0.2F
         //auto5:左手，antic:0.2F,contact:0.3F
@@ -342,8 +432,8 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.05f,0.25f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.05f,0.25f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.05f,0.25f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.05f,0.25f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto6:右手，antic:0.1F,contact:0.2F
         //auto6:左手，antic:0.1F,contact:0.2F
@@ -358,8 +448,8 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.0f,0.15f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.0f,0.15f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.0f,0.15f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto7:右手，antic:0.01F,contact:0.1F
         //autO7:左手，antic:0.01F,contact:0.1F
@@ -379,8 +469,8 @@ public class MyAnimations {
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
                         newTF(0.0f,0.12f, 5, biped.toolR, InteractionHand.MAIN_HAND),
                         newTF(0.0f,0.12f, 5, biped.toolL, InteractionHand.OFF_HAND),
-                        newTF(0.12f,0.25f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.12f,0.25f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.12f,0.25f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.12f,0.25f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto8:右手，antic:0.05F,contact:0.1F\antic:0.15F,contact:0.2F(单手两段攻击)
         //autO8:左手，antic:0.05F,contact:0.1F\antic:0.15F,contact:0.2F(单手两段攻击)
@@ -394,8 +484,8 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.0f,0.15f, 7, biped.toolL, InteractionHand.OFF_HAND)
+                        newTF(0.0f,0.15f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.0f,0.15f, 5, biped.toolL, InteractionHand.OFF_HAND)
                 ));
         //auto9:右手，antic:0.01F,contact:0.1F
         //autO9:左手，antic:0.01F,contact:0.1F
@@ -407,7 +497,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0.0f,0.15f, 5, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
         SAO_DUAL_SWORD_AUTO11 = new BasicAttackAnimation(0.05F, 0.01F,0.1F, 0.3F, null, biped.toolR, "biped/sao_dual_sword/sao_dual_sword_auto11", biped)
@@ -417,7 +507,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0.0f,0.15f, 5, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
         SAO_DUAL_SWORD_AUTO12 = new BasicAttackAnimation(0.05F, 0.01F, 0.1F, 0.5F, null, biped.toolR, "biped/sao_dual_sword/sao_dual_sword_auto12", biped)
@@ -427,7 +517,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.6F)
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.15f, 7, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0.0f,0.15f, 5, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
         SAO_DUAL_SWORD_DASH = new BasicAttackAnimation(0.02F, "biped/sao_dual_sword/sao_dual_sword_dash", biped,
@@ -449,12 +539,124 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, null)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed( 2.1f))
                 .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
-                        newTF(0.0f,0.65f, 10, biped.toolR, InteractionHand.MAIN_HAND),
-                        newTF(0.65f,0.95f, 10, biped.toolL, InteractionHand.OFF_HAND),
-                        newTF(0.75f,1.05f, 10, biped.toolR, InteractionHand.MAIN_HAND)
+                        newTF(0.0f,0.65f, 5, biped.toolR, InteractionHand.MAIN_HAND),
+                        newTF(0.65f,0.95f, 5, biped.toolL, InteractionHand.OFF_HAND),
+                        newTF(0.75f,1.05f, 5, biped.toolR, InteractionHand.MAIN_HAND)
                 ));
 
+        SAO_RAPIER_IDLE = new StaticAnimation(true, "biped/living/sao_rapier_idle", biped);
+        SAO_RAPIER_WALK = new MovementAnimation(true, "biped/living/sao_rapier_walk", biped);
+        SAO_RAPIER_RUN = new MovementAnimation(true, "biped/living/sao_rapier_run", biped);
 
+        SAO_RAPIER_AUTO1 = new BasicAttackAnimation(0.05F, 0.1F, 0.2F, 0.3F, null, biped.toolR, "biped/sao_rapier_auto1", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                                newTF(0f,1.1f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
+        SAO_RAPIER_AUTO2 = new BasicAttackAnimation(0.05F, 0.1F, 0.2F, 0.3F, null, biped.toolR, "biped/sao_rapier_auto2", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                                newTF(0f,1.3f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
+        SAO_RAPIER_AUTO3 = new BasicAttackAnimation(0.02F, 0.1F, 0.2F, 0.4F, null, biped.toolR, "biped/sao_rapier_auto3", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                                newTF(0f,1.2f, 5,biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
+        SAO_RAPIER_AUTO4 = new BasicAttackAnimation(0.05F,"biped/sao_rapier_auto4", biped,
+                new AttackAnimation.Phase(0.0F,0.1F,0.15F,0.2F,0.2F,InteractionHand.MAIN_HAND,biped.toolR,null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT),
+                new AttackAnimation.Phase(0.2F,0.25F,0.35F,0.5F,Float.MAX_VALUE,InteractionHand.MAIN_HAND,biped.toolR,null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT))
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                                newTF(0f,1.1f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
+        SAO_RAPIER_AUTO5 = new BasicAttackAnimation(0.02F, 0.2F, 0.3F, 0.65F, null, biped.toolR, "biped/sao_rapier_auto5", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(ClientAnimationProperties.TRAIL_EFFECT, newTFL(
+                                newTF(0f,1.3f, 5, biped.toolR, InteractionHand.MAIN_HAND)
+                        )
+                );
+
+        SAO_RAPIER_DASH  = new DashAttackAnimation(0F, 0.2F, 0.1F, 0.3F, 0.4F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_dash", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(14.7F))
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT);
+
+        SAO_RAPIER_AIR  = new DashAttackAnimation(0.12F, 0.133F, 0.05F, 0.2F, 0.3F, WeaponCollider.SAO_RAPIER_DASH_SHORT, biped.rootJoint, "biped/sao_rapier_air", biped)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6f)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT);
+
+        SAO_RAPIER_SPECIAL_DASH  = new DashAttackAnimation(0.1F, 0.3F, 0.05F, 4.8333F, 5.0F, WeaponCollider.SAO_RAPIER_DASH, biped.rootJoint, "biped/sao_rapier_dash_long", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(14.7F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(114514))
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.21F)
+                .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
+                .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, Particles.SPARKS_SPLASH_HIT)
+                .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
+                        AnimationEvent.TimeStampedEvent.create(0, (ep, anim, objs) -> {
+                            if(ep instanceof PlayerPatch){
+                                ep.setMaxStunShield(114514.0f);
+                                ep.setStunShield(ep.getMaxStunShield());
+                            }
+                        }, AnimationEvent.Side.SERVER),
+                        AnimationEvent.TimeStampedEvent.create(3.5f, (ep, anim, objs) -> {
+                            if(ep instanceof PlayerPatch){
+                                ep.setMaxStunShield(0f);
+                                ep.setStunShield(ep.getMaxStunShield());
+                            }
+                        }, AnimationEvent.Side.SERVER)
+                });
+
+        SAO_RAPIER_SA2  = new ScanAttackAnimation(0.0F, 0.3f,0.72f, 1.48F, InteractionHand.MAIN_HAND, WeaponCollider.SAO_RAPIER_SCAN, biped.rootJoint, "biped/sao_rapier_sa2", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
+                .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
+                        AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.RapierSA.prev(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(0.65f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.RapierSA.HandleAtk(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(1.15f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.RapierSA.post(ep);
+                        }, AnimationEvent.Side.CLIENT)
+                })
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(1.2f));
 
 
     }
@@ -467,25 +669,14 @@ public class MyAnimations {
         return Lists.newArrayList(tfs);
     }
 
-    public static TrailInfo newTF(float start, float end, Joint joint, InteractionHand hand){
-        JsonObject je = new JsonObject();
-        je.addProperty("joint", joint.getName());
-        je.addProperty("startTime", start);
-        je.addProperty("endTime", end);
-        je.addProperty("item_skin_hand", hand.toString());
-
-        //System.out.println(je);
-
-        return TrailInfo.deserialize(je);
-    }
-
     public static TrailInfo newTF(float start, float end, int lifetime, Joint joint, InteractionHand hand){
         JsonObject je = new JsonObject();
         je.addProperty("joint", joint.getName());
-        je.addProperty("startTime", start);
-        je.addProperty("endTime", end);
+        je.addProperty("start_time", start);
+        je.addProperty("end_time", end);
         je.addProperty("item_skin_hand", hand.toString());
-        je.addProperty("lifetime", (int)((end - start) * 20 + lifetime));
+        je.addProperty("lifetime", lifetime);
+        //je.addProperty("fade_time", 0.1f);
         //System.out.println(je);
 
         return TrailInfo.deserialize(je);
@@ -495,12 +686,16 @@ public class MyAnimations {
         return List.of(Pair.of(Armatures.BIPED.toolR, null), Pair.of(Armatures.BIPED.toolL, null));
     }
 
-    public static CamAnim Yoimiya;
+    public static CamAnim YOIMIYA_SA;
+    public static CamAnim SAO_RAPIER_SA2_CAM;
+    public static CamAnim SAO_RAPIER_SA2_CAM2;
+
+
     public static void RegCamAnims(){
-        Yoimiya = regCamAnim(new CamAnim(0.3f , EpicACG.MODID, "camanim/yoimiya.json"));
-        //SAO_RAPIER_SA2_CAM = regCamAnim(new CamAnim(0.3f ,EpicAddon.MODID, "camanim/sao_rapier_sa2.json"));
-        //SAO_RAPIER_SA2_CAM2 = regCamAnim(new CamAnim(0.3f ,EpicAddon.MODID, "camanim/sao_rapier_sa2_post.json"));
-        //DMC_V_PREV = regCamAnim(new CamAnim(0.4f, EpicAddon.MODID, "camanim/dmc_v_prev.json"));
+        YOIMIYA_SA = regCamAnim(new CamAnim(0.3f , EpicACG.MODID, "camanim/yoimiya.json"));
+        SAO_RAPIER_SA2_CAM = regCamAnim(new CamAnim(0.3f ,EpicACG.MODID, "camanim/sao_rapier_sa2.json"));
+        SAO_RAPIER_SA2_CAM2 = regCamAnim(new CamAnim(0.3f ,EpicACG.MODID, "camanim/sao_rapier_sa2_post.json"));
+        //DMC_V_PREV = regCamAnim(new CamAnim(0.4f, EpicACG.MODID, "camanim/dmc_v_prev.json"));
     }
 
     public static CamAnim regCamAnim(CamAnim anim){

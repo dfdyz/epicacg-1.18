@@ -92,7 +92,7 @@ public class EpicACGRenderType {
             RenderSystem.depthMask(true);
             RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
 
-            if(Texture != null) RenderUtils.SetCurrentTexture(Texture);
+            if(Texture != null) RenderUtils.GLSetTexture(Texture);
 
             p_107448_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
         }
