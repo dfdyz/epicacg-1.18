@@ -5,10 +5,10 @@
 	"package": "com.dfdyz.epicacg.mixins",
 	"client": [
 		"MixinGameRenderer",
-		"MixinLevelRenderer"
+		"MixinLevelRenderer",
+		"MixinLivingEntity"
 	],
 	"mixins": [
-		"MixinLivingEntity"
 	],
 	"injectors": {
 		"defaultRequire": 1

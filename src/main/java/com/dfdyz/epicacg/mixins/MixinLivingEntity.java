@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LivingEntity.class)
 public abstract class MixinLivingEntity {
-
     @Inject(at = @At("HEAD"),method = "makePoofParticles", cancellable = true)
     private void MixinPoof(CallbackInfo callbackInfo){
         if(ClientConfig.cfg.EnableDeathParticle)

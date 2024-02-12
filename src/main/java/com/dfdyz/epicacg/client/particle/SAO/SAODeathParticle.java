@@ -21,7 +21,7 @@ public class SAODeathParticle extends NoRenderParticle {
         DeathParticleHandler.ParticleTransformed transform = DeathParticleHandler.TransformPool.get(eid);
         DeathParticleHandler.TransformPool.remove(eid);
 
-        float per = 0.2f;
+        float per = 1 / transform.density;
 
         Vec3 rect3d = transform.maxV.subtract(transform.minV);
 
@@ -83,9 +83,9 @@ public class SAODeathParticle extends NoRenderParticle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet spriteSet;
+        //private final SpriteSet spriteSet;
         public Provider(SpriteSet spriteSet) {
-            this.spriteSet = spriteSet;
+            //this.spriteSet = spriteSet;
         }
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double _0, double _1, double _2, double _3, double _4, double _5) {

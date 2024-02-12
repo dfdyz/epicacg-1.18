@@ -16,7 +16,6 @@ import java.io.*;
 import java.util.Map;
 
 
-@OnlyIn(Dist.CLIENT)
 public class ClientConfig {
     public static ClientConfigValue cfg = new ClientConfigValue();
 
@@ -89,11 +88,11 @@ public class ClientConfig {
         json = ReadString(cfgpath);
         //LOGGER.info(json);
         if(json != ""){
-            DeathParticleHandler.TransformType.clear();
-            DeathParticleHandler.TransformType = CommonConfig.GSON.fromJson(json, new TypeToken<Map<String, DeathParticleHandler.ParticleTransform>>(){}.getType());
+            DeathParticleHandler.config.clear();
+            DeathParticleHandler.config = CommonConfig.GSON.fromJson(json, new TypeToken<DeathParticleHandler.DeathParticleConfig>(){}.getType());
         }
         else{
-            WriteString(cfgpath, CommonConfig.GSON.toJson(DeathParticleHandler.TransformType));
+            WriteString(cfgpath, CommonConfig.GSON.toJson(DeathParticleHandler.config));
         }
 
 /*

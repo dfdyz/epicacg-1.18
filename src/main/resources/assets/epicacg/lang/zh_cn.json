@@ -4,9 +4,9 @@
   "item.epicacg.elucidator": "阐释者",
   "item.epicacg.lambent_light": "闪烁之光",
   "item.epicacg.dark_repulsor": "逐暗者",
-  "item.epicacg.dragon_shit_crystal": "粑粑水晶",
+  "item.epicacg.dragon_shit_crystal": "龙水晶",
   "item.epicacg.anneal_blade": "韧炼之剑",
-  "item.epicacg.battle_scythe": "战斗镰刀[未完成]",
+  "item.epicacg.battle_scythe": "战斗镰刀",
   "item.epicacg.destiny": "-命运-",
   "item.epicacg.training_bow": "训练弓",
   "item.epicacg.custom_skillbook": "技能书",
@@ -28,10 +28,18 @@
   "skill.epicacg.sao_single_sword_guard_skill.tooltip": "用剑格挡",
   "skill.epicacg.sao_single_sword_guard_skill": "单手剑-格挡 %s",
 
-  "skill.epicacg.sao_single_sword.category": "单手用直剑",
+  "skill.epicfight.sao_single_sword.category": "单手用直剑",
 
   "skill.epicacg.single_sword_sa": "",
   "skill.epicacg.single_sword_sa.tooltip": "",
+
+  "skill.epicacg.weapon_skill_rapier": "技能 (多态)",
+  "skill.epicacg.weapon_skill_rapier.tooltip": "闪光穿刺(奔跑时无法触发)\n彗星穿刺\n",
+
+  "skill.epicacg.battle_scythe_sa": "归刃",
+  "skill.epicacg.battle_scythe_sa.tooltip": "向前突进，多次闪现，快速斩击\n",
+
+
 
   "skill.epicacg.gs_yoimiya_sa": "弓弦之舞",
   "skill.epicacg.gs_yoimiya_sa.tooltip": "腾空并向下释放烟花，造成大量伤害",

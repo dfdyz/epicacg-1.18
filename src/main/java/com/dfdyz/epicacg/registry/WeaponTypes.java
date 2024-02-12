@@ -167,12 +167,11 @@ public class WeaponTypes {
                 .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.RUN, MyAnimations.SAO_RAPIER_RUN)
                 .livingMotionModifier(EpicACGStyles.SAO_RAPIER, LivingMotions.KNEEL, MyAnimations.SAO_RAPIER_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.IDLE, MyAnimations.SAO_DUAL_SWORD_HOLD)
-                .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.WALK, MyAnimations.SAO_DUAL_SWORD_HOLD)
+                .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.WALK, MyAnimations.SAO_DUAL_SWORD_WALK)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.CHASE, MyAnimations.SAO_DUAL_SWORD_HOLD)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.RUN, MyAnimations.SAO_DUAL_SWORD_RUN)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.JUMP, MyAnimations.SAO_DUAL_SWORD_NORMAL)
-                .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.KNEEL, MyAnimations.SAO_DUAL_SWORD_NORMAL)
-                .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.SNEAK, MyAnimations.SAO_DUAL_SWORD_HOLD)
+                .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.KNEEL, MyAnimations.SAO_RAPIER_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.SWIM, MyAnimations.SAO_DUAL_SWORD_NORMAL)
                 .livingMotionModifier(EpicACGStyles.SAO_DUAL_SWORD, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
                 .weaponCombinationPredicator((entitypatch) -> {
@@ -186,7 +185,6 @@ public class WeaponTypes {
                                     && ((PlayerPatch)entitypatch).getSkill(EpicACGSkillSlot.SAO_SINGLE_SWORD).getSkill().getRegistryName().getPath().equals("sao_dual_sword_skill")){
                                 tag = true;
                             }
-
                         }
                     }
                     return tag;
@@ -238,12 +236,7 @@ public class WeaponTypes {
             return this.canUseOffhand;
         }
 
-
-
-
     }
-
-
     public static void register(WeaponCapabilityPresetRegistryEvent event){
         Logger LOGGER = LogUtils.getLogger();
         LOGGER.info("Loading WeaponCapability");

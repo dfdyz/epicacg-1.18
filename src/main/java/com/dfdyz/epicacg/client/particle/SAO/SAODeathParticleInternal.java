@@ -92,9 +92,9 @@ public class SAODeathParticleInternal extends Particle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet spriteSet;
+        //private final SpriteSet spriteSet;
         public Provider(SpriteSet spriteSet) {
-            this.spriteSet = spriteSet;
+            //this.spriteSet = spriteSet;
         }
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

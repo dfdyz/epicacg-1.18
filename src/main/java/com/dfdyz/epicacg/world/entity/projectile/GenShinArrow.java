@@ -76,6 +76,7 @@ public class GenShinArrow extends Arrow {
             entity.setSecondsOnFire(5);
         }
 
+        entity.invulnerableTime = 0;
         if (entity.hurt(damagesource, dmg)) {
             entity.setInvulnerable(false);
             if (flag) {

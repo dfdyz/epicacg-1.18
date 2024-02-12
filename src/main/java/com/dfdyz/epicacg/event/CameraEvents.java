@@ -6,6 +6,7 @@ import com.dfdyz.epicacg.client.camera.CamAnim;
 import com.dfdyz.epicacg.utils.MathUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.client.renderer.FirstPersonRenderer;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = EpicACG.MODID, value = Dist.CLIENT)
@@ -40,6 +42,11 @@ public class CameraEvents {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void TransformCam(EntityViewRenderEvent.CameraSetup event){
+        CameraType cameraType = Minecraft.getInstance().options.getCameraType();
+        if(cameraType.isFirstPerson() || cameraType.isMirrored()){
+            return;
+        }
+
         if (!(!isEnd || linking) || currentAnim == null) {
             return;
         }

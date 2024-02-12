@@ -4,9 +4,9 @@
   "item.epicacg.elucidator": "Elucidator",
   "item.epicacg.lambent_light": "Lambent Light",
   "item.epicacg.dark_repulsor" :"Dark Repulsor",
-  "item.epicacg.dragon_shit_crystal" :"Shit Crystal",
+  "item.epicacg.dragon_shit_crystal" :"Dragon Crystal",
   "item.epicacg.anneal_blade": "Anneal Blade",
-  "item.epicacg.battle_scythe": "Battle Scythe[WIP]",
+  "item.epicacg.battle_scythe": "Battle Scythe",
   "item.epicacg.destiny": "-Destiny-",
   "item.epicacg.training_bow": "Training Bow",
   "item.epicacg.custom_skillbook": "Skill Book",
@@ -27,15 +27,26 @@
   "skill.epicacg.sao_single_sword_guard_skill.tooltip": "Use Single-hand to guard.",
   "skill.epicacg.sao_single_sword_guard_skill": "Single-hand Sword Guard\nAvailable Weapon Types : %s",
 
-  "skill.epicacg.sao_single_sword.category": "SINGLE SWORD",
+  "skill.epicfight.sao_single_sword.category": "SINGLE SWORD",
 
   "epicfight.skill_slot.sao_single_sword": "SINGLE SWORD SYSTEM",
 
   "skill.epicacg.single_sword_sa": "",
   "skill.epicacg.single_sword_sa.tooltip": "",
 
+
+  "skill.epicacg.weapon_skill_rapier": "Multi-Skill",
+  "skill.epicacg.weapon_skill_rapier.tooltip": "Flash puncture(Unable to use while running)\nComet puncture\n",
+
+  "skill.epicacg.battle_scythe_sa": "Sheathed Blade",
+  "skill.epicacg.battle_scythe_sa.tooltip": "Advance forward, flash and cut quickly",
+
+
   "skill.epicacg.gs_yoimiya_sa": "Dance of Bow",
-  "skill.epicacg.gs_yoimiya_sa.tooltip": "",
+  "skill.epicacg.gs_yoimiya_sa.tooltip": "Firework !",
+
+
+
 
   "key.epicacg.gui": "EFM ACG AddonPack",
   "key.epicacg.switch_skill": "SkillSwitching(Hold and Rolling the mid button)"

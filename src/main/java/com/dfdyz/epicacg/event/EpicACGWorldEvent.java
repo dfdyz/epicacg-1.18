@@ -17,6 +17,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
@@ -47,6 +48,7 @@ public class EpicACGWorldEvent {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void renderWorldLast(TickEvent.RenderTickEvent event) {
+        if(FMLEnvironment.dist != Dist.CLIENT) return;
         if(event.phase == TickEvent.Phase.START) return;
         //GlobalVal.ANGInternal += 0.05f * ClientConfig.cfg.RotSpeed;
         GlobalVal.WANG += 0.05f * 0.7f;
@@ -64,27 +66,22 @@ public class EpicACGWorldEvent {
         });
     }
 
+
     private static void ShootDeathParticle(LivingEntity entity){
         //System.out.println("dddddd");
-
-
         Level level = entity.getLevel();
-
 
         String regName = entity.getType().getRegistryName().toString();
 
-        DeathParticleHandler.ParticleTransform transformType = DeathParticleHandler.TransformType.get(regName);
+        DeathParticleHandler.ParticleTransform transformType = DeathParticleHandler.config.custom.get(regName);
 
         if(transformType == null){
             LazyOptional<EntityPatch> capability = entity.getCapability(EpicFightCapabilities.CAPABILITY_ENTITY);
-
 
             Vec3 pos = entity.position();
             AABB box = entity.getBoundingBox();
             //type == 1
             float rot = entity.yBodyRot;
-
-
 
             Vec3 minVec = (new Vec3(box.minX,box.minY-0.85f,box.minZ)).subtract(pos);
             Vec3 maxVec = (new Vec3(box.maxX,box.maxY-0.85f,box.maxZ)).subtract(pos);
@@ -100,7 +97,7 @@ public class EpicACGWorldEvent {
             }
 
             DeathParticleHandler.TransformPool.putIfAbsent(eid,
-                    new DeathParticleHandler.ParticleTransformed(Vec3.ZERO, minVec, maxVec, rotation));
+                    new DeathParticleHandler.ParticleTransformed(Vec3.ZERO, minVec, maxVec, rotation, DeathParticleHandler.config.default_density));
 
             //System.out.format("put %s\n", pos.toString());
 
@@ -111,6 +108,13 @@ public class EpicACGWorldEvent {
 
         }
         else {
+            //type:
+            //  1 use default hit box
+            //  2 use custom box (with pos offset)
+            //  3 use custom box (with pos offset) & custom rotation ()
+            //  4 use custom box (with pos offset) & custom rotation offset () & entity yaw
+
+
             Vec3 pos = entity.position();
 
             Vec3 minVec, maxVec;
@@ -144,11 +148,11 @@ public class EpicACGWorldEvent {
 
             if(transformType.type >= 2){
                 DeathParticleHandler.TransformPool.putIfAbsent(eid,
-                        new DeathParticleHandler.ParticleTransformed(transformType.offset, minVec, maxVec, rotation));
+                        new DeathParticleHandler.ParticleTransformed(transformType.offset, minVec, maxVec, rotation, transformType.density));
             }
             else {
                 DeathParticleHandler.TransformPool.putIfAbsent(eid,
-                        new DeathParticleHandler.ParticleTransformed(Vec3.ZERO, minVec, maxVec, rotation));
+                        new DeathParticleHandler.ParticleTransformed(Vec3.ZERO, minVec, maxVec, rotation, transformType.density));
             }
             //System.out.format("put %s\n", pos.toString());
             level.addParticle(Particles.SAO_DEATH.get(),

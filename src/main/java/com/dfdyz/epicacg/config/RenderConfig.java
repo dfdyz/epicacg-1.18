@@ -42,7 +42,7 @@ public class RenderConfig {
     }
 
     public static void AddDeathParticleConfig(EntityType type, DeathParticleHandler.ParticleTransform transform){
-        DeathParticleHandler.TransformType.putIfAbsent(type.getRegistryName().toString(), transform);
+        DeathParticleHandler.config.custom.putIfAbsent(type.getRegistryName().toString(), transform);
     }
 
     static {
@@ -51,14 +51,14 @@ public class RenderConfig {
                         Vec3.ZERO,
                         new Vec3(-0.5,0,-0.35),
                         new Vec3(0.5,1.82,0.35),
-                        new Vec3(90,0,0),
+                        new Vec3(90,0,0), 5,
                         4));
         AddDeathParticleConfig(EntityType.ENDERMAN,
                 new DeathParticleHandler.ParticleTransform(
                         Vec3.ZERO,
                         new Vec3(-0.5,0,-0.35),
                         new Vec3(0.5,2.8,0.35),
-                        Vec3.ZERO,
+                        Vec3.ZERO, 5,
                         4));
     }
 

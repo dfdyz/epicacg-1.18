@@ -51,7 +51,7 @@ public class MySkills {
 
         SkillManager.register(GSSpecialAttack::new,
                 (SimpleWeaponInnateSkill.Builder) SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder()
-                        .setAnimations(new ResourceLocation(EpicACG.MODID,"biped/gs_yoimiya_sa"))
+                        .setAnimations(new ResourceLocation(EpicACG.MODID,"biped/gs_yoimiya/gs_yoimiya_sa"))
                         .setResource(WEAPON_INNATE_ENERGY)
                         .setRegistryName(new ResourceLocation(EpicACG.MODID, "gs_yoimiya_sa"))
                 , EpicACG.MODID, "gs_yoimiya_sa");
@@ -102,7 +102,7 @@ public class MySkills {
                                 new ResourceLocation(EpicACG.MODID, "weapon_skill_rapier"))
                         .setResource(WEAPON_INNATE_ENERGY)
                         .setCategory(SkillCategories.WEAPON_INNATE)
-                        .setAnimation(new ResourceLocation(EpicACG.MODID, "biped/sao_rapier_dash_long"))
+                        .setAnimation(new ResourceLocation(EpicACG.MODID, "biped/sao_rapier/sao_rapier_dash_long"))
                 , EpicACG.MODID, "weapon_skill_rapier");
 
         SkillManager.register(SAOSingleSwordInternal::new,

@@ -4,11 +4,15 @@
   "masks":
   [
     {
-      "livingmotion":"ALL",
-      "type":"arms"
+      "livingmotion":"IDLE",
+      "type":"upper_joints"
     },
     {
-      "livingmotion":"IDLE",
+      "livingmotion":"WALK",
+      "type":"upper_joints"
+    },
+    {
+      "livingmotion":"RUN",
       "type":"none"
     }
   ]

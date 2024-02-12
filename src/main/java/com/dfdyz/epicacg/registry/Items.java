@@ -38,7 +38,9 @@ public class Items {
     public static final RegistryObject<Item> BattleScythe = ITEMS.register("battle_scythe", () -> new SimpleWeaponItem(new Item.Properties().tab(ITEM_TAB), Tiers.DIAMOND, 8));
     public static final RegistryObject<Item> Elucidator = ITEMS.register("elucidator", () -> new SpecialWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Special, 15));
     public static final RegistryObject<Item> DarkRepulsor = ITEMS.register("dark_repulsor", () -> new SimpleWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Normal, 15));
+    public static final RegistryObject<Item> LambentLight = ITEMS.register("lambent_light", () -> new SimpleWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Normal, 15));
 
+    public static final RegistryObject<Item> DragonShitCrystal = ITEMS.register("dragon_shit_crystal", () -> new Item(new  Item.Properties().tab(ITEM_TAB)));
 
     public enum EpicACGTier implements Tier {
         SAO_Normal(4, 9999, 9.0F, 6.0F, 22, () -> {
