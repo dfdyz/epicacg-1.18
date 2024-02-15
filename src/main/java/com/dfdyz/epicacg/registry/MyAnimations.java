@@ -14,7 +14,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -635,11 +637,19 @@ public class MyAnimations {
                 //.addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed( 1f))
                 .addEvents(
                         AnimationEvent.TimeStampedEvent
-                                .create(1.45F, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.CLIENT)
-                                .params(new Vec3f(0.0F, -1F, 0F), Armatures.BIPED.rootJoint, 5D, 0.7F))
-                .addEvents(
+                                .create(0.1F, (entitypatch, anim, objs) -> {
+                                    SAOSkillAnimUtils.playSound(entitypatch.getOriginal(), Sounds.DualSword_SA1_1);
+                                }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent
-                                .create(1.5F, (entitypatch, anim, objs) -> {
+                                .create(1.15F, (entitypatch, anim, objs) -> {
+                                    SAOSkillAnimUtils.playSound(entitypatch.getOriginal(), Sounds.DualSword_SA1_2);
+                                }, AnimationEvent.Side.SERVER),
+                        AnimationEvent.TimeStampedEvent
+                                .create(1.5F, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE
+                                        , AnimationEvent.Side.CLIENT)
+                                .params(new Vec3f(0.0F, -1F, 0F), Armatures.BIPED.rootJoint, 5D, 0.7F),
+                        AnimationEvent.TimeStampedEvent
+                                .create(1.4F, (entitypatch, anim, objs) -> {
                                     SAOSkillAnimUtils.DualSwordSA.LandingStrike(entitypatch.getOriginal());
                                 }, AnimationEvent.Side.CLIENT))
         ;

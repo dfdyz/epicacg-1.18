@@ -3,14 +3,26 @@ package com.dfdyz.epicacg.efmextra.skills.SAO.skillevents;
 import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.dfdyz.epicacg.registry.MobEffects;
+import com.dfdyz.epicacg.registry.Sounds;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.animation.Joint;
+import yesman.epicfight.api.animation.property.AnimationEvent;
+import yesman.epicfight.api.utils.LevelUtil;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -20,6 +32,34 @@ import static com.dfdyz.epicacg.registry.MyAnimations.SAO_RAPIER_SA2_CAM;
 import static com.dfdyz.epicacg.registry.MyAnimations.SAO_RAPIER_SA2_CAM2;
 
 public class SAOSkillAnimUtils {
+    /*
+    public static final AnimationEvent.AnimationEventConsumer FRACTURE_GROUND_SIMPLE = (entitypatch, animation, params) -> {
+        Vec3 position = (entitypatch.getOriginal()).position();
+        OpenMatrix4f modelTransform = entitypatch.getArmature().getBindedTransformFor(animation.getPoseByTime(entitypatch, (Float)params[3], 1.0F), (Joint)params[1]).mulFront(OpenMatrix4f.createTranslation((float)position.x, (float)position.y, (float)position.z).mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS).mulBack(entitypatch.getModelMatrix(1.0F))));
+        Level level = (entitypatch.getOriginal()).level;
+        Vec3 weaponEdge = OpenMatrix4f.transform(modelTransform, ((Vec3f)params[0]).toDoubleVector());
+        BlockHitResult hitResult = level.clip(new ClipContext(position.add(0.0, 0.1, 0.0), weaponEdge, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entitypatch.getOriginal()));
+        Vec3 slamStartPos;
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            Direction direction = hitResult.getDirection();
+            BlockPos collidePos = hitResult.getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
+            if (!LevelUtil.canTransferShockWave(level, collidePos, level.getBlockState(collidePos))) {
+                collidePos = collidePos.below();
+            }
+
+            slamStartPos = new Vec3(collidePos.getX(), collidePos.getY(), collidePos.getZ());
+        } else {
+            slamStartPos = weaponEdge.subtract(0.0, 1.0, 0.0);
+        }
+
+        LevelUtil.circleSlamFracture(entitypatch.getOriginal(), level, slamStartPos, (Double)params[2], true, false);
+    };*/
+
+
+    public static void playSound(Entity entity, SoundEvent soundEvent){
+        //System.out.println("?????");
+        entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundEvent, entity.getSoundSource(), 1.0F, 1.0F);
+    }
 
     public static class RapierSA {
         public static void prev(LivingEntityPatch entityPatch){
@@ -58,7 +98,8 @@ public class SAOSkillAnimUtils {
 
         public static void LandingStrike(Entity entity){
             LandingStrikeParticle particle = new LandingStrikeParticle(
-                    (ClientLevel) entity.level, entity.position().add(0, 0.2f, 0));
+                    (ClientLevel) entity.level, entity.position().add(0, .8f, 0));
+            particle.setColor(0, 246.f / 255.f, 1f);
             RenderUtils.AddParticle((ClientLevel) entity.level, particle);
         }
 

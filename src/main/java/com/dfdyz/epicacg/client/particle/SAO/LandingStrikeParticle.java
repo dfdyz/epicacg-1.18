@@ -17,7 +17,7 @@ public class LandingStrikeParticle extends Particle {
 
     public LandingStrikeParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
-        lifetime = 8;
+        lifetime = 9;
     }
 
     public LandingStrikeParticle(ClientLevel level, Vec3 pos) {
@@ -35,6 +35,12 @@ public class LandingStrikeParticle extends Particle {
     public void render(VertexConsumer vertexConsumer, Camera camera, float pt) {
         if(!PostParticlePipelines.isActive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(textures).callPipeline();
+
+        if(age < 1) return;
+
+        float tick = age + pt;
+        int frame = Math.min(7, (int) ((tick - 1) * 1.3f));
+        if(frame >= 7) return;
 
         Vec3 vec3 = camera.getPosition();
         //Quaternion quaternion = camera.rotation();
@@ -55,22 +61,19 @@ public class LandingStrikeParticle extends Particle {
             Vector3f vector3f = avector3f[i];
             //vector3f.add(f, f1, f2);
             //vector3f.transform(quaternion);
-            vector3f.mul(1.5f);
+            vector3f.mul(5);
             vector3f.add(f, f1, f2);
             //vector3f.mul(0f);
             //vector3f.add(f, f1, f2);
         }
-
-
-        int frame = Math.min(6, age);
 
         float u0 = 0;
         float u1 = 1;
 
         float per = 1.f / 7;
 
-        float v0 = 1.f - frame * per;
-        float v1 = 1.f - (frame + 1) * per;
+        float v0 = frame * per;
+        float v1 = (frame + 1) * per;
 
         //System.out.println(t);
         int light = this.getLightColor(pt);
