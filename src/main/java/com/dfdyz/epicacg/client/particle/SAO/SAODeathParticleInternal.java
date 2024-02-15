@@ -47,6 +47,9 @@ public class SAODeathParticleInternal extends Particle {
         super.tick();
         this.xd += 0.01f * GlobalVal.WX;
         this.zd += 0.01f * GlobalVal.WZ;
+
+
+
         //rotation.set(rotation.i(),rotation.j(),rotation.k(), (float) (rotation.r() + rotSpeed/180*Math.PI));
     }
 

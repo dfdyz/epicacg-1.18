@@ -2,7 +2,6 @@ package com.dfdyz.epicacg.client.particle.GenshinImpact;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
 import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType;
 import com.dfdyz.epicacg.registry.Particles;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -42,7 +41,7 @@ public class GenShinBowLandingParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.GENSHIN_BOW_LANDING;
+        return EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_LANDONG_PARTICLE_TEX);
     }
 
     private Vector3f[] avector3f = new Vector3f[]{new Vector3f(-3.0F, -3.0F, 0.0F), new Vector3f(-3.0F, 3.0F, 0.0F), new Vector3f(3.0F, 3.0F, 0.0F), new Vector3f(3.0F, -3.0F, 0.0F)};
@@ -57,7 +56,7 @@ public class GenShinBowLandingParticle extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float tick) {
         if(!PostParticlePipelines.isActive()) return;
-        EpicACGRenderType.GENSHIN_BOW_LANDING.callPipeline();
+        EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_LANDONG_PARTICLE_TEX).callPipeline();
         Vec3 vec3 = camera.getPosition();
         //Quaternion quaternion = camera.rotation();
 

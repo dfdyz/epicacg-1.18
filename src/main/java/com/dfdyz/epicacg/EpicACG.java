@@ -1,6 +1,5 @@
 package com.dfdyz.epicacg;
 
-import com.dfdyz.epicacg.client.camera.CamAnim;
 import com.dfdyz.epicacg.command.ClientCommands;
 import com.dfdyz.epicacg.config.ClientConfig;
 import com.dfdyz.epicacg.efmextra.skills.EpicACGSkillCategories;
@@ -78,10 +77,7 @@ public class EpicACG
 
         if(FMLEnvironment.dist == Dist.CLIENT){
             ControllerEvent.EpicAddonKeyMapping.Reg();
-            MyAnimations.RegCamAnims();
-            for (CamAnim camAnim: MyAnimations.CamAnimRegistry) {
-                camAnim.load();
-            }
+            MyAnimations.LoadCamAnims();
 
             try {
                 ClientConfig.Load(false);

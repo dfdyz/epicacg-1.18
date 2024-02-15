@@ -8,11 +8,8 @@ import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle3;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowShootParticle;
 import com.dfdyz.epicacg.client.particle.MyTextureSheetParticle;
-import com.dfdyz.epicacg.client.particle.SAO.SAODeathParticle;
-import com.dfdyz.epicacg.client.particle.SAO.SAODeathParticleInternal;
+import com.dfdyz.epicacg.client.particle.SAO.*;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.YoimiyaSA.GsYoimiyaFirework;
-import com.dfdyz.epicacg.client.particle.SAO.SparksSplashHitParticle;
-import com.dfdyz.epicacg.client.particle.SAO.SparksSplashParticle;
 import com.dfdyz.epicacg.utils.MyHitParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
@@ -44,6 +41,12 @@ public class Particles {
     public static final RegistryObject<HitParticleType> SPARKS_SPLASH_HIT = PARTICLES.register("sparks_splash_hit",() -> new HitParticleType(true, HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, MyHitParticleType.Atker2Tar));
 
     public static final RegistryObject<SimpleParticleType> ENTITY_AFTER_IMG_EX = PARTICLES.register("after_image_ex",() -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ALO_WING = PARTICLES.register("alo_wing", () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<SimpleParticleType> STAR_FLASH = PARTICLES.register("star_flash", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> PHOTON_TRAIL = PARTICLES.register("photon_trail", () -> new SimpleParticleType(true));
+
+
     @OnlyIn(Dist.CLIENT)
     public static void registryParticles(ParticleFactoryRegisterEvent event){
         ParticleEngine PE = Minecraft.getInstance().particleEngine;
@@ -65,5 +68,9 @@ public class Particles {
         PE.register(SPARKS_SPLASH.get(), SparksSplashParticle.Provider::new);
         PE.register(SPARKS_SPLASH_HIT.get(), SparksSplashHitParticle.Provider::new);
         PE.register(ENTITY_AFTER_IMG_EX.get(), EntityAfterImgParticleEx.Provider::new);
+
+        PE.register(ALO_WING.get(), KiritoWingParticle.Provider::new);
+        PE.register(STAR_FLASH.get(), StarFlashParticle.Provider::new);
+        PE.register(PHOTON_TRAIL.get(), PhotonTrailingParticle.Provider::new);
     }
 }

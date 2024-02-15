@@ -2,7 +2,6 @@ package com.dfdyz.epicacg.client.particle.GenshinImpact;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
 import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
@@ -35,7 +34,7 @@ public class GenShinBowLandingParticle3 extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.GENSHIN_BOW_LANDING2;
+        return EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_LANDONG_PARTICLE_TEX3);
     }
 
     private Vector3f[] avector3f = new Vector3f[]{new Vector3f(-3.0F, -3.0F, 0.0F), new Vector3f(-3.0F, 3.0F, 0.0F), new Vector3f(3.0F, 3.0F, 0.0F), new Vector3f(3.0F, -3.0F, 0.0F)};
@@ -50,7 +49,7 @@ public class GenShinBowLandingParticle3 extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float tick) {
         if(!PostParticlePipelines.isActive()) return;
-        EpicACGRenderType.GENSHIN_BOW_LANDING2.callPipeline();
+        EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_LANDONG_PARTICLE_TEX3).callPipeline();
         if(age < TimeWaitToPlay) return;
         Vec3 vec3 = camera.getPosition();
         //Quaternion quaternion = camera.rotation();
@@ -107,9 +106,9 @@ public class GenShinBowLandingParticle3 extends TextureSheetParticle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet spriteSet;
+        //private final SpriteSet spriteSet;
         public Provider(SpriteSet spriteSet) {
-            this.spriteSet = spriteSet;
+            //this.spriteSet = spriteSet;
         }
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

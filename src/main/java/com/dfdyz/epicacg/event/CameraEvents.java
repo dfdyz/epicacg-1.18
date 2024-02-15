@@ -2,7 +2,7 @@ package com.dfdyz.epicacg.event;
 
 
 import com.dfdyz.epicacg.EpicACG;
-import com.dfdyz.epicacg.client.camera.CamAnim;
+import com.dfdyz.epicacg.client.camera.CameraAnimation;
 import com.dfdyz.epicacg.utils.MathUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -26,7 +26,7 @@ import yesman.epicfight.client.renderer.FirstPersonRenderer;
 public class CameraEvents {
     private static float yawLock = 0f;
     private static Vec3 posLock = new Vec3(0,0,0);
-    public static CamAnim currentAnim;
+    public static CameraAnimation currentAnim;
     private static int tick = 0;
     private static int linkTick = 0;
     private static int maxLinkTick = 3;
@@ -37,7 +37,7 @@ public class CameraEvents {
     private static float fovO = 0;
     private static boolean isLockPos = false;
 
-    private static CamAnim.Pose pose_;
+    private static CameraAnimation.Pose pose_;
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -69,7 +69,7 @@ public class CameraEvents {
         Camera camera = event.getCamera();
         double partialTicks = event.getPartialTicks();
 
-        CamAnim.Pose pose;
+        CameraAnimation.Pose pose;
         if(linking){
             pose = pose_;
             float t = (linkTick + (float) partialTicks)/maxLinkTick;
@@ -141,7 +141,7 @@ public class CameraEvents {
         }
         else return;
 
-        if(!isEnd && currentAnim != null && tick/20f >= currentAnim.getMaxTime()){
+        if(!isEnd && currentAnim != null && tick/20f >= currentAnim.totalTime){
             isEnd = true;
             linking = true;
             tick = 0;
@@ -156,7 +156,7 @@ public class CameraEvents {
             Minecraft.getInstance().options.fov = fovO;
         }
     }
-    public static void SetAnim(CamAnim anim, LivingEntity org, boolean lockOrgPos){
+    public static void SetAnim(CameraAnimation anim, LivingEntity org, boolean lockOrgPos){
         if(org instanceof Player){
             if (!((Player) org).isLocalPlayer()) return;
         }

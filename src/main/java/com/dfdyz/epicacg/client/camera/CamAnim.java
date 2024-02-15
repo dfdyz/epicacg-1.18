@@ -18,19 +18,20 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CamAnim {
-    public final float linkTime;
-    public final List<Key> keys_ = Lists.newArrayList();
-    public final ResourceLocation resourceLocation;
+   /* //public final float linkTime;
+    //public final List<Key> keys_ = Lists.newArrayList();
+    //public final ResourceLocation resourceLocation;
 
     public CamAnim(float linkTime, ResourceLocation resourceLocation){
-        this.resourceLocation = resourceLocation;
-        this.linkTime = linkTime;
+        //this.resourceLocation = resourceLocation;
+        //this.linkTime = linkTime;
     }
 
     public CamAnim(float linkTime, String namespace, String path){
         this.resourceLocation = new ResourceLocation(namespace,path);
         this.linkTime = linkTime;
     }
+
 
     public void load(){
         try {
@@ -91,43 +92,9 @@ public class CamAnim {
     }
 
 
-    public static class Pose{
-        public final Vec3 pos;
-        public final float rotY;
-        public final float rotX;
-        public final float fov;
-        public Pose(Vec3 pos, float rotX, float rotY, float fov){
-            this.pos = pos;
-            this.rotY = rotY;
-            this.rotX = rotX;
-            this.fov = fov;
-        }
 
-        public static Pose lerp(Pose p1, Pose p2, float t){
-            Vec3 p = lerpVec3(p1.pos,p2.pos,t);
-            float _rotY = p1.rotY*(1-t) + p2.rotY*t;
-            float _rotX = p1.rotX*(1-t) + p2.rotX*t;
-            float fov = p1.fov*(1-t) + p2.fov*t;
-            return new Pose(p, _rotX, _rotY, fov);
-        }
 
-        public static Vec3 lerpVec3(Vec3 v1, Vec3 v2, float t){
-            double x = (v1.x*(1-t) + v2.x*t);
-            double y = (v1.y*(1-t) + v2.y*t);
-            double z = (v1.z*(1-t) + v2.z*t);
-            return new Vec3(x,y,z);
-        }
 
-        @Override
-        public String toString() {
-            return "Pose{" +
-                    "pos=" + pos +
-                    ", rotY=" + rotY +
-                    ", rotX=" + rotX +
-                    ", fov=" + fov +
-                    '}';
-        }
-    }
 
     public static class Key{
         public final Pose pose;
@@ -146,13 +113,11 @@ public class CamAnim {
         };
 
         public static Key ReadFromText(KeyFrameInfo kfi){
-
-
             return new Key(new Vec3(kfi.x,kfi.y,kfi.z), kfi.rx, kfi.ry, kfi.fov, kfi.t);
         }
 
         public static class KeyFrameInfo{
             public float x,y,z,rx,ry,fov,t;
         }
-    }
+    }*/
 }

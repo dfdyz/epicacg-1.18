@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.utils.RenderUtils;
+import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -129,11 +129,11 @@ public class BloomTrailParticle extends TextureSheetParticle {
             return;
         }*/
 
-        double xd = Math.pow(this.entitypatch.getOriginal().getX() - this.entitypatch.getOriginal().xo, 2);
-        double yd = Math.pow(this.entitypatch.getOriginal().getY() - this.entitypatch.getOriginal().yo, 2);
-        double zd = Math.pow(this.entitypatch.getOriginal().getZ() - this.entitypatch.getOriginal().zo, 2);
-        float move = (float)Math.sqrt(xd + yd + zd) * 2.0F;
-        this.setSize(this.bbWidth + move, this.bbHeight + move);
+        //double xd = Math.pow(this.entitypatch.getOriginal().getX() - this.entitypatch.getOriginal().xo, 2);
+        //double yd = Math.pow(this.entitypatch.getOriginal().getY() - this.entitypatch.getOriginal().yo, 2);
+        //double zd = Math.pow(this.entitypatch.getOriginal().getZ() - this.entitypatch.getOriginal().zo, 2);
+        //float move = (float)Math.sqrt(xd + yd + zd) * 2.0F;
+        //this.setSize(this.bbWidth + move, this.bbHeight + move);
 
         boolean isTrailInvisible = animPlayer.getAnimation() instanceof LinkAnimation || animPlayer.getElapsedTime() <= this.trailInfo.startTime;
         boolean isFirstTrail = this.visibleTrailEdges.size() == 0;
@@ -231,10 +231,11 @@ public class BloomTrailParticle extends TextureSheetParticle {
             return;
         }
 
-        EpicACGRenderType.BLOOM_TRAIL.callPipeline();
+        if(!PostParticlePipelines.isActive()) return;
+        EpicACGRenderType.getBloomRenderTypeByTexture(trailInfo.texturePath).callPipeline();
 
         //get texture
-        RenderUtils.GLSetTexture(this.trailInfo.texturePath);
+        //RenderUtils.GLSetTexture(this.trailInfo.texturePath);
 
         PoseStack poseStack = new PoseStack();
         int light = this.getLightColor(partialTick);
@@ -295,7 +296,7 @@ public class BloomTrailParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.BLOOM_TRAIL;
+        return EpicACGRenderType.getBloomRenderTypeByTexture(trailInfo.texturePath);
     }
 
     protected void setupPoseStack(PoseStack poseStack, Camera camera, float partialTicks) {

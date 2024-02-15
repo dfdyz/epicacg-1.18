@@ -41,6 +41,8 @@ public class MySkills {
     public static Skill SAO_SINGLESWORD;
     public static Skill SAO_RAPIER_A;
     public static Skill WEAPON_SKILL_RAPIER;
+
+    public static Skill SAO_DUAL_SWORD_SA;
     public static Skill GS_YOIMIYA_SPECIALATK;
     public static void registerSkills() {
         SkillManager.register(MutiSpecialSkill::new,
@@ -132,6 +134,14 @@ public class MySkills {
                         .setRegistryName(new ResourceLocation(EpicACG.MODID, "battle_scythe_sa"))
                 , EpicACG.MODID, "battle_scythe_sa");
 
+        SkillManager.register(SimpleWeaponSASkill::new,
+                (SimpleWeaponInnateSkill.Builder) SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder()
+                        .setAnimations(new ResourceLocation(EpicACG.MODID,"biped/sao_dual_sword/sao_dual_sword_sa1"))
+                        .setResource(WEAPON_INNATE_ENERGY)
+                        .setRegistryName(new ResourceLocation(EpicACG.MODID, "sao_dual_sword_sa"))
+                , EpicACG.MODID, "sao_dual_sword_sa");
+
+
     }
 
 
@@ -156,7 +166,7 @@ public class MySkills {
         SAO_DUALSWORD = event.build(EpicACG.MODID, "sao_dual_sword_skill");
         SAO_RAPIER_A = event.build(EpicACG.MODID,"sao_rapier_skill");
         WEAPON_SKILL_RAPIER = event.build(EpicACG.MODID, "weapon_skill_rapier");
-
+        SAO_DUAL_SWORD_SA = event.build(EpicACG.MODID, "sao_dual_sword_sa");
     }
 
 }

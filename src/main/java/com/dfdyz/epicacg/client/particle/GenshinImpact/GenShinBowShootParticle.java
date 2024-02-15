@@ -2,7 +2,6 @@ package com.dfdyz.epicacg.client.particle.GenshinImpact;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
 import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -13,6 +12,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import static com.dfdyz.epicacg.client.render.EpicACGRenderType.GS_BOW_SHOOT_PARTICLE_TEX;
 
 public class GenShinBowShootParticle extends TextureSheetParticle {
     protected final int lifeTick;
@@ -43,7 +44,7 @@ public class GenShinBowShootParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.GENSHIN_BOW_PARTICLE;
+        return EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_SHOOT_PARTICLE_TEX);
     }
 
     private Vector3f[] avector3f = new Vector3f[]{new Vector3f(-3.0F, -3.0F, 0.0F), new Vector3f(-3.0F, 3.0F, 0.0F), new Vector3f(3.0F, 3.0F, 0.0F), new Vector3f(3.0F, -3.0F, 0.0F)};
@@ -51,7 +52,9 @@ public class GenShinBowShootParticle extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float tick) {
         if(!PostParticlePipelines.isActive()) return;
-        EpicACGRenderType.GENSHIN_BOW_PARTICLE.callPipeline();
+
+        EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_SHOOT_PARTICLE_TEX).callPipeline();
+
         Vec3 vec3 = camera.getPosition();
         float f = (float)(this.x - vec3.x());
         float f1 = (float)(this.y - vec3.y() - 0.8);

@@ -70,11 +70,6 @@ public class SAODeathParticle extends NoRenderParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return SAO_DEATH_PARTICLE;
-    }
-
-    @Override
     public void tick() {
         if (this.age++ >= this.lifetime) {
             this.remove();

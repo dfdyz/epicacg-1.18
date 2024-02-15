@@ -1,10 +1,8 @@
 package com.dfdyz.epicacg.command;
 
 import com.dfdyz.epicacg.EpicACG;
-import com.dfdyz.epicacg.client.camera.CamAnim;
 import com.dfdyz.epicacg.config.ClientConfig;
 import com.dfdyz.epicacg.registry.MyAnimations;
-import com.dfdyz.epicacg.utils.ReflectionUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -56,9 +54,7 @@ public class ClientCommands {
                             ClientConfig.Load(true);
                             //BladeTrailTextureLoader.ReleaseAll();
                             //BladeTrailTextureLoader.Load();
-                            for (CamAnim camAnim: MyAnimations.CamAnimRegistry) {
-                                camAnim.load();
-                            }
+                            MyAnimations.LoadCamAnims();
                             MSGClient("[EpicACG]Reload All Config.");
                             return Command.SINGLE_SUCCESS;
                         }))

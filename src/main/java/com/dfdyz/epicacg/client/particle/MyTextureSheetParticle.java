@@ -59,7 +59,7 @@ public class MyTextureSheetParticle extends SingleQuadParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return QUAD_PARTICLE;
+        return getRenderTypeByTexture(texture);
     }
 
     @Override

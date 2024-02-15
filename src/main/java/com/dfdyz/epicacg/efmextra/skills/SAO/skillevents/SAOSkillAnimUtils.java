@@ -1,9 +1,13 @@
 package com.dfdyz.epicacg.efmextra.skills.SAO.skillevents;
 
+import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.dfdyz.epicacg.registry.MobEffects;
+import com.dfdyz.epicacg.utils.RenderUtils;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -48,6 +52,16 @@ public class SAOSkillAnimUtils {
             //entityPatch.getOriginal().setInvisible(false);
             CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM2, (LivingEntity) entityPatch.getOriginal(), true);
         }
+    }
+
+    public static class DualSwordSA{
+
+        public static void LandingStrike(Entity entity){
+            LandingStrikeParticle particle = new LandingStrikeParticle(
+                    (ClientLevel) entity.level, entity.position().add(0, 0.2f, 0));
+            RenderUtils.AddParticle((ClientLevel) entity.level, particle);
+        }
+
     }
 
     /*

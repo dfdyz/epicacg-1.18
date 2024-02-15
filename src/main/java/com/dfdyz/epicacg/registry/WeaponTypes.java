@@ -83,7 +83,6 @@ public class WeaponTypes {
         return builder;
     };
 
-
     public static final Function<Item, CapabilityItem.Builder> SAO_SINGLE_SWORD = (item) -> {
         WeaponCapability.Builder builder = WeaponCapability.builder()
                 .category(EpicACGWeaponCategories.SINGLE_SWORD)
@@ -157,7 +156,7 @@ public class WeaponTypes {
                         MyAnimations.SAO_DUAL_SWORD_DASH, Animations.SPEAR_DASH,
                         Animations.GREATSWORD_AIR_SLASH)
                 .innateSkill(EpicACGStyles.SAO_SINGLE_SWORD,(itemstack) ->  MySkills.SAO_SINGLESWORD_SA)
-                .innateSkill(EpicACGStyles.SAO_DUAL_SWORD,(itemstack) ->  EpicFightSkills.DANCING_EDGE)
+                .innateSkill(EpicACGStyles.SAO_DUAL_SWORD,(itemstack) ->  MySkills.SAO_DUAL_SWORD_SA)
                 .innateSkill(EpicACGStyles.SAO_RAPIER, (itemstack) ->  MySkills.WEAPON_SKILL_RAPIER)
                 .livingMotionModifier(EpicACGStyles.SAO_SINGLE_SWORD, LivingMotions.IDLE, Animations.BIPED_IDLE)
                 .livingMotionModifier(EpicACGStyles.SAO_SINGLE_SWORD, LivingMotions.BLOCK, MyAnimations.SAO_SINGLE_SWORD_GUARD)
@@ -196,10 +195,36 @@ public class WeaponTypes {
         }
         return builder;
     };
-    
+
+    //todo
+    /*
+    public static final Function<Item, CapabilityItem.Builder> SAO_LONGSWORD_VARIANT = (item) -> {
+        WeaponCapability.Builder builder = WeaponCapability.builder()
+                .category(EpicACGWeaponCategories.LONG_SWORD)
+                .styleProvider((playerpatch) -> CapabilityItem.Styles.ONE_HAND)
+                .collider(ColliderPreset.LONGSWORD)
+                .hitSound(EpicFightSounds.BLADE_HIT)
+                .newStyleCombo(CapabilityItem.Styles.ONE_HAND,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_AUTO1,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_AUTO2,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_AUTO3,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_AUTO4,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_AUTO5,
+                        MyAnimations.SAO_LONGSWORD_VARIANT_DASH, Animations.LONGSWORD_AIR_SLASH)
+                .innateSkill(CapabilityItem.Styles.ONE_HAND,(itemStack) -> EpicFightSkills.SHARP_STAB)
+                .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, MyAnimations.SAO_LONGSWORD_VARIANT_IDLE)
+                .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, MyAnimations.SAO_LONGSWORD_VARIANT_WALK)
+                .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN, MyAnimations.SAO_LONGSWORD_VARIANT_RUN)
+                .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.JUMP, MyAnimations.SAO_LONGSWORD_VARIANT_JUMP)
+                .weaponCombinationPredicator((entitypatch) -> false);
+
+        return builder;
+    };*/
+
 
     public enum EpicACGWeaponCategories implements WeaponCategory {
-        SCYTHE, SINGLE_SWORD;//GREAT_SWORD,ES_WIND_SNEAKER,SAO_PALADIN,SINGLE_SWORD;
+        SCYTHE, SINGLE_SWORD, LONG_SWORD;
         final int id;
 
         private EpicACGWeaponCategories() {
@@ -245,6 +270,9 @@ public class WeaponTypes {
         event.getTypeEntry().put("genshin_bow", GENSHIN_BOW);
         //event.getTypeEntry().put("sr_baseball_bat", SR_BaseBallBat);
         event.getTypeEntry().put("battle_scythe", BATTLE_SCYTHE);
+
+        //todo
+        //event.getTypeEntry().put("sao_longsword_variant", SAO_LONGSWORD_VARIANT);
 
 
         //event.getTypeEntry().put("sao_greatsword", SAO_GREATSWORD);

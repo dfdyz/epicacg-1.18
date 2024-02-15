@@ -23,7 +23,6 @@ public class SparksSplashParticle extends TextureSheetParticle {
     @Override
     protected int getLightColor(float p_107249_) {
         int i = super.getLightColor(p_107249_);
-        int j = 240;
         int k = i >> 16 & 255;
         return 240 | k << 16;
     }

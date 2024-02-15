@@ -4,6 +4,7 @@ package com.dfdyz.epicacg.client.render;
 import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.render.custom.BloomParticleRenderType;
 import com.dfdyz.epicacg.utils.RenderUtils;
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -16,6 +17,10 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.HashMap;
+
+import static com.dfdyz.epicacg.utils.RenderUtils.GetTextures;
 
 @OnlyIn(Dist.CLIENT)
 public class EpicACGRenderType {
@@ -34,13 +39,17 @@ public class EpicACGRenderType {
             GetTextures("particle/sao_death")
     );
             //new EpicACGQuadParticleRenderType("textures/particle/sao_death", "SAO_DEATH");
+
+    /*
     public static final BloomParticleRenderType GENSHIN_BOW_PARTICLE = new BloomParticleRenderType(
             new ResourceLocation(EpicACG.MODID, "genshin_bow"), GS_BOW_SHOOT_PARTICLE_TEX
     );
 
+
     public static final BloomParticleRenderType GENSHIN_BOW_LANDING = new BloomParticleRenderType(
             new ResourceLocation(EpicACG.MODID, "genshin_bow_landing"), GS_BOW_LANDONG_PARTICLE_TEX
     );
+
 
     public static final BloomParticleRenderType GENSHIN_BOW_LANDING2 = new BloomParticleRenderType(
             new ResourceLocation(EpicACG.MODID, "genshin_bow_landing2"), GS_BOW_LANDONG_PARTICLE_TEX3
@@ -50,8 +59,34 @@ public class EpicACGRenderType {
             new ResourceLocation(EpicACG.MODID, "efm_trail"), null
     );
 
-    public static final EpicACGQuadParticleRenderType QUAD_PARTICLE = new EpicACGQuadParticleRenderType("quad_particle", null);
+    public static final BloomParticleRenderType BLOOM_QUAD_PARTICLE = new BloomParticleRenderType(
+            new ResourceLocation(EpicACG.MODID, "bloom_quad_particle"), null
+    );*/
 
+
+    private static final HashMap<ResourceLocation, BloomParticleRenderType> BloomRenderTypes = Maps.newHashMap();
+    public static BloomParticleRenderType getBloomRenderTypeByTexture(ResourceLocation texture){
+        if(BloomRenderTypes.containsKey(texture)){
+            return BloomRenderTypes.get(texture);
+        }
+        else {
+            BloomParticleRenderType bloomType = new BloomParticleRenderType(new ResourceLocation(EpicACG.MODID, "bloom_particle"), texture);
+            BloomRenderTypes.put(texture, bloomType);
+            return bloomType;
+        }
+    }
+
+    private static final HashMap<ResourceLocation, EpicACGQuadParticleRenderType> QuadRenderTypes = Maps.newHashMap();
+    public static EpicACGQuadParticleRenderType getRenderTypeByTexture(ResourceLocation texture){
+        if(QuadRenderTypes.containsKey(texture)){
+            return QuadRenderTypes.get(texture);
+        }
+        else {
+            EpicACGQuadParticleRenderType rdt = new EpicACGQuadParticleRenderType("epicacg:quad_particle", texture);
+            QuadRenderTypes.put(texture,rdt);
+            return rdt;
+        }
+    }
 
 
     /*
@@ -68,9 +103,6 @@ public class EpicACGRenderType {
     );
             //new EpicACGQuadParticleRenderType("textures/particle/genshin_bow_landing3", "GENSHIN_BOW");
 */
-    public static ResourceLocation GetTextures(String path){
-        return new ResourceLocation(EpicACG.MODID, "textures/" + path + ".png");
-    }
 
 
     public static class EpicACGQuadParticleRenderType implements ParticleRenderType {
