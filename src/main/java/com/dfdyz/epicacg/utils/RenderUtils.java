@@ -3,20 +3,15 @@ package com.dfdyz.epicacg.utils;
 import com.dfdyz.epicacg.EpicACG;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.codehaus.plexus.util.dag.Vertex;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
@@ -25,17 +20,15 @@ import yesman.epicfight.api.utils.math.Vec3f;
 
 public class RenderUtils {
     public static void GLSetTexture(ResourceLocation texture){
-        RenderSystem.disableTexture();
         TextureManager texturemanager = Minecraft.getInstance().getTextureManager();
         AbstractTexture abstracttexture = texturemanager.getTexture(texture);
         RenderSystem.bindTexture(abstracttexture.getId());
         RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
         RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
         RenderSystem.setShaderTexture(0, abstracttexture.getId());
-        RenderSystem.enableTexture();
     }
 
-    public static ResourceLocation GetTextures(String path){
+    public static ResourceLocation GetTexture(String path){
         return new ResourceLocation(EpicACG.MODID, "textures/" + path + ".png");
     }
 
@@ -94,6 +87,8 @@ public class RenderUtils {
         }
 
     }
+
+    public static final int DefaultLightColor = 15728880;
 
     @OnlyIn(Dist.CLIENT)
     public static void AddParticle(ClientLevel level, Particle particle){

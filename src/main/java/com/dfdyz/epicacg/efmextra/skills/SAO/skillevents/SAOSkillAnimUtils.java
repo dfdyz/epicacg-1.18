@@ -1,8 +1,11 @@
 package com.dfdyz.epicacg.efmextra.skills.SAO.skillevents;
 
+import com.dfdyz.epicacg.client.particle.DMC.SpaceBrokenParticle;
 import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
+import com.dfdyz.epicacg.efmextra.skills.SAO.SingleSwordSASkills;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.dfdyz.epicacg.registry.MobEffects;
+import com.dfdyz.epicacg.registry.Particles;
 import com.dfdyz.epicacg.registry.Sounds;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -28,8 +31,7 @@ import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-import static com.dfdyz.epicacg.registry.MyAnimations.SAO_RAPIER_SA2_CAM;
-import static com.dfdyz.epicacg.registry.MyAnimations.SAO_RAPIER_SA2_CAM2;
+import static com.dfdyz.epicacg.registry.MyAnimations.*;
 
 public class SAOSkillAnimUtils {
     /*
@@ -105,7 +107,7 @@ public class SAOSkillAnimUtils {
 
     }
 
-    /*
+
     public static class DMC5_V_JC{
         public static void prev(LivingEntityPatch entityPatch){
             if(entityPatch.isLogicalClient()){
@@ -120,8 +122,6 @@ public class SAOSkillAnimUtils {
                 }
             }
         }
-
-
 
         public static void HandleAtk(LivingEntityPatch entityPatch){
             //CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM, (LivingEntity) entityPatch.getOriginal(), true);
@@ -149,19 +149,11 @@ public class SAOSkillAnimUtils {
             if(entityPatch.isLogicalClient()){
                 Level worldIn = entityPatch.getOriginal().getLevel();
                 Vec3 pos = entityPatch.getOriginal().position();
-                worldIn.addParticle(RegParticle.JudgementCut.get() ,pos.x,pos.y,pos.z,0,0,0);
+                worldIn.addParticle(Particles.DMC_JC_BLADE_TRAIL.get() ,pos.x,pos.y,pos.z,0,0,0);
+                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, 29, 0));
+                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, 29, 1));
 
-
-                PostEffectEvent.PushPostEffectHighest(
-                        new PostEffectEvent.PostEffectTimePair(
-                                RegPostEffect.SpaceBroken,
-                                1.58f,//1.58f,
-                                (time) -> {
-                                    return new float[]{(float) pos.x, (float) pos.y, (float) pos.z};
-                                },
-                                pos)
-                );
-                PostEffectEvent.PushPostEffectMiddle(RegPostEffect.WhiteFlush, 0.25f, pos);
+                //PostEffectEvent.PushPostEffectMiddle(RegPostEffect.WhiteFlush, 0.25f, pos);
             }
         }
 
@@ -183,9 +175,4 @@ public class SAOSkillAnimUtils {
 
 
 
-
-    public static void giveNoGravity(LivingEntityPatch entityPatch){
-        LivingEntity entity = (LivingEntity) entityPatch.getOriginal();
-        //entity.addEffect(new MobEffectInstance(RegMobEffect.NO_GRAVITY.get(), 18, 1));
-    }*/
 }

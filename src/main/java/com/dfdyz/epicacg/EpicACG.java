@@ -73,11 +73,13 @@ public class EpicACG
     private void setupCommon(final FMLCommonSetupEvent event)
     {
         event.enqueueWork(Netmgr::register);
-        event.enqueueWork(MySkills::registerSkills);
+        MySkills.registerSkills();
 
         if(FMLEnvironment.dist == Dist.CLIENT){
             ControllerEvent.EpicAddonKeyMapping.Reg();
             MyAnimations.LoadCamAnims();
+
+            MyModels.LoadOtherModel();
 
             try {
                 ClientConfig.Load(false);

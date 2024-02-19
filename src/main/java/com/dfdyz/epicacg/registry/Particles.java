@@ -2,6 +2,7 @@ package com.dfdyz.epicacg.registry;
 
 import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.particle.BloomTrailParticle;
+import com.dfdyz.epicacg.client.particle.DMC.JudgementCutParticle;
 import com.dfdyz.epicacg.client.particle.EntityAfterImgParticleEx;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle;
 import com.dfdyz.epicacg.client.particle.GenshinImpact.GenShinBowLandingParticle2;
@@ -46,6 +47,7 @@ public class Particles {
     public static final RegistryObject<SimpleParticleType> STAR_FLASH = PARTICLES.register("star_flash", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> PHOTON_TRAIL = PARTICLES.register("photon_trail", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> DMC_JC_BLADE_TRAIL = PARTICLES.register("dmc_jc_blade_trail", () -> new SimpleParticleType(true));
 
     @OnlyIn(Dist.CLIENT)
     public static void registryParticles(ParticleFactoryRegisterEvent event){
@@ -72,5 +74,7 @@ public class Particles {
         PE.register(ALO_WING.get(), KiritoWingParticle.Provider::new);
         PE.register(STAR_FLASH.get(), StarFlashParticle.Provider::new);
         PE.register(PHOTON_TRAIL.get(), PhotonTrailingParticle.Provider::new);
+
+        PE.register(DMC_JC_BLADE_TRAIL.get(), JudgementCutParticle.Provider::new);
     }
 }

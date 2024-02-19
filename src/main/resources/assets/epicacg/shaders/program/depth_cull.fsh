@@ -12,6 +12,6 @@ void main(){
     vec4 srcdepth = texture(SrcDepth, texCoord);
     vec4 gdepth = texture(GlobalDepth, texCoord);
 
-    fragColor = srcdepth.r < gdepth.r ? vec4(0,0,0,0) : src;
+    fragColor = srcdepth.r + 0.0001 < gdepth.r ? vec4(0,0,0,0) : src;
     //fragColor = vec4(cut.x > 0.1 ? vec3(1,1,1) : col.rgb,1);
 }

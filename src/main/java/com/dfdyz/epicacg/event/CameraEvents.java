@@ -36,7 +36,6 @@ public class CameraEvents {
     private static final Vec3 Vec3UP = new Vec3(0,1f,0);
     private static float fovO = 0;
     private static boolean isLockPos = false;
-
     private static CameraAnimation.Pose pose_;
 
     @OnlyIn(Dist.CLIENT)

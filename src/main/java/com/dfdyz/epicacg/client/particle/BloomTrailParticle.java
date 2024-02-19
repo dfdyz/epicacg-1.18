@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -110,6 +110,15 @@ public class BloomTrailParticle extends TextureSheetParticle {
 
     @Override
     public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
+
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
         this.visibleTrailEdges.removeIf(v -> !v.isAlive());
 
@@ -231,14 +240,14 @@ public class BloomTrailParticle extends TextureSheetParticle {
             return;
         }
 
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive() || !this.entitypatch.getOriginal().isAlive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(trailInfo.texturePath).callPipeline();
 
         //get texture
         //RenderUtils.GLSetTexture(this.trailInfo.texturePath);
 
         PoseStack poseStack = new PoseStack();
-        int light = this.getLightColor(partialTick);
+        int light = 15728880;
         this.setupPoseStack(poseStack, camera, partialTick);
         Matrix4f matrix4f = poseStack.last().pose();
         int edges = this.visibleTrailEdges.size() - 1;

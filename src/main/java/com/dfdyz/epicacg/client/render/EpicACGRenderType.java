@@ -3,6 +3,7 @@ package com.dfdyz.epicacg.client.render;
 
 import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.render.custom.BloomParticleRenderType;
+import com.dfdyz.epicacg.client.render.custom.SpaceBrokenRenderType;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -20,23 +21,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 
-import static com.dfdyz.epicacg.utils.RenderUtils.GetTextures;
+import static com.dfdyz.epicacg.utils.RenderUtils.GetTexture;
 
 @OnlyIn(Dist.CLIENT)
 public class EpicACGRenderType {
-    public static final ResourceLocation ChildSkillnoSelected = GetTextures("gui/noselected");
-    public static final ResourceLocation ChildSkillSelected = GetTextures("gui/selected");
+    public static final ResourceLocation ChildSkillnoSelected = GetTexture("gui/noselected");
+    public static final ResourceLocation ChildSkillSelected = GetTexture("gui/selected");
 
-    public static final ResourceLocation GS_BOW_SHOOT_PARTICLE_TEX = GetTextures("particle/genshin_bow");
-    public static final ResourceLocation GS_BOW_LANDONG_PARTICLE_TEX = GetTextures("particle/genshin_bow_landing");
-    public static final ResourceLocation GS_BOW_LANDONG_PARTICLE_TEX3 = GetTextures("particle/genshin_bow_landing3");
+    public static final ResourceLocation GS_BOW_SHOOT_PARTICLE_TEX = GetTexture("particle/genshin_bow");
+    public static final ResourceLocation GS_BOW_LANDONG_PARTICLE_TEX = GetTexture("particle/genshin_bow_landing");
+    public static final ResourceLocation GS_BOW_LANDONG_PARTICLE_TEX3 = GetTexture("particle/genshin_bow_landing3");
 
-    public static final ResourceLocation BLACK_KNIGHT_PARTICLE_TEX = GetTextures("particle/blackknight_hit");
-    public static final ResourceLocation BLOOD_THIRSTY_PARTICLE_TEX = GetTextures("particle/bloodthirsty_hit");
+    public static final ResourceLocation BLACK_KNIGHT_PARTICLE_TEX = GetTexture("particle/blackknight_hit");
+    public static final ResourceLocation BLOOD_THIRSTY_PARTICLE_TEX = GetTexture("particle/bloodthirsty_hit");
 
     public static final BloomParticleRenderType SAO_DEATH_PARTICLE = new BloomParticleRenderType(
             new ResourceLocation(EpicACG.MODID, "sao_death"),
-            GetTextures("particle/sao_death")
+            GetTexture("particle/sao_death")
     );
             //new EpicACGQuadParticleRenderType("textures/particle/sao_death", "SAO_DEATH");
 
@@ -63,30 +64,36 @@ public class EpicACGRenderType {
             new ResourceLocation(EpicACG.MODID, "bloom_quad_particle"), null
     );*/
 
-
-    private static final HashMap<ResourceLocation, BloomParticleRenderType> BloomRenderTypes = Maps.newHashMap();
+    private static int bloomIdx = 0;
+    public static final HashMap<ResourceLocation, BloomParticleRenderType> BloomRenderTypes = Maps.newHashMap();
     public static BloomParticleRenderType getBloomRenderTypeByTexture(ResourceLocation texture){
         if(BloomRenderTypes.containsKey(texture)){
             return BloomRenderTypes.get(texture);
         }
         else {
-            BloomParticleRenderType bloomType = new BloomParticleRenderType(new ResourceLocation(EpicACG.MODID, "bloom_particle"), texture);
+            BloomParticleRenderType bloomType = new BloomParticleRenderType(new ResourceLocation(EpicACG.MODID, "bloom_particle_" + bloomIdx++), texture);
             BloomRenderTypes.put(texture, bloomType);
             return bloomType;
         }
     }
 
-    private static final HashMap<ResourceLocation, EpicACGQuadParticleRenderType> QuadRenderTypes = Maps.newHashMap();
+    private static int quadIdx = 0;
+    public static final HashMap<ResourceLocation, EpicACGQuadParticleRenderType> QuadRenderTypes = Maps.newHashMap();
     public static EpicACGQuadParticleRenderType getRenderTypeByTexture(ResourceLocation texture){
         if(QuadRenderTypes.containsKey(texture)){
             return QuadRenderTypes.get(texture);
         }
         else {
-            EpicACGQuadParticleRenderType rdt = new EpicACGQuadParticleRenderType("epicacg:quad_particle", texture);
+            EpicACGQuadParticleRenderType rdt = new EpicACGQuadParticleRenderType("epicacg:quad_particle_" + quadIdx++, texture);
             QuadRenderTypes.put(texture,rdt);
             return rdt;
         }
     }
+
+    public static SpaceBrokenRenderType SpaceBroken1 = new SpaceBrokenRenderType(new ResourceLocation(EpicACG.MODID, "space_broken" ), 0);
+    public static SpaceBrokenRenderType SpaceBroken2 = new SpaceBrokenRenderType(new ResourceLocation(EpicACG.MODID, "space_broken" ), 1);
+
+
 
 
     /*

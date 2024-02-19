@@ -1,7 +1,7 @@
 package com.dfdyz.epicacg.mixins;
 
 
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import net.minecraft.client.renderer.LevelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,8 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 @Mixin(value = LevelRenderer.class)
-public class MixinLevelRenderer {
-
+public abstract class MixinLevelRenderer {
 
     @Inject(method = "renderLevel(Lcom/mojang/blaze3d/vertex/PoseStack;FJZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lcom/mojang/math/Matrix4f;)V",
             at = @At(
@@ -25,7 +24,7 @@ public class MixinLevelRenderer {
 
             ))
     private void markRendered(CallbackInfo cbi){
-        PostParticlePipelines.active();
+        PostEffectPipelines.active();
     }
 
 

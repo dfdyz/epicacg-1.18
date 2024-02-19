@@ -52,6 +52,13 @@ public class GenShinArrow extends Arrow {
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
+
+
+
+
+
+
+
         //super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         float f = (float)this.getDeltaMovement().length();

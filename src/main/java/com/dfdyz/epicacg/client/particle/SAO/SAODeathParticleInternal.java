@@ -1,6 +1,6 @@
 package com.dfdyz.epicacg.client.particle.SAO;
 
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.dfdyz.epicacg.utils.GlobalVal;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
@@ -55,7 +55,7 @@ public class SAODeathParticleInternal extends Particle {
 
     @Override
     public void render(VertexConsumer vertexBuffer, Camera camera, float pt) {
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive()) return;
         SAO_DEATH_PARTICLE.callPipeline();
         float agef = this.age + pt;
         float s = (float) Math.sqrt(1-Math.min(1f,Math.max(0,agef-1)/lifetime));

@@ -1,7 +1,7 @@
 package com.dfdyz.epicacg.client.particle.SAO;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
@@ -11,7 +11,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
-import static com.dfdyz.epicacg.utils.RenderUtils.GetTextures;
+import static com.dfdyz.epicacg.utils.RenderUtils.GetTexture;
 
 public class LandingStrikeParticle extends Particle {
 
@@ -26,6 +26,9 @@ public class LandingStrikeParticle extends Particle {
 
     @Override
     public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
         if (this.age++ >= this.lifetime) {
             this.remove();
         }
@@ -33,7 +36,7 @@ public class LandingStrikeParticle extends Particle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float pt) {
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(textures).callPipeline();
 
         if(age < 1) return;
@@ -76,7 +79,7 @@ public class LandingStrikeParticle extends Particle {
         float v1 = (frame + 1) * per;
 
         //System.out.println(t);
-        int light = this.getLightColor(pt);
+        int light = 15728880;
 
         vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u0, v1).uv2(light).endVertex();
         vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u0, v0).uv2(light).endVertex();
@@ -84,7 +87,7 @@ public class LandingStrikeParticle extends Particle {
         vertexConsumer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u1, v1).uv2(light).endVertex();
     }
 
-    private static final ResourceLocation textures = GetTextures("particle/landing_strike");
+    private static final ResourceLocation textures = GetTexture("particle/landing_strike");
 
     @Override
     public ParticleRenderType getRenderType() {

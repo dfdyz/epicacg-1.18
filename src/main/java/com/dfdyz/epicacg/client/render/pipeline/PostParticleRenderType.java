@@ -1,5 +1,6 @@
 package com.dfdyz.epicacg.client.render.pipeline;
 
+import com.dfdyz.epicacg.client.render.targets.TargetManager;
 import com.dfdyz.epicacg.registry.PostEffects;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -47,7 +48,7 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
         setupBufferBuilder(bufferBuilder);
     }
 
-    ShaderInstance getShader(){
+    protected ShaderInstance getShader(){
         return GameRenderer.positionColorTexLightmapShader;
     }
 
@@ -80,23 +81,14 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
     }
 
-    public abstract PostParticlePipelines.Pipeline getPipeline();
+    public abstract PostEffectPipelines.Pipeline getPipeline();
 
-    public static void DepthCull(RenderTarget source, RenderTarget DepthBuffer, RenderTarget output){
-        //RenderTarget blur = createTempTarget(source);
-        //RenderTarget blur2 = createTempTarget(source);
-
-        PostEffects.depth_cull.process(source, output,
-                (effect) ->
-                {
-                    effect.setSampler("SrcDepth",
-                            source::getDepthTextureId);
-                    effect.setSampler("GlobalDepth",
-                            DepthBuffer::getColorTextureId);
-                });
-
-        //blur1.destroyBuffers();
-        //blur2.destroyBuffers();
+    static ResourceLocation tempTarget = new ResourceLocation("epicacg:depth_cull_temp");
+    public static void doDepthCull(RenderTarget source, RenderTarget DepthBuffer){
+        RenderTarget tmp = TargetManager.getTarget(tempTarget);
+        PostEffects.blit.process(source, tmp);
+        PostEffects.depth_cull.process(tmp, DepthBuffer, source);
+        TargetManager.ReleaseTarget(tempTarget);
     }
 
     public static void Blit(RenderTarget source, RenderTarget output){

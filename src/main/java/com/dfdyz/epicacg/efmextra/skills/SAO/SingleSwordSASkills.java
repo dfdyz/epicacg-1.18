@@ -3,6 +3,8 @@ package com.dfdyz.epicacg.efmextra.skills.SAO;
 import com.dfdyz.epicacg.efmextra.skills.EpicACGSkillSlot;
 import com.dfdyz.epicacg.efmextra.skills.IMutiSpecialSkill;
 import com.dfdyz.epicacg.efmextra.skills.MutiSpecialSkill;
+import com.dfdyz.epicacg.efmextra.skills.SimpleWeaponSASkill;
+import com.dfdyz.epicacg.registry.MyAnimations;
 import com.dfdyz.epicacg.registry.MySkills;
 import com.dfdyz.epicacg.utils.SkillUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,6 +16,7 @@ import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillDataManager;
 import yesman.epicfight.skill.SkillSlots;
+import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -22,28 +25,29 @@ import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class SingleSwordSASkills  extends WeaponInnateSkill implements IMutiSpecialSkill {
+import static yesman.epicfight.skill.Skill.Resource.WEAPON_INNATE_ENERGY;
+
+public class SingleSwordSASkills  extends SimpleWeaponSASkill implements IMutiSpecialSkill {
     private final ArrayList<ResourceLocation> noPower = new ArrayList<>();
     private final ArrayList<ResourceLocation> morePower = new ArrayList<>();
     public static final SkillDataManager.SkillDataKey<Boolean> Invincible = SkillDataManager.SkillDataKey.createDataKey(SkillDataManager.ValueType.BOOLEAN);;
-
     private final UUID EventUUID = UUID.fromString("eb69decf-48a1-5333-dacc-884fd345c02a");
 
     private final StaticAnimation noPowerAnimation1;
     private final StaticAnimation morePowerAnimation1;
 
-    public SingleSwordSASkills(Builder<? extends Skill> builder) {
+    public SingleSwordSASkills(Builder builder) {
         super(builder);
         noPowerAnimation1 = Animations.SWEEPING_EDGE;
-        morePowerAnimation1 = null;//EpicAddonAnimations.DMC5_V_JC;
+        morePowerAnimation1 = MyAnimations.DMC5_V_JC;
 
         ResourceLocation name = this.getRegistryName();
         noPower.add(new ResourceLocation(name.getNamespace(), "textures/gui/skills/" + name.getPath() + ".png"));
-        //noPower.add(new ResourceLocation(name.getNamespace(), "textures/gui/skills/single/judgement_cut.png"));
+        noPower.add(new ResourceLocation(name.getNamespace(), "textures/gui/skills/single/judgement_cut.png"));
     }
 
-    public static Skill.Builder<SingleSwordSASkills> createBuilder(ResourceLocation resourceLocation) {
-        return (new Skill.Builder<SingleSwordSASkills>()).setRegistryName(resourceLocation).setResource(Resource.WEAPON_INNATE_ENERGY);
+    public static SimpleWeaponInnateSkill.Builder createBuilder(ResourceLocation resourceLocation) {
+        return (SimpleWeaponInnateSkill.Builder) (new SimpleWeaponInnateSkill.Builder()).setCategory(SkillSlots.WEAPON_INNATE.category()).setRegistryName(resourceLocation).setResource(WEAPON_INNATE_ENERGY);
     }
 
     @Override
@@ -83,7 +87,7 @@ public class SingleSwordSASkills  extends WeaponInnateSkill implements IMutiSpec
             SkillContainer skillContainer = executer.getSkill(SkillSlots.WEAPON_INNATE);
             int selected = executer.getSkill(EpicACGSkillSlot.SKILL_SELECTOR).getDataManager().getDataValue(MutiSpecialSkill.CHILD_SKILL_INDEX);
 
-            ok = skillContainer.getStack() > (selected == 0 ? 0:1);
+            ok = skillContainer.getStack() > (selected == 0 ? 0:5);
 
             return ok || (executer.getOriginal()).isCreative();
         } else {
@@ -101,8 +105,8 @@ public class SingleSwordSASkills  extends WeaponInnateSkill implements IMutiSpec
             this.setStackSynchronize(executer, executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() - 1);
         }
         else {
-            //executer.playAnimationSynchronized(this.morePowerAnimation1, 0.0F);
-            //this.setStackSynchronize(executer, executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() - 1);
+            executer.playAnimationSynchronized(this.morePowerAnimation1, 0.0F);
+            this.setStackSynchronize(executer, executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() - 5);
         }
 
         this.setDurationSynchronize(executer, this.maxDuration);
@@ -122,6 +126,16 @@ public class SingleSwordSASkills  extends WeaponInnateSkill implements IMutiSpec
 
     @Override
     public boolean isSkillActive(PlayerPatch<?> executer, int idx) {
-        return true;
+        if(executer.getOriginal().isCreative()) return true;
+
+        if(idx == 0){
+            return true;
+        }
+        else if(idx == 1){
+            if (executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() >= 5){
+                return true;
+            }
+        }
+        return false;
     }
 }

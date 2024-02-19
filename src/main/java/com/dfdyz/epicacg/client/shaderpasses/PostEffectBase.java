@@ -29,7 +29,6 @@ public class PostEffectBase {
         process(inTarget, outTarget, null);
     }
 
-
     public void process(RenderTarget inTarget, RenderTarget outTarget, Consumer<EffectInstance> uniformConsumer)
     {
         prevProcess(inTarget, outTarget);
@@ -60,7 +59,6 @@ public class PostEffectBase {
     public void prevProcess(RenderTarget inTarget, RenderTarget outTarget){
 
     }
-
     public void pushVertex(RenderTarget inTarget, RenderTarget outTarget){
         outTarget.clear(Minecraft.ON_OSX);
         outTarget.bindWrite(false);
@@ -68,11 +66,10 @@ public class PostEffectBase {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
         bufferbuilder.vertex(0.0D, 0.0D, 500.0D).endVertex();
-        bufferbuilder.vertex(inTarget.width, 0.0D, 500.0D).endVertex();
-        bufferbuilder.vertex(inTarget.width, inTarget.height, 500.0D).endVertex();
-        bufferbuilder.vertex(0.0D, inTarget.height, 500.0D).endVertex();
+        bufferbuilder.vertex(outTarget.width, 0.0D, 500.0D).endVertex();
+        bufferbuilder.vertex(outTarget.width, outTarget.height, 500.0D).endVertex();
+        bufferbuilder.vertex(0.0D, outTarget.height, 500.0D).endVertex();
         bufferbuilder.end();
-
         BufferUploader._endInternal(bufferbuilder);
         RenderSystem.depthFunc(515);
     }

@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '18.5.21.1'
+version = '18.5.21.1.hotfix'
 group = 'com.dfdyz.epicacg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'epicacg'
 
@@ -181,7 +181,7 @@ dependencies {
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
     implementation fg.deobf("libs:EpicFight:18.5.21")
     //implementation fg.deobf("maven.modrinth:rubidium:0.5.6")
-    //aimplementation fg.deobf("maven.modrinth:oculus:${iris_version}")
+    //implementation fg.deobf("maven.modrinth:oculus:${iris_version}")
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

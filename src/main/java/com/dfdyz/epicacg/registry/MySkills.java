@@ -15,6 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import yesman.epicfight.api.data.reloader.SkillManager;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
@@ -124,7 +126,7 @@ public class MySkills {
 
         SkillManager.register(SingleSwordSASkills::new,
                 SingleSwordSASkills.createBuilder(new ResourceLocation(EpicACG.MODID, "single_sword_sa"))
-                        .setCategory(SkillCategories.WEAPON_INNATE)
+                        .setCategory(SkillCategories.WEAPON_INNATE).setAnimations(new ResourceLocation(EpicFightMod.MODID, "biped/combat/sword_auto1"))
                 , EpicACG.MODID, "single_sword_sa");
 
         SkillManager.register(SimpleWeaponSASkill::new,
@@ -140,8 +142,6 @@ public class MySkills {
                         .setResource(WEAPON_INNATE_ENERGY)
                         .setRegistryName(new ResourceLocation(EpicACG.MODID, "sao_dual_sword_sa"))
                 , EpicACG.MODID, "sao_dual_sword_sa");
-
-
     }
 
 

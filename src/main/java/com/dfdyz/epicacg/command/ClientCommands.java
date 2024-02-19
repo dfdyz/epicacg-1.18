@@ -1,16 +1,21 @@
 package com.dfdyz.epicacg.command;
 
 import com.dfdyz.epicacg.EpicACG;
+import com.dfdyz.epicacg.client.particle.DMC.SpaceBrokenParticle;
 import com.dfdyz.epicacg.config.ClientConfig;
 import com.dfdyz.epicacg.registry.MyAnimations;
+import com.dfdyz.epicacg.registry.MyModels;
+import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
@@ -31,6 +36,15 @@ public class ClientCommands {
         try{
             //ParticleRenderingPhase phase = ReflectionUtils.GetField(Minecraft.getInstance().particleEngine, "phase");
             //System.out.println(phase);
+
+            /*
+            MyModels.LoadOtherModel();
+            ClientLevel level = Minecraft.getInstance().level;
+            Vec3 pos = Minecraft.getInstance().player.position();
+            RenderUtils.AddParticle(level, new SpaceBrokenParticle(level, pos.x, pos.y, pos.z, 0));
+
+            RenderUtils.AddParticle(level, new SpaceBrokenParticle(level, pos.x, pos.y, pos.z, 1));
+*/
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +59,6 @@ public class ClientCommands {
                     }
 
                     Debug();
-
 
                     return Command.SINGLE_SUCCESS;
                 })

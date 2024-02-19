@@ -1,5 +1,6 @@
 package com.dfdyz.epicacg.efmextra.anims;
 
+import com.dfdyz.epicacg.efmextra.anims.property.MyProperties;
 import com.dfdyz.epicacg.utils.Function.ScanAttackConsumer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -60,6 +61,41 @@ public class ScanAttackAnimation extends AttackAnimation{
         return this;
     }
 
+    @Override
+    public void modifyPose(DynamicAnimation animation, Pose pose, LivingEntityPatch<?> entitypatch, float time, float partialTicks) {
+            if (this.getProperty(AnimationProperty.ActionAnimationProperty.COORD).isEmpty()) {
+                JointTransform jt = pose.getOrDefaultTransform("Root");
+                Vec3f jointPosition = jt.translation();
+                OpenMatrix4f toRootTransformApplied = entitypatch.getArmature().searchJointByName("Root").getLocalTrasnform().removeTranslation();
+                OpenMatrix4f toOrigin = OpenMatrix4f.invert(toRootTransformApplied, null);
+                Vec3f worldPosition = OpenMatrix4f.transform3v(toRootTransformApplied, jointPosition, null);
+
+                if(this.getProperty(MyProperties.MOVE_ROOT_PHASE).isPresent() && this.getProperty(MyProperties.MOVE_ROOT_PHASE).get().isInPhase(time)){
+
+                }
+                else {
+                    worldPosition.x = 0.0F;
+                    worldPosition.y = this.getProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL).orElse(false) && worldPosition.y > 0.0F ? 0.0F : worldPosition.y;
+                    worldPosition.z = 0.0F;
+                }
+
+
+                OpenMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
+                jointPosition.x = worldPosition.x;
+                jointPosition.y = worldPosition.y;
+                jointPosition.z = worldPosition.z;
+
+                if(this.getProperty(MyProperties.INVISIBLE_PHASE).isPresent() && this.getProperty(MyProperties.INVISIBLE_PHASE).get().isInPhase(time)){
+                    jt.scale().set(0,0,0);
+                }
+            }
+
+
+        AnimationProperty.PoseModifier modifier = this.getProperty(AnimationProperty.StaticAnimationProperty.POSE_MODIFIER).orElse(null);
+        if (modifier != null) {
+            modifier.modify(animation, pose, entitypatch, time, partialTicks);
+        }
+    }
 
     //private final int Aid;
     //public final String Hjoint;
@@ -109,24 +145,6 @@ public class ScanAttackAnimation extends AttackAnimation{
      */
 
     @Override
-    public void modifyPose(DynamicAnimation animation, Pose pose, LivingEntityPatch<?> entitypatch, float time, float pt) {
-        JointTransform jt = pose.getOrDefaultTransform("Root");
-        Vec3f jointPosition = jt.translation();
-        OpenMatrix4f toRootTransformApplied = entitypatch.getArmature().searchJointByName("Root").getLocalTrasnform().removeTranslation();
-        OpenMatrix4f toOrigin = OpenMatrix4f.invert(toRootTransformApplied, (OpenMatrix4f)null);
-        Vec3f worldPosition = OpenMatrix4f.transform3v(toRootTransformApplied, jointPosition, (Vec3f)null);
-        //if(shouldMove){
-            worldPosition.x = 0.0F;
-//        worldPosition.y = moveRootY ? worldPosition.y : 0.0F;
-            worldPosition.z = 0.0F;
-        //}
-        OpenMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
-        jointPosition.x = worldPosition.x;
-        jointPosition.y = worldPosition.y;
-        jointPosition.z = worldPosition.z;
-    }
-
-    @Override
     protected void onLoaded() {
         super.onLoaded();
         if (!this.properties.containsKey(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
@@ -143,7 +161,14 @@ public class ScanAttackAnimation extends AttackAnimation{
             return Vec3.ZERO;
         }*/
         Vec3 vec3 = super.getCoordVector(entitypatch, dynamicAnimation);
-        return vec3.multiply(1,1,1);
+
+        float t = entitypatch.getAnimator().getPlayerFor(dynamicAnimation).getElapsedTime();
+        if(this.getProperty(MyProperties.MOVE_ROOT_PHASE).isPresent() &&
+                this.getProperty(MyProperties.MOVE_ROOT_PHASE).get().isInPhase(t)){
+            vec3 = vec3.multiply(0,0,0);
+        }
+
+        return vec3;
     }
 
     @Override

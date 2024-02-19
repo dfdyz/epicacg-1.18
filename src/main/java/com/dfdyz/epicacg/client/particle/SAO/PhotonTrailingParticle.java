@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -24,8 +23,6 @@ import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.TrailInfo;
 import yesman.epicfight.api.client.model.ItemSkin;
 import yesman.epicfight.api.client.model.ItemSkins;
-import yesman.epicfight.api.utils.math.OpenMatrix4f;
-import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -50,12 +47,19 @@ public class PhotonTrailingParticle extends NoRenderParticle {
         this.trailInfo = trailInfo;
 
         this.lifetime = trailInfo.trailLifetime;
+
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
     }
 
     @Override
     public void tick() {
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
-
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
         if (this.animationEnd) {
             if (this.lifetime-- <= 0) {
                 this.remove();
@@ -86,7 +90,12 @@ public class PhotonTrailingParticle extends NoRenderParticle {
                 photon.scale(25f);
                 RenderUtils.AddParticle(level, photon);
             }
+
+
+            this.setPos(curr.x, curr.y, curr.z);
         }
+
+
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -177,7 +186,7 @@ public class PhotonTrailingParticle extends NoRenderParticle {
                 vector3f.add(x, y, z);
             }
 
-            int j = this.getLightColor(pt);
+            int j = 15728880;
             vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(0, 0).uv2(j).endVertex();
             vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(0, 1).uv2(j).endVertex();
             vertexConsumer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(1, 1).uv2(j).endVertex();
@@ -196,7 +205,7 @@ public class PhotonTrailingParticle extends NoRenderParticle {
             alpha = 1.f * (lifetime - age) / lifetime;
         }
 
-        ResourceLocation texture = RenderUtils.GetTextures("particle/photo");
+        ResourceLocation texture = RenderUtils.GetTexture("particle/photo");
         @Override
         public ParticleRenderType getRenderType() {
             return EpicACGRenderType.getBloomRenderTypeByTexture(texture);

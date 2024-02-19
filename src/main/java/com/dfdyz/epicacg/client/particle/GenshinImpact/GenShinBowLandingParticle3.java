@@ -1,7 +1,7 @@
 package com.dfdyz.epicacg.client.particle.GenshinImpact;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
@@ -48,7 +48,7 @@ public class GenShinBowLandingParticle3 extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float tick) {
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(GS_BOW_LANDONG_PARTICLE_TEX3).callPipeline();
         if(age < TimeWaitToPlay) return;
         Vec3 vec3 = camera.getPosition();

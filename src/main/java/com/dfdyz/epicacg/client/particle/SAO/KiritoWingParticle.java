@@ -1,7 +1,7 @@
 package com.dfdyz.epicacg.client.particle.SAO;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -83,6 +83,11 @@ public class KiritoWingParticle extends Particle {
         this.bCol = 1;
         this.alpha = 1;
         oAlpha = alpha;
+
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
     }
 
 
@@ -90,6 +95,9 @@ public class KiritoWingParticle extends Particle {
 
     @Override
     public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
 
         if (this.animationEnd) {
@@ -106,6 +114,11 @@ public class KiritoWingParticle extends Particle {
                 this.lifetime = this.trailInfo.trailLifetime;
             }
         }
+
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
     }
 
     private float getAlpha(float pt){
@@ -114,7 +127,7 @@ public class KiritoWingParticle extends Particle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float pt) {
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive() || !this.entitypatch.getOriginal().isAlive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(trailInfo.texturePath).callPipeline();
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
         float elapsedTime = Mth.lerp(pt, animPlayer.getPrevElapsedTime(), animPlayer.getElapsedTime());
@@ -133,14 +146,15 @@ public class KiritoWingParticle extends Particle {
                         .mulBack(this.entitypatch.getModelMatrix(pt)));
         OpenMatrix4f tf = this.entitypatch.getArmature().getBindedTransformFor(pose, this.joint).mulFront(modelTf);
 
+        int light = 15728880;
         if(le.getPosition(1).subtract(le.getPosition(0)).y() > 0.5){
-            quad1_.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), getLightColor(pt));
-            quad2_.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), getLightColor(pt));
+            quad1_.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), light);
+            quad2_.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), light);
 
         }
         else {
-            quad1.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), getLightColor(pt));
-            quad2.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), getLightColor(pt));
+            quad1.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), light);
+            quad2.PushVertex(vertexConsumer, Vec3f.fromDoubleVector(camera.getPosition()),tf, rCol, gCol, bCol, getAlpha(pt), light);
         }
     }
 

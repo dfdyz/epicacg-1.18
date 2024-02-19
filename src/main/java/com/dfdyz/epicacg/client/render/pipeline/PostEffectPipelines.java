@@ -1,38 +1,50 @@
 package com.dfdyz.epicacg.client.render.pipeline;
 
+import com.dfdyz.epicacg.client.render.targets.TargetManager;
 import com.google.common.collect.Queues;
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.PriorityQueue;
 import java.util.Queue;
 
-import static com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType.createTempTarget;
 import static net.minecraft.client.Minecraft.ON_OSX;
 
-public class PostParticlePipelines {
+public class PostEffectPipelines {
     //public static final HashMap<ResourceLocation, RenderTarget> TempTargets = Maps.newHashMap();
     public static RenderTarget rtRecord;
     public static final Queue<Pipeline> PostEffectQueue = Queues.newConcurrentLinkedQueue();
+    public static final PriorityQueue<Pipeline> PostEffectQueueInternal = Queues.newPriorityQueue();
+
+    static ResourceLocation depth_target = new ResourceLocation("epicacg:depth_target");
+    public static RenderTarget depth;
 
     public static void RenderPost(){
-
         if(!PostEffectQueue.isEmpty()){
-            RenderTarget depth = createTempTarget(Minecraft.getInstance().getMainRenderTarget());
+            RenderSystem.enableBlend();
+
+            depth = TargetManager.getTarget(depth_target);
             depth.copyDepthFrom(Minecraft.getInstance().getMainRenderTarget());
             depth.unbindWrite();
             //
             //RenderSystem.disableDepthTest();
             Pipeline renderType;
 
-            while (!PostEffectQueue.isEmpty()){
-                renderType = PostEffectQueue.poll();
+            PostEffectQueue.removeIf((ppl) -> {
+                PostEffectQueueInternal.add(ppl);
+                return true;
+            });
+
+
+            while (!PostEffectQueueInternal.isEmpty()){
+                renderType = PostEffectQueueInternal.poll();
                 renderType.HandlePostEffect();
             }
             //RenderSystem.enableDepthTest();
             //RenderSystem.enableDepthTest();
             Minecraft.getInstance().getMainRenderTarget().copyDepthFrom(depth);
-            depth.destroyBuffers();
             Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
             //target = null;
         }
@@ -41,7 +53,9 @@ public class PostParticlePipelines {
         TargetManager.ReleaseAll();
     }
 
-    protected static boolean Active = false;
+
+    //for fucking oculus
+    private static boolean Active = false;
 
     public static boolean isActive(){ return Active; }
     public static void active(){
@@ -62,11 +76,20 @@ public class PostParticlePipelines {
         }
     }
 
-    public static abstract class Pipeline{
+    public static abstract class Pipeline implements Comparable<Pipeline>{
         protected boolean called = false;
         protected boolean started = false;
         protected RenderTarget bufferTarget;
         protected final ResourceLocation name;
+
+        public int priority = 0;
+
+        @Override
+        public int compareTo(Pipeline o) {
+            if(priority > o.priority) return 1;
+            else if(priority == o.priority) return 0;
+            else return -1;
+        }
 
         public Pipeline(ResourceLocation name){
             this.name = name;
@@ -115,7 +138,7 @@ public class PostParticlePipelines {
                 rt.bindWrite(false);
             }
             else {
-                bufferTarget.clear(Minecraft.ON_OSX);
+                //bufferTarget.clear(Minecraft.ON_OSX);
                 getSource().bindWrite(false);
             }
 

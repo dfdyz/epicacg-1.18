@@ -1,6 +1,6 @@
 package com.dfdyz.epicacg.mixins;
 
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import net.minecraft.client.renderer.GameRenderer;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = GameRenderer.class, priority = -1000)
-public class MixinGameRenderer {
+public abstract class MixinGameRenderer {
 
     @Inject(method = "render",
             at = @At(
@@ -18,7 +18,7 @@ public class MixinGameRenderer {
                     ordinal = 0
             ))
     private void PostRender(float pt, long startTime, boolean tick, CallbackInfo cbi){
-        PostParticlePipelines.RenderPost();
+        PostEffectPipelines.RenderPost();
     }
 
 }

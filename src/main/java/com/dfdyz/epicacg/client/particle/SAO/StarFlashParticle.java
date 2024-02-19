@@ -1,7 +1,7 @@
 package com.dfdyz.epicacg.client.particle.SAO;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
-import com.dfdyz.epicacg.client.render.pipeline.PostParticlePipelines;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
@@ -71,6 +71,11 @@ public class StarFlashParticle extends Particle {
         this.bCol = 1;
         this.alpha = 1;
         oAlpha = alpha;
+
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
     }
 
     float oAlpha;
@@ -80,6 +85,9 @@ public class StarFlashParticle extends Particle {
 
     @Override
     public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
         ++this.age;
         oAlpha = alpha;
@@ -104,6 +112,12 @@ public class StarFlashParticle extends Particle {
             }
         }
 
+        if(this.entitypatch.getOriginal().isAlive()){
+            Vec3 pos = entitypatch.getOriginal().position();
+            this.setPos(pos.x, pos.y, pos.z);
+        }
+
+        //System.out.println("????");
     }
 
     //ResourceLocation texture = RenderUtils.GetTextures("particle/star_flash");
@@ -114,7 +128,7 @@ public class StarFlashParticle extends Particle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float pt) {
-        if(!PostParticlePipelines.isActive()) return;
+        if(!PostEffectPipelines.isActive() || !this.entitypatch.getOriginal().isAlive()) return;
         EpicACGRenderType.getBloomRenderTypeByTexture(trailInfo.texturePath).callPipeline();
         AnimationPlayer animPlayer = this.entitypatch.getAnimator().getPlayerFor(this.animation);
         float elapsedTime = Mth.lerp(pt, animPlayer.getPrevElapsedTime(), animPlayer.getElapsedTime());
@@ -175,7 +189,7 @@ public class StarFlashParticle extends Particle {
         float v0 = perFrame * frame;
         float v1 = perFrame + perFrame * frame;
 
-        int j = this.getLightColor(pt);
+        int j = 15728880;
         vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, 1).uv(u0, v0).uv2(j).endVertex();
         vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, 1).uv(u0, v1).uv2(j).endVertex();
         vertexConsumer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, 1).uv(u1, v1).uv2(j).endVertex();

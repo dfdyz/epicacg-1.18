@@ -1,5 +1,6 @@
-package com.dfdyz.epicacg.client.render.pipeline;
+package com.dfdyz.epicacg.client.render.targets;
 
+import com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.minecraft.client.Minecraft;
@@ -11,13 +12,10 @@ import java.util.Stack;
 import static net.minecraft.client.Minecraft.ON_OSX;
 
 public class TargetManager {
-
-
     private static final Stack<RenderTarget> freeTargets = new Stack<>();
     private static final HashMap<ResourceLocation, RenderTarget> busyTarget = Maps.newHashMap();
 
     private static int lastW, lastH;
-
 
     public static RenderTarget getTarget(ResourceLocation handle){
         if(busyTarget.containsKey(handle)) return busyTarget.get(handle);
@@ -63,6 +61,7 @@ public class TargetManager {
         else {
             rt = freeTargets.pop();
         }
+
         return rt;
     }
 }

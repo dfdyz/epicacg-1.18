@@ -4,6 +4,7 @@ import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.camera.CameraAnimation;
 import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
 import com.dfdyz.epicacg.efmextra.anims.*;
+import com.dfdyz.epicacg.efmextra.anims.property.MyProperties;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.skillevents.YoimiyaSkillFunction;
 import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.SAOSkillAnimUtils;
 import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
@@ -44,6 +45,7 @@ import static com.dfdyz.epicacg.utils.MoveCoordFuncUtils.TraceLockedTargetEx;
 
 public class MyAnimations {
     //public static List<CamAnim> CamAnimRegistry = Lists.newArrayList();
+    public static StaticAnimation DMC5_V_JC;
     public static StaticAnimation GS_Yoimiya_Auto1;
     public static StaticAnimation GS_Yoimiya_Auto2;
     public static StaticAnimation GS_Yoimiya_Auto3;
@@ -126,6 +128,7 @@ public class MyAnimations {
         HumanoidArmature biped = Armatures.BIPED;
 
         GS_Yoimiya_Auto1 = new ScanAttackAnimation(0.1F, 0,0.62F, 0.8333F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_auto1", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0.4F, (ep, anim, objs) -> {
                             YoimiyaSkillFunction.BowShoot(ep,biped.toolL);
@@ -137,6 +140,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2.75f));
 
         GS_Yoimiya_Auto2 = new ScanAttackAnimation(0.1F, 0,0.7F, 0.98F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_auto2", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0.6F, (ep, anim, objs) -> {
                             YoimiyaSkillFunction.BowShoot(ep,biped.toolR);
@@ -144,6 +148,7 @@ public class MyAnimations {
                 });
 
         GS_Yoimiya_Auto3 = new ScanAttackAnimation(0.1F, 0,0.88F, 1.03F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_auto3", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2.95f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0.84F, (ep, anim, objs) -> {
@@ -152,6 +157,7 @@ public class MyAnimations {
                 });
 
         GS_Yoimiya_Auto4 = new ScanAttackAnimation(0.05F, 0,2.12F, 2.733F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_auto4", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(1.2083F, (ep, anim, objs) -> {
                             YoimiyaSkillFunction.BowShoot(ep,biped.toolL);
@@ -166,6 +172,7 @@ public class MyAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(3.1f));
 
         GS_Yoimiya_Auto5 = new ScanAttackAnimation(0.02F, 0,0.2F, 1.51F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_auto5", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER,MSpeed( 3.1f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0.7083F, (ep, anim, objs) -> {
@@ -174,6 +181,7 @@ public class MyAnimations {
                 });
 
         GS_Yoimiya_SA = new YoimiyaSAAnimation(0.02F, 0.5F, 4.56F, InteractionHand.MAIN_HAND, WeaponCollider.GenShin_Bow_scan,biped.rootJoint, "biped/gs_yoimiya/gs_yoimiya_sa", biped)
+
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0f)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2.4f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
@@ -791,6 +799,29 @@ public class MyAnimations {
                 })
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(1.2f));
 
+        DMC5_V_JC  = new ScanAttackAnimation(0.02F, 0.334f, 0.43f, 4.48F, InteractionHand.MAIN_HAND, WeaponCollider.DMC_JC, biped.rootJoint, "biped/dmc5_v_jc", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0))
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0f)
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
+                .addProperty(MyProperties.MOVE_ROOT_PHASE, new MyProperties.SpecialPhase(0, 5.35f))
+                .addProperty(MyProperties.INVISIBLE_PHASE, new MyProperties.SpecialPhase(0.85f,2.19f))
+                .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
+                        AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.prev(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(0.4f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.HandleAtk(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(0.85f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.post1(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(4.48f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.post(ep);
+                        }, AnimationEvent.Side.BOTH)
+                })
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2));
+
         //todo
         /*
         SAO_LONGSWORD_VARIANT_AUTO1 = new BasicAttackAnimation(0.05F, 0.2F, 0.3F, 0.4F, null,
@@ -875,13 +906,12 @@ public class MyAnimations {
     public static CameraAnimation YOIMIYA_SA;
     public static CameraAnimation SAO_RAPIER_SA2_CAM;
     public static CameraAnimation SAO_RAPIER_SA2_CAM2;
-
-
+    public static CameraAnimation DMC_V_PREV;
     public static void LoadCamAnims(){
         YOIMIYA_SA = CameraAnimation.load(new ResourceLocation(EpicACG.MODID, "camera_animation/yoimiya.json"));
         SAO_RAPIER_SA2_CAM = CameraAnimation.load(new ResourceLocation(EpicACG.MODID, "camera_animation/sao_rapier_sa2.json"));
         SAO_RAPIER_SA2_CAM2 = CameraAnimation.load(new ResourceLocation(EpicACG.MODID, "camera_animation/sao_rapier_sa2_post.json"));
-        //DMC_V_PREV = CameraAnimation.load(new ResourceLocation(EpicACG.MODID, "camera_animation/dmc_v_prev.json"));
+        DMC_V_PREV = CameraAnimation.load(new ResourceLocation(EpicACG.MODID, "camera_animation/dmc_v_prev.json"));
     }
 
 }
