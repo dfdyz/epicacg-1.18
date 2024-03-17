@@ -112,6 +112,7 @@ public class RenderUtils {
         }
     }
 
+    // pos tex col light
     public static void RenderQuadFaceOnCamera(VertexConsumer vertexConsumer, Camera camera,
                                               float posX, float posY, float posZ,
                                               float r, float g, float b, float a,
@@ -143,6 +144,8 @@ public class RenderUtils {
 
     }
 
+
+    // pos tex col light
     public static void RenderQuadFaceOnCamera2(VertexConsumer vertexConsumer, Camera camera,
                                               float posX, float posY, float posZ,
                                               float r, float g, float b, float a,

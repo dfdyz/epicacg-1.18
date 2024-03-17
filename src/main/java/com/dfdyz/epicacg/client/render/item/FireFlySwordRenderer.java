@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.ForgeHooksClient;
 import org.jetbrains.annotations.NotNull;
 
 public class FireFlySwordRenderer extends MyISTER{

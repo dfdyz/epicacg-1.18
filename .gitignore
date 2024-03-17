@@ -20,7 +20,7 @@ build
 # other
 eclipse
 run
-model
+/model
 src/main/resources/assets/epicacg/models/item/test
 
 # Files from Forge MDK
