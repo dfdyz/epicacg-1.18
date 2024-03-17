@@ -145,7 +145,7 @@ public class PostEffectPipelines {
             //ClientCommands.Debug();
         }
         public abstract void PostEffectHandler();
-        public final void HandlePostEffect(){
+        public void HandlePostEffect(){
             if(called) PostEffectHandler();
             bufferTarget = null;
             started = false;

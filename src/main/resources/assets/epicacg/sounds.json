@@ -40,5 +40,17 @@
     "category":"weapon",
     "subtitle":"weapon_skill.dual_sword.sa1_2",
     "sounds":[{"name":"epicacg:weapon/dual_sword_sa1_2", "stream":true}]
+  },
+  "weapon_skill.dmc5_jc_1":
+  {
+    "category":"weapon",
+    "subtitle":"weapon_skill.dmc5_jc_1",
+    "sounds":[{"name":"epicacg:weapon/dmc5_jc1", "stream":true}]
+  },
+  "weapon_skill.dmc5_jc_2":
+  {
+    "category":"weapon",
+    "subtitle":"weapon_skill.dmc5_jc_2",
+    "sounds":[{"name":"epicacg:weapon/dmc5_jc2", "stream":true}]
   }
 }

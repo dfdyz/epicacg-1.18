@@ -1,6 +1,8 @@
 package com.dfdyz.epicacg.client.particle.DMC;
 
 import com.dfdyz.epicacg.client.render.EpicACGRenderType;
+import com.dfdyz.epicacg.client.render.custom.BloomParticleRenderType;
+import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -12,6 +14,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import static com.dfdyz.epicacg.client.render.EpicACGRenderType.SAO_DEATH_PARTICLE;
 
 public class JCBladeTrail extends SingleQuadParticle {
     protected float timeOffset = 0f;
@@ -28,8 +32,8 @@ public class JCBladeTrail extends SingleQuadParticle {
         this.yd = ry;
         this.zd = rz;
 
-        rCol = 0.84705f;
-        gCol = 0.85882f;
+        rCol = 0.55f;
+        gCol = 0.6902f;
         bCol = 1;
         alpha = 0.8f;
     }
@@ -65,8 +69,14 @@ public class JCBladeTrail extends SingleQuadParticle {
         }
     }
 
+
+
+
     @Override
     public void render(VertexConsumer buffer, Camera camera, float pt) {
+        if(!PostEffectPipelines.isActive()) return;
+        renderType.callPipeline();
+
         float at = this.age+pt;
         if(at < timeOffset || at > lifetime+timeOffset) return;
         float t = Math.min(1, at / this.lifetime * 2.5f);
@@ -84,7 +94,7 @@ public class JCBladeTrail extends SingleQuadParticle {
         right.cross(dir);
         right.normalize();
         float _t = (float) Math.sqrt(Math.min(1, (lifetime - at) / lifetime * 2.5f));
-        right.mul(0.012f*_t);
+        right.mul(0.015f*_t);
 
         Vector3f left = right.copy();
         left.mul(-1);
@@ -101,6 +111,7 @@ public class JCBladeTrail extends SingleQuadParticle {
 
         points[2].add(dir);
         points[3].add(dir);
+
         for(int i = 0; i < 4; ++i) {
             Vector3f vector3f = points[i];
             vector3f.add(f, f1, f2);
@@ -123,10 +134,13 @@ public class JCBladeTrail extends SingleQuadParticle {
         buffer.vertex(points[3].x(), points[3].y(), points[3].z()).color(this.rCol,this.gCol,this.bCol,this.alpha).uv(u0, v1).uv2(light).endVertex();
     }
 
-    ResourceLocation texture = RenderUtils.GetTexture("particle/sparks");
+    static ResourceLocation texture = RenderUtils.GetTexture("particle/sparks");
+
+    static BloomParticleRenderType renderType = EpicACGRenderType.getBloomRenderTypeByTexture(texture);
+
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.getRenderTypeByTexture(texture);
+        return renderType;
     }
 
     @OnlyIn(Dist.CLIENT)

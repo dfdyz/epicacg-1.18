@@ -1,31 +1,32 @@
 package com.dfdyz.epicacg.client.shaderpasses;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.IOException;
 
-public class Blur extends PostEffectBase{
+public class Blur extends PostPassBase {
     public Blur(ResourceManager rsmgr) throws IOException {
         super(new EffectInstance(rsmgr, "epicacg:blur"));
     }
 
-    /*
-    public void process(RenderTarget inTarget, RenderTarget outTarget){
+
+    public void process(RenderTarget inTarget, RenderTarget outTarget, float blurDirX, float blurDirY, int radius){
         inTarget.unbindWrite();
         RenderSystem.viewport(0, 0, outTarget.width, outTarget.height);
         this.effect.setSampler("DiffuseSampler", inTarget::getColorTextureId);
-        Matrix4f shaderOrthoMatrix = Matrix4f.orthographic(0.0F, outTarget.width, outTarget.height, 0.0F, 0.1F, 1000.0F);
 
+        Matrix4f shaderOrthoMatrix = Matrix4f.orthographic(0.0F, outTarget.width, outTarget.height, 0.0F, 0.1F, 1000.0F);
         this.effect.safeGetUniform("ProjMat").set(shaderOrthoMatrix);
-        //this.effect.safeGetUniform("InSize").set((float) inTarget.width, (float) inTarget.height);
         this.effect.safeGetUniform("OutSize").set((float) outTarget.width, (float) outTarget.height);
-        this.effect.safeGetUniform("BlurDir").set(blurDir[0], blurDir[1]);
+        this.effect.safeGetUniform("BlurDir").set(blurDirX, blurDirY);
         this.effect.safeGetUniform("Radius").set(radius);
 
-        //Minecraft minecraft = Minecraft.getInstance();
-        //this.effect.safeGetUniform("ScreenSize").set((float)minecraft.getWindow().getWidth(), (float)minecraft.getWindow().getHeight());
-        //SetValue();
         this.effect.apply();
 
         outTarget.clear(Minecraft.ON_OSX);
@@ -33,10 +34,10 @@ public class Blur extends PostEffectBase{
         RenderSystem.depthFunc(519);
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-        bufferbuilder.vertex(0.0D, 0.0D, 500.0D).endVertex();
-        bufferbuilder.vertex(inTarget.width, 0.0D, 500.0D).endVertex();
-        bufferbuilder.vertex(inTarget.width, inTarget.height, 500.0D).endVertex();
-        bufferbuilder.vertex(0.0D, inTarget.height, 500.0D).endVertex();
+        bufferbuilder.vertex(0.0D, 0.0D, 700).endVertex();
+        bufferbuilder.vertex(inTarget.width, 0.0D, 700).endVertex();
+        bufferbuilder.vertex(inTarget.width, inTarget.height, 700).endVertex();
+        bufferbuilder.vertex(0.0D, inTarget.height, 700).endVertex();
         bufferbuilder.end();
 
         BufferUploader._endInternal(bufferbuilder);
@@ -44,5 +45,5 @@ public class Blur extends PostEffectBase{
         this.effect.clear();
         outTarget.unbindWrite();
         inTarget.unbindRead();
-    }*/
+    }
 }

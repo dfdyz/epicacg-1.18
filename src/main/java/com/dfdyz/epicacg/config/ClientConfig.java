@@ -1,19 +1,14 @@
 package com.dfdyz.epicacg.config;
 
 
-import com.dfdyz.epicacg.efmextra.reloader.Config2SkinReloader;
 import com.dfdyz.epicacg.utils.DeathParticleHandler;
 import com.google.common.reflect.TypeToken;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.jline.utils.InputStreamReader;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.util.Map;
 
 
 public class ClientConfig {
@@ -118,7 +113,7 @@ public class ClientConfig {
         //LOGGER.info("JSON JSON\n"+GSON.toJson(RenderConfig.TrailItem)+"\nJSON JSON");
     }
 
-    public static void SaveCommon(){
+    public static void SaveClientCfg(){
         String cfgpath = FMLPaths.CONFIGDIR.get().resolve("EpicAddonCommon.json").toString();
         LOGGER.info("EpicAddon:Save Common Config");
         WriteString(cfgpath, CommonConfig.GSON.toJson(cfg));

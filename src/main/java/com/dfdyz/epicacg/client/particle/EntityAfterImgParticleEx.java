@@ -1,5 +1,8 @@
 package com.dfdyz.epicacg.client.particle;
 
+import com.dfdyz.epicacg.client.render.EpicACGRenderType;
+import com.dfdyz.epicacg.client.render.IPatchedAnimatedMesh;
+import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -15,7 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.client.model.AnimatedMesh;
@@ -23,8 +25,6 @@ import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.particle.CustomModelParticle;
-import yesman.epicfight.client.particle.EntityAfterImageParticle;
-import yesman.epicfight.client.particle.EpicFightParticleRenderTypes;
 import yesman.epicfight.client.renderer.patched.entity.PatchedEntityRenderer;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -52,7 +52,7 @@ public class EntityAfterImgParticleEx extends CustomModelParticle<AnimatedMesh> 
     }
 
     public ParticleRenderType getRenderType() {
-        return EpicFightParticleRenderTypes.TRANSLUCENT;
+        return EpicACGRenderType.TRANSLUCENT;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class EntityAfterImgParticleEx extends CustomModelParticle<AnimatedMesh> 
         PoseStack poseStack = new PoseStack();
         this.setupPoseStack(poseStack, camera, partialTicks);
         poseStack.mulPoseMatrix(this.modelMatrix);
-        this.particleMesh.drawWithPoseNoTexture(poseStack, vertexConsumer, 0xffffffff,
+        ((IPatchedAnimatedMesh)this.particleMesh).drawWithPoseNoTexture2(poseStack, vertexConsumer, RenderUtils.DefaultLightColor,
                 this.rCol, this.gCol, this.bCol, alpha,
                 OverlayTexture.NO_OVERLAY, this.poseMatrices);
     }

@@ -15,7 +15,8 @@ public class ClientConfigValue {
     //public float HealthBarRenderDistance = 48f;
     public boolean EnableDeathParticle = true;
 
-    public boolean EnableBloomParticle = true;
+    //public boolean EnableBloomParticle = true;
+    public short BloomMode = 0;
 
     public ClientConfigValue(){
 

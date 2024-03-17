@@ -94,10 +94,10 @@ public class MyTextureSheetParticle extends SingleQuadParticle {
         float v1 = 1;
 
         int light = this.getLightColor(pt);
-        buffer.vertex(vertexes[0].x(), vertexes[0].y(), vertexes[0].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u1, v1).uv2(light).endVertex();
-        buffer.vertex(vertexes[1].x(), vertexes[1].y(), vertexes[1].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u1, v0).uv2(light).endVertex();
-        buffer.vertex(vertexes[2].x(), vertexes[2].y(), vertexes[2].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u0, v0).uv2(light).endVertex();
-        buffer.vertex(vertexes[3].x(), vertexes[3].y(), vertexes[3].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(u0, v1).uv2(light).endVertex();
+        buffer.vertex(vertexes[0].x(), vertexes[0].y(), vertexes[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        buffer.vertex(vertexes[1].x(), vertexes[1].y(), vertexes[1].z()).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        buffer.vertex(vertexes[2].x(), vertexes[2].y(), vertexes[2].z()).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        buffer.vertex(vertexes[3].x(), vertexes[3].y(), vertexes[3].z()).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
     }
 
     @Override

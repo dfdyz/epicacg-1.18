@@ -14,7 +14,12 @@ public class JudgementCutParticle extends NoRenderParticle {
         //level.addParticle(RegParticle.JudgementCutTrail.get(), x, y, z,x, y, z);
 
         //EpicAddon.LOGGER.info(rx+"");
-        lifetime = 10;
+        lifetime = 25;
+    }
+
+    @Override
+    public boolean shouldCull() {
+        return false;
     }
 
     @Override
@@ -23,7 +28,7 @@ public class JudgementCutParticle extends NoRenderParticle {
             this.remove();
         }
 
-        for (int i = 0; i<3; i++){
+        for (int i = 0; i<2; i++){
             float r = random.nextFloat(5,8);
             float theta = random.nextFloat(0,360);
             float beta = random.nextFloat(45,80);
@@ -37,7 +42,7 @@ public class JudgementCutParticle extends NoRenderParticle {
             theta2 = (float) (theta2/180*Math.PI);
             beta2 = (float) (beta2/180*Math.PI);
 
-            float scale = 1.6f;
+            float scale = 1.35f;
             double sr = r*Math.sin(beta);
             double sx = sr*Math.sin(theta)*scale;
             double sy = r*Math.cos(beta)*scale;
@@ -57,7 +62,6 @@ public class JudgementCutParticle extends NoRenderParticle {
                     ey-sy,
                     (-ez-sz)));
         }
-
     }
 
     @Override

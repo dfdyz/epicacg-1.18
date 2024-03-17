@@ -48,7 +48,13 @@ public class CameraAnimation {
         );
     }
 
+
     public static CameraAnimation load(ResourceLocation resourceLocation){
+        return load(resourceLocation, 1f);
+    }
+
+
+    public static CameraAnimation load(ResourceLocation resourceLocation, float timeScale){
         Minecraft mc = Minecraft.getInstance();
 
         try {
@@ -121,6 +127,13 @@ public class CameraAnimation {
             fov = new FloatSheet();
             fov.getFromJson(sheets, "value");
 
+            x.scaleTimes(timeScale);
+            y.scaleTimes(timeScale);
+            z.scaleTimes(timeScale);
+            rx.scaleTimes(timeScale);
+            ry.scaleTimes(timeScale);
+            fov.scaleTimes(timeScale);
+
             EpicACG.LOGGER.info("Load Camera Animation: " + resourceLocation);
             return new CameraAnimation(x,y,z,rx,ry,fov);
         } catch (IOException e) {
@@ -170,6 +183,12 @@ public class CameraAnimation {
 
         public float getMaxTime(){
             return timeSheet[timeSheet.length-1];
+        }
+
+        public void scaleTimes(float scale){
+            for (int i = 0; i < timeSheet.length; i++) {
+                timeSheet[i] /= scale;
+            }
         }
     }
 

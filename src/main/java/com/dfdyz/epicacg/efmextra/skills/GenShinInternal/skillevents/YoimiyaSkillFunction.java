@@ -2,6 +2,7 @@ package com.dfdyz.epicacg.efmextra.skills.GenShinInternal.skillevents;
 
 
 import com.dfdyz.epicacg.config.ClientConfig;
+import com.dfdyz.epicacg.efmextra.anims.ScanAttackAnimation;
 import com.dfdyz.epicacg.registry.Particles;
 import com.dfdyz.epicacg.registry.Sounds;
 import com.dfdyz.epicacg.utils.GlobalVal;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -40,11 +42,34 @@ public class YoimiyaSkillFunction {
         else {
             if(entitypatch.getCurrenltyAttackedEntities().size() > 0){
                 Vec3 position = entitypatch.getOriginal().position();
-                Entity target = entitypatch.getCurrenltyAttackedEntities().get(0);
+                Entity target = null;
+
+                if(entitypatch.getTarget() != null){
+                    target = entitypatch.getTarget();
+                }
+                else {
+                    if(ScanAttackAnimation.getScannedEntities(entitypatch).size() > 0)
+                        target = ScanAttackAnimation.getScannedEntities(entitypatch).get(0);
+                }
 
                 float dmgboost = (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, entitypatch.getValidItemInHand(InteractionHand.MAIN_HAND)))*0.2f;
 
-                if(target.equals(entitypatch.getOriginal())){
+                if(target != null && target.isAlive() && !target.equals(entitypatch.getOriginal())){
+                    Vec3 shootTarget = target.getBoundingBox().getCenter();
+                    //shootTarget = new Vec3(shootTarget.x,target.getEyeY(),shootTarget.z);
+                    Vec3 center = position.add(0,entitypatch.getOriginal().getEyeHeight(),0);
+                    Vec3 shootVec = shootTarget.subtract(center);
+                    Vec3 shootPos = center.add((new Vec3(shootVec.x,0,shootVec.z)).normalize());
+
+                    GenShinArrow projectile = new GenShinArrow(worldIn, entitypatch.getOriginal());
+                    projectile.setPos(shootPos);
+                    projectile.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+                    projectile.setDmg((float) entitypatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE)*0.2333f*(dmgboost+1));
+                    projectile.shoot(shootVec.x(), shootVec.y(), shootVec.z(), 4.2f, 1.0f);
+                    worldIn.addFreshEntity(projectile);
+                }
+                else {
                     float ang = (float) ((entitypatch.getOriginal().getViewYRot(1)+90)/180 * Math.PI);
                     Vec3 shootVec = new Vec3(Math.cos(ang), 0 , Math.sin(ang));
                     Vec3 shootPos = position.add(shootVec.x,entitypatch.getOriginal().getEyeHeight(),shootVec.z);
@@ -57,24 +82,6 @@ public class YoimiyaSkillFunction {
 
                     projectile.shoot(shootVec.x(), 0.1f, shootVec.z(), 4.2f, 1.0f);
                     worldIn.addFreshEntity(projectile);
-
-                }
-                else {
-                    //Vec3 shootPos = handPos;
-                    Vec3 shootTarget = target.position();
-                    shootTarget = new Vec3(shootTarget.x,target.getEyeY(),shootTarget.z);
-                    Vec3 center = position.add(0,entitypatch.getOriginal().getEyeHeight(),0);
-                    Vec3 shootVec = shootTarget.subtract(center);
-                    Vec3 shootPos = center.add((new Vec3(shootVec.x,0,shootVec.z)).normalize());
-
-                    GenShinArrow projectile = new GenShinArrow(worldIn, entitypatch.getOriginal());
-                    projectile.setPos(shootPos);
-                    projectile.pickup = AbstractArrow.Pickup.DISALLOWED;
-
-                    projectile.setDmg((float) entitypatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE)*0.2333f*(dmgboost+1));
-                    projectile.shoot(shootVec.x(), shootVec.y(), shootVec.z(), 4.2f, 1.0f);
-                    worldIn.addFreshEntity(projectile);
-
                 }
 
                 entitypatch.playSound(Sounds.GENSHIN_BOW, 0.0F, 0.0F);

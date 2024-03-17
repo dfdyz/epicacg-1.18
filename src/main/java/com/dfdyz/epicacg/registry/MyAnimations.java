@@ -2,7 +2,6 @@ package com.dfdyz.epicacg.registry;
 
 import com.dfdyz.epicacg.EpicACG;
 import com.dfdyz.epicacg.client.camera.CameraAnimation;
-import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
 import com.dfdyz.epicacg.efmextra.anims.*;
 import com.dfdyz.epicacg.efmextra.anims.property.MyProperties;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.skillevents.YoimiyaSkillFunction;
@@ -10,14 +9,10 @@ import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.SAOSkillAnimUtils;
 import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
 import com.dfdyz.epicacg.event.CameraEvents;
 import com.dfdyz.epicacg.utils.MoveCoordFuncUtils;
-import com.dfdyz.epicacg.utils.RenderUtils;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -781,7 +776,7 @@ public class MyAnimations {
                         }, AnimationEvent.Side.SERVER)
                 });
 
-        SAO_RAPIER_SA2  = new ScanAttackAnimation(0.01F, 0.3f,0.72f, 1.48F, InteractionHand.MAIN_HAND, WeaponCollider.SAO_RAPIER_SCAN, biped.rootJoint, "biped/sao_rapier/sao_rapier_sa2", biped)
+        SAO_RAPIER_SA2  = new DeferredDamageAttackAnimation(0.01F, 0.3f,0.72f, 1.48F, InteractionHand.MAIN_HAND, WeaponCollider.SAO_RAPIER_SCAN, biped.rootJoint, "biped/sao_rapier/sao_rapier_sa2", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
@@ -791,36 +786,45 @@ public class MyAnimations {
                             SAOSkillAnimUtils.RapierSA.prev(ep);
                         }, AnimationEvent.Side.CLIENT),
                         AnimationEvent.TimeStampedEvent.create(0.65f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.RapierSA.HandleAtk(ep);
+                            SAOSkillAnimUtils.RapierSA.HandleAtk1(ep);
                         }, AnimationEvent.Side.BOTH),
                         AnimationEvent.TimeStampedEvent.create(1.15f, (ep, anim, objs) -> {
                             SAOSkillAnimUtils.RapierSA.post(ep);
-                        }, AnimationEvent.Side.CLIENT)
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(1.35f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.RapierSA.HandleAtk2(ep);
+                        }, AnimationEvent.Side.BOTH),
                 })
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(1.2f));
 
-        DMC5_V_JC  = new ScanAttackAnimation(0.02F, 0.334f, 0.43f, 4.48F, InteractionHand.MAIN_HAND, WeaponCollider.DMC_JC, biped.rootJoint, "biped/dmc5_v_jc", biped)
+        DMC5_V_JC  = new DeferredDamageAttackAnimation(0.02F, 0.334f, 0.43f, 4.48F, InteractionHand.MAIN_HAND, WeaponCollider.DMC_JC, biped.rootJoint, "biped/dmc5_v_jc", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0))
                 .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0f)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
                 .addProperty(MyProperties.MOVE_ROOT_PHASE, new MyProperties.SpecialPhase(0, 5.35f))
-                .addProperty(MyProperties.INVISIBLE_PHASE, new MyProperties.SpecialPhase(0.85f,2.19f))
+                .addProperty(MyProperties.INVISIBLE_PHASE, new MyProperties.SpecialPhase(0.85f,2.8f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
                             SAOSkillAnimUtils.DMC5_V_JC.prev(ep);
                         }, AnimationEvent.Side.BOTH),
                         AnimationEvent.TimeStampedEvent.create(0.4f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.HandleAtk(ep);
+                            SAOSkillAnimUtils.DMC5_V_JC.HandleAtk1(ep);
                         }, AnimationEvent.Side.BOTH),
                         AnimationEvent.TimeStampedEvent.create(0.85f, (ep, anim, objs) -> {
                             SAOSkillAnimUtils.DMC5_V_JC.post1(ep);
                         }, AnimationEvent.Side.BOTH),
-                        AnimationEvent.TimeStampedEvent.create(4.48f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.post(ep);
+                        AnimationEvent.TimeStampedEvent.create(1.0f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.post2(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(1.3f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.post3(ep);
+                        }, AnimationEvent.Side.BOTH),
+                        AnimationEvent.TimeStampedEvent.create(3.733f, (ep, anim, objs) -> {
+                            SAOSkillAnimUtils.DMC5_V_JC.postAttack(ep);
                         }, AnimationEvent.Side.BOTH)
                 })
-                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(2));
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(1));
 
         //todo
         /*

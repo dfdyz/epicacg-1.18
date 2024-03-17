@@ -1,6 +1,7 @@
 package com.dfdyz.epicacg.client.render.targets;
 
 import com.dfdyz.epicacg.client.render.pipeline.PostParticleRenderType;
+import com.dfdyz.epicacg.utils.Function.ScreenResizeEventHandler;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.minecraft.client.Minecraft;
@@ -8,12 +9,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 import static net.minecraft.client.Minecraft.ON_OSX;
 
 public class TargetManager {
     private static final Stack<RenderTarget> freeTargets = new Stack<>();
     private static final HashMap<ResourceLocation, RenderTarget> busyTarget = Maps.newHashMap();
+
+    public static ScreenResizeEventHandler OnResize = (w,h) -> {};
 
     private static int lastW, lastH;
 
@@ -43,6 +48,8 @@ public class TargetManager {
 
         lastW = main.width;
         lastH = main.height;
+
+        OnResize.consume(main.width, main.height);
 
         busyTarget.clear();
     }

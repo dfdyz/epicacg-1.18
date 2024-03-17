@@ -1,35 +1,43 @@
 package com.dfdyz.epicacg.efmextra.skills.SAO.skillevents;
 
+import com.dfdyz.epicacg.client.particle.DMC.AirWaveParticle;
+import com.dfdyz.epicacg.client.particle.DMC.PhantomsParticle;
 import com.dfdyz.epicacg.client.particle.DMC.SpaceBrokenParticle;
 import com.dfdyz.epicacg.client.particle.SAO.LandingStrikeParticle;
+import com.dfdyz.epicacg.client.screeneffect.ColorDispersionEffect;
+import com.dfdyz.epicacg.efmextra.anims.DeferredDamageAttackAnimation;
 import com.dfdyz.epicacg.efmextra.skills.SAO.SingleSwordSASkills;
 import com.dfdyz.epicacg.event.CameraEvents;
+import com.dfdyz.epicacg.event.ScreenEffectEngine;
 import com.dfdyz.epicacg.registry.MobEffects;
 import com.dfdyz.epicacg.registry.Particles;
 import com.dfdyz.epicacg.registry.Sounds;
 import com.dfdyz.epicacg.utils.RenderUtils;
+import com.google.common.collect.Lists;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.animation.Joint;
-import yesman.epicfight.api.animation.property.AnimationEvent;
-import yesman.epicfight.api.utils.LevelUtil;
-import yesman.epicfight.api.utils.math.OpenMatrix4f;
-import yesman.epicfight.api.utils.math.Vec3f;
+import net.minecraftforge.entity.PartEntity;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.utils.AttackResult;
+import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.EpicFightDamageSource;
+import yesman.epicfight.world.entity.eventlistener.DealtDamageEvent;
+import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static com.dfdyz.epicacg.registry.MyAnimations.*;
 
@@ -64,35 +72,40 @@ public class SAOSkillAnimUtils {
     }
 
     public static class RapierSA {
-        public static void prev(LivingEntityPatch entityPatch){
-            CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM, (LivingEntity) entityPatch.getOriginal(), true);
+        public static void prev(LivingEntityPatch<?> entityPatch){
+            CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM, entityPatch.getOriginal(), true);
         }
-        //public static OpenMatrix4f matrix4f = new OpenMatrix4f();
-        public static void HandleAtk(LivingEntityPatch entityPatch){
-            //float yaw = entityPatch.getOriginal().getYRot();
-            //System.out.println("????");
+        public static void HandleAtk1(LivingEntityPatch<?> entityPatch){
             if(entityPatch.isLogicalClient()){
-                //PostEffectEvent.PushPostEffectHighest(RegPostEffect.SpaceBroken, 0.75f, entityPatch.getOriginal().position());
             }
             else {
                 if(entityPatch.getCurrenltyAttackedEntities().size() > 0){
-                    //System.out.println("????");
                     entityPatch.getCurrenltyAttackedEntities().forEach((entity)->{
-                        if(entity instanceof LivingEntity) {
-                            LivingEntity le = (LivingEntity)entity;
-                            if(le.equals(entityPatch.getOriginal())) return;
-                            float dmg = entityPatch.getValidItemInHand(InteractionHand.MAIN_HAND).getDamageValue();
-                            le.addEffect(new MobEffectInstance(MobEffects.WOUND.get(), 13, (int) (dmg*10)));
-                            le.addEffect(new MobEffectInstance(MobEffects.STOP.get(), 13, 1));
-                        }
+                        if(entity != null && entity.isAlive() && entity.equals(entityPatch.getOriginal())) return;
+                        entity.addEffect(new MobEffectInstance(MobEffects.STOP.get(), 13, 1));
                     });
                 }
             }
         }
 
-        public static void post(LivingEntityPatch entityPatch){
+        public static void HandleAtk2(LivingEntityPatch<?> entityPatch){
+            if(entityPatch.isLogicalClient()){
+            }
+            else {
+                List<Entity> EntityMap = DeferredDamageAttackAnimation.getScannedEntities(entityPatch);
+                if(EntityMap.size() > 0){
+                    EntityMap.forEach(
+                            (entity)->{
+                                if(entity != null && entity.isAlive() && entity.equals(entityPatch.getOriginal())) return;
+                                HurtEntity(entityPatch, entity, SAO_RAPIER_SA2, 1.7f,0.2f);
+                            });
+                }
+            }
+        }
+
+        public static void post(LivingEntityPatch<?> entityPatch){
             //entityPatch.getOriginal().setInvisible(false);
-            CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM2, (LivingEntity) entityPatch.getOriginal(), true);
+            CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM2, entityPatch.getOriginal(), true);
         }
     }
 
@@ -109,9 +122,21 @@ public class SAOSkillAnimUtils {
 
 
     public static class DMC5_V_JC{
-        public static void prev(LivingEntityPatch entityPatch){
+        public static void prev(LivingEntityPatch<?> entityPatch){
             if(entityPatch.isLogicalClient()){
-                CameraEvents.SetAnim(DMC_V_PREV, (LivingEntity) entityPatch.getOriginal(), true);
+                CameraEvents.SetAnim(DMC_V_PREV, entityPatch.getOriginal(), true);
+
+                Vec3 pos = Minecraft.getInstance().player.position();
+                AirWaveParticle particle = new AirWaveParticle(
+                        Minecraft.getInstance().level, pos.x, pos.y, pos.z, 1, 5
+                );
+
+                RenderUtils.AddParticle(Minecraft.getInstance().level, particle);
+
+                ColorDispersionEffect effect = new ColorDispersionEffect(pos);
+                effect.lifetime = 12;
+                effect.type = ColorDispersionEffect.Type.PREV;
+                ScreenEffectEngine.PushScreenEffect(effect);
             }
             else {
                 if(entityPatch instanceof ServerPlayerPatch pp){
@@ -123,46 +148,84 @@ public class SAOSkillAnimUtils {
             }
         }
 
-        public static void HandleAtk(LivingEntityPatch entityPatch){
+        public static void HandleAtk1(LivingEntityPatch<?> entityPatch){
             //CameraEvents.SetAnim(SAO_RAPIER_SA2_CAM, (LivingEntity) entityPatch.getOriginal(), true);
-
             if(entityPatch.isLogicalClient()){
-
+                Vec3 pos = entityPatch.getOriginal().position();
+                PhantomsParticle particle = new PhantomsParticle(
+                        Minecraft.getInstance().level, pos.x, pos.y, pos.z, entityPatch
+                );
+                particle.setLifetime(30);
+                RenderUtils.AddParticle(Minecraft.getInstance().level, particle);
             }
             else {
                 if(entityPatch.getCurrenltyAttackedEntities().size() > 0){
                     //System.out.println("????");
                     entityPatch.getCurrenltyAttackedEntities().forEach((entity)->{
-                        if(entity instanceof LivingEntity) {
-                            LivingEntity le = (LivingEntity)entity;
-                            if(le.equals(entityPatch.getOriginal())) return;
-                            float dmg = entityPatch.getValidItemInHand(InteractionHand.MAIN_HAND).getDamageValue();
-                            le.addEffect(new MobEffectInstance(MobEffects.WOUND.get(), 33, (int) (dmg*10)));
-                            le.addEffect(new MobEffectInstance(MobEffects.STOP.get(), 42, 1));
-                        }
+                        if(entity != null
+                                && entity.isAlive()
+                                && entity.equals(entityPatch.getOriginal())
+                                && entity.distanceTo(entityPatch.getOriginal()) < 9
+                        ) return;
+                        entity.addEffect(new MobEffectInstance(MobEffects.STOP.get(), 67, 1));
                     });
                 }
             }
         }
         //public static OpenMatrix4f matrix4f = new OpenMatrix4f();
-        public static void post1(LivingEntityPatch entityPatch){
+        public static void post1(LivingEntityPatch<?> entityPatch){
             if(entityPatch.isLogicalClient()){
                 Level worldIn = entityPatch.getOriginal().getLevel();
                 Vec3 pos = entityPatch.getOriginal().position();
                 worldIn.addParticle(Particles.DMC_JC_BLADE_TRAIL.get() ,pos.x,pos.y,pos.z,0,0,0);
-                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, 29, 0));
-                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, 29, 1));
-
                 //PostEffectEvent.PushPostEffectMiddle(RegPostEffect.WhiteFlush, 0.25f, pos);
+                ColorDispersionEffect effect = new ColorDispersionEffect(pos);
+                effect.lifetime = 58;
+                ScreenEffectEngine.PushScreenEffect(effect);
+            }
+            else {
+                playSound(entityPatch.getOriginal(), Sounds.DMC5_JC_1);
             }
         }
 
+        public static void post2(LivingEntityPatch<?> entityPatch){
+            if(entityPatch.isLogicalClient()){
+                Level worldIn = entityPatch.getOriginal().getLevel();
+                Vec3 pos = entityPatch.getOriginal().position();
+                worldIn.addParticle(Particles.DMC_JC_BLADE_TRAIL.get() ,pos.x,pos.y,pos.z,0,0,0);
+           }
+        }
 
-        public static void post(LivingEntityPatch entityPatch){
+        public static void post3(LivingEntityPatch<?> entityPatch){
+            if(entityPatch.isLogicalClient()){
+                Level worldIn = entityPatch.getOriginal().getLevel();
+                Vec3 pos = entityPatch.getOriginal().position();
+                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, entityPatch.getOriginal().yBodyRot, 45, 0));
+                RenderUtils.AddParticle((ClientLevel) worldIn, new SpaceBrokenParticle((ClientLevel) worldIn, pos.x, pos.y, pos.z, entityPatch.getOriginal().yBodyRot,45, 1));
+            }
+        }
+
+        public static void postAttack(LivingEntityPatch<?> entityPatch){
             if(entityPatch.isLogicalClient()){
 
             }
             else {
+                playSound(entityPatch.getOriginal(), Sounds.DMC5_JC_2);
+
+                List<Entity> EntityMap = DeferredDamageAttackAnimation.getScannedEntities(entityPatch);
+                if(EntityMap.size() > 0){
+                    EntityMap.forEach(
+                            (entity) -> {
+                                if(entity != null
+                                        && entity.isAlive()
+                                        && entity.equals(entityPatch.getOriginal())
+                                        && entity.distanceTo(entityPatch.getOriginal()) < 9
+                                ) return;
+                                HurtEntity(entityPatch, entity,DMC5_V_JC, 1.5f,0.4f);
+                            }
+                    );
+                }
+
                 if(entityPatch instanceof ServerPlayerPatch pp){
                     SkillContainer sc = pp.getSkill(SkillSlots.WEAPON_INNATE);
                     if(sc.getDataManager().hasData(SingleSwordSASkills.Invincible)){
@@ -173,6 +236,51 @@ public class SAOSkillAnimUtils {
         }
     }
 
+    public static void HurtEntity(LivingEntityPatch<?> attacker, Entity target, StaticAnimation animation, float damageRate, float cutRate){
+        EpicFightDamageSource source = attacker.getDamageSource(animation, InteractionHand.MAIN_HAND);
 
+        if(source.getDamageModifier() == null){
+            source.setDamageModifier(new ValueModifier(0, damageRate,0));
+        }
+        else {
+            source.getDamageModifier().merge(new ValueModifier(0, damageRate,0));
+        }
+
+        LivingEntity rootEntity = getTrueEntity(target);
+
+        int prevInvulTime = target.invulnerableTime;
+        target.invulnerableTime = 0;
+        AttackResult attackResult = attacker.attack(source, target, InteractionHand.MAIN_HAND);
+        target.invulnerableTime = prevInvulTime;
+        if (attackResult.resultType.dealtDamage() && rootEntity != null) {
+            if (attacker instanceof ServerPlayerPatch) {
+                ServerPlayerPatch playerpatch = (ServerPlayerPatch)attacker;
+                playerpatch.getEventListener().triggerEvents(PlayerEventListener.EventType.DEALT_DAMAGE_EVENT_POST,
+                        new DealtDamageEvent(playerpatch, rootEntity, source, attackResult.damage));
+            }
+        }
+
+        if(rootEntity != null){
+            float dmg = rootEntity.getMaxHealth() * 0.05f;
+            dmg += cutRate * (rootEntity.getMaxHealth() - rootEntity.getHealth());
+            target.hurt(DamageSource.GENERIC, dmg);
+        }
+
+    }
+
+    public static LivingEntity getTrueEntity(Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            return livingEntity;
+        } else {
+            if (entity instanceof PartEntity<?> partEntity) {
+                Entity parentEntity = partEntity.getParent();
+                if (parentEntity instanceof LivingEntity livingEntity) {
+                    return livingEntity;
+                }
+            }
+
+            return null;
+        }
+    }
 
 }

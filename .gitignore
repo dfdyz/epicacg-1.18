@@ -21,6 +21,7 @@ build
 eclipse
 run
 model
+src/main/resources/assets/epicacg/models/item/test
 
 # Files from Forge MDK
 forge*changelog.txt

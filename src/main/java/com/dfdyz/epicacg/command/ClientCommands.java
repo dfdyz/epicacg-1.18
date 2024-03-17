@@ -1,21 +1,16 @@
 package com.dfdyz.epicacg.command;
 
 import com.dfdyz.epicacg.EpicACG;
-import com.dfdyz.epicacg.client.particle.DMC.SpaceBrokenParticle;
 import com.dfdyz.epicacg.config.ClientConfig;
 import com.dfdyz.epicacg.registry.MyAnimations;
-import com.dfdyz.epicacg.registry.MyModels;
-import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
@@ -34,17 +29,23 @@ public class ClientCommands {
 
     public static void Debug(){
         try{
-            //ParticleRenderingPhase phase = ReflectionUtils.GetField(Minecraft.getInstance().particleEngine, "phase");
-            //System.out.println(phase);
 
+            //MyModels.LoadOtherModel();
+
+            //Player player = Minecraft.getInstance().player;
+            //LocalPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, LocalPlayerPatch.class);
             /*
-            MyModels.LoadOtherModel();
-            ClientLevel level = Minecraft.getInstance().level;
             Vec3 pos = Minecraft.getInstance().player.position();
-            RenderUtils.AddParticle(level, new SpaceBrokenParticle(level, pos.x, pos.y, pos.z, 0));
 
-            RenderUtils.AddParticle(level, new SpaceBrokenParticle(level, pos.x, pos.y, pos.z, 1));
-*/
+            AirWaveParticle particle = new AirWaveParticle(
+                    Minecraft.getInstance().level, pos.x, pos.y, pos.z, 1, 150
+            );
+
+            RenderUtils.AddParticle(Minecraft.getInstance().level, particle);
+
+             */
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -58,8 +59,6 @@ public class ClientCommands {
                         player.displayClientMessage(Component.nullToEmpty("Function:\nReload\nOption:\nGenShinVoice <boolean>\nDeathParticle <boolean>"),false);
                     }
 
-                    Debug();
-
                     return Command.SINGLE_SUCCESS;
                 })
                 .then(Commands.literal("Reload")
@@ -69,6 +68,11 @@ public class ClientCommands {
                             //BladeTrailTextureLoader.Load();
                             MyAnimations.LoadCamAnims();
                             MSGClient("[EpicACG]Reload All Config.");
+                            return Command.SINGLE_SUCCESS;
+                        }))
+                .then(Commands.literal("Debug")
+                        .executes(context -> {
+                            Debug();
                             return Command.SINGLE_SUCCESS;
                         }))
                 /*
@@ -100,14 +104,14 @@ public class ClientCommands {
                         .then(Commands.literal("true")
                                 .executes(context -> {
                                     ClientConfig.cfg.EnableDeathParticle = true;
-                                    ClientConfig.SaveCommon();
+                                    ClientConfig.SaveClientCfg();
                                     MSGClient("[EpicACG]Enabled DeathParticle.");
                                     return Command.SINGLE_SUCCESS;
                                 }))
                         .then(Commands.literal("false")
                                 .executes(context -> {
                                     ClientConfig.cfg.EnableDeathParticle = false;
-                                    ClientConfig.SaveCommon();
+                                    ClientConfig.SaveClientCfg();
                                     MSGClient("[EpicACG]Disabled DeathParticle.");
                                     return Command.SINGLE_SUCCESS;
                                 })))
@@ -119,14 +123,14 @@ public class ClientCommands {
                         .then(Commands.literal("true")
                                 .executes(context -> {
                                     ClientConfig.cfg.EnableGenShinVoice = true;
-                                    ClientConfig.SaveCommon();
+                                    ClientConfig.SaveClientCfg();
                                     MSGClient("[EpicACG]Enabled GenShinVoice.");
                                     return Command.SINGLE_SUCCESS;
                                 }))
                         .then(Commands.literal("false")
                                 .executes(context -> {
                                     ClientConfig.cfg.EnableGenShinVoice = false;
-                                    ClientConfig.SaveCommon();
+                                    ClientConfig.SaveClientCfg();
                                     MSGClient("[EpicACG]Disabled GenShinVoice.");
                                     return Command.SINGLE_SUCCESS;
                                 })))

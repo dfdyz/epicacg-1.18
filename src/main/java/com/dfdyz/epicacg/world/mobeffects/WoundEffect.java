@@ -18,7 +18,8 @@ public class WoundEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity owner, int lv) {
-        float dmg = Math.max(owner.getMaxHealth()*0.05f, lv/10f);
+        float dmg = Math.max(owner.getMaxHealth() * 0.05f, lv/10f);
+        System.out.println(owner.getMaxHealth() * 0.05f + ", " + lv/10f);
         dmg += 0.4f*(owner.getMaxHealth()-owner.getHealth());
         owner.hurt(DamageSource.GENERIC, dmg);
     }

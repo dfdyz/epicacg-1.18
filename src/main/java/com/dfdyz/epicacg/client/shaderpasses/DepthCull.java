@@ -3,13 +3,11 @@ package com.dfdyz.epicacg.client.shaderpasses;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Matrix4f;
-import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
-public class DepthCull extends PostEffectBase{
+public class DepthCull extends PostPassBase {
     public DepthCull(String resourceLocation, ResourceManager resmgr) throws IOException {
         super(resourceLocation, resmgr);
     }

@@ -24,13 +24,16 @@ public class Sounds {
 
     public static final SoundEvent DualSword_SA1_1 = RegSound("weapon_skill.dual_sword.sa1_1");
     public static final SoundEvent DualSword_SA1_2 = RegSound("weapon_skill.dual_sword.sa1_2");
+    public static final SoundEvent DMC5_JC_1 = RegSound("weapon_skill.dmc5_jc_1");
+    public static final SoundEvent DMC5_JC_2 = RegSound("weapon_skill.dmc5_jc_2");
+
+
     private static SoundEvent RegSound(String name) {
         ResourceLocation r = new ResourceLocation(EpicACG.MODID, name);
         SoundEvent s = new SoundEvent(r).setRegistryName(name);
         SOUND_EVENTS.add(s);
         return s;
     }
-
 
     @SubscribeEvent
     public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event) {

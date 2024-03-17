@@ -160,37 +160,20 @@ public class PhotonTrailingParticle extends NoRenderParticle {
         }
         @Override
         public void render(VertexConsumer vertexConsumer, Camera camera, float pt) {
-            Vector3f[] avector3f = new Vector3f[]{
-                    new Vector3f(-1.0F, -1.0F, 0.0F),
-                    new Vector3f(-1.0F, 1.0F, 0.0F),
-                    new Vector3f(1.0F, 1.0F, 0.0F),
-                    new Vector3f(1.0F, -1.0F, 0.0F)};
-
-            Vec3 camPos =  camera.getPosition();
-            float x = (float) (Mth.lerp(pt, this.xo, this.x) - camPos.x());
-            float y = (float) (Mth.lerp(pt, this.yo, this.y) - camPos.y());
-            float z = (float) (Mth.lerp(pt, this.zo, this.z) - camPos.z());
-
-            Quaternion camRot = camera.rotation();
             float alp = getAlpha(pt);
             float t_ = (age % 10 + pt) / 9.f;
             if(t_ <= 0.5f) t_ = 4*t_ - 1;
             else t_ = -4*t_ + 3;
             float sz =  (0.5f + 0.1f * t_) * alp * Mth.sqrt(bbWidth * bbHeight);
 
-            for(int i = 0; i < 4; ++i) {
-                Vector3f vector3f = avector3f[i];
-                vector3f.mul(sz);
-                vector3f.add(0,0,-0.2f);
-                vector3f.transform(camRot);
-                vector3f.add(x, y, z);
-            }
+            RenderUtils.RenderQuadFaceOnCamera(vertexConsumer, camera,
+                    (float) Mth.lerp(pt, this.xo, this.x),
+                    (float) Mth.lerp(pt, this.yo, this.y),
+                    (float) Mth.lerp(pt, this.zo, this.z),
+                    this.rCol, this.gCol, this.bCol, alp,
+                    sz, pt
+            );
 
-            int j = 15728880;
-            vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(0, 0).uv2(j).endVertex();
-            vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(0, 1).uv2(j).endVertex();
-            vertexConsumer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(1, 1).uv2(j).endVertex();
-            vertexConsumer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).color(this.rCol, this.gCol, this.bCol, alp).uv(1, 0).uv2(j).endVertex();
         }
 
         @Override

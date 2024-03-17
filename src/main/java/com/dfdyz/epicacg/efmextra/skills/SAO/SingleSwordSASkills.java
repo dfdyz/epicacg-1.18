@@ -44,6 +44,7 @@ public class SingleSwordSASkills  extends SimpleWeaponSASkill implements IMutiSp
         ResourceLocation name = this.getRegistryName();
         noPower.add(new ResourceLocation(name.getNamespace(), "textures/gui/skills/" + name.getPath() + ".png"));
         noPower.add(new ResourceLocation(name.getNamespace(), "textures/gui/skills/single/judgement_cut.png"));
+
     }
 
     public static SimpleWeaponInnateSkill.Builder createBuilder(ResourceLocation resourceLocation) {
@@ -87,11 +88,11 @@ public class SingleSwordSASkills  extends SimpleWeaponSASkill implements IMutiSp
             SkillContainer skillContainer = executer.getSkill(SkillSlots.WEAPON_INNATE);
             int selected = executer.getSkill(EpicACGSkillSlot.SKILL_SELECTOR).getDataManager().getDataValue(MutiSpecialSkill.CHILD_SKILL_INDEX);
 
-            ok = skillContainer.getStack() > (selected == 0 ? 0:5);
+            ok = skillContainer.getStack() >= (selected == 0 ? 1:5);
 
             return ok || (executer.getOriginal()).isCreative();
         } else {
-            return SkillUtils.getMainHandSkill(executer) == this && (executer.getOriginal()).getVehicle() == null && (!executer.getSkill(SkillSlots.WEAPON_INNATE).isActivated() || this.activateType == ActivateType.TOGGLE);
+            return SkillUtils.getMainHandSkill(executer) == this && (executer.getOriginal()).getVehicle() == null && (!executer.getSkill(SkillSlots.WEAPON_INNATE).isActivated());
         }
     }
 

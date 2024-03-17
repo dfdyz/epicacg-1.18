@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = Mob.class)
 public abstract class MixinMob {
     @Inject(at = @At(value = "HEAD"), method = "serverAiStep()V", cancellable = true)
-    private void epicfight_serverAiStep(CallbackInfo info) {
+    private void serverAiStep(CallbackInfo info) {
         Mob self = (Mob)((Object)this);
         MobEffectInstance e = self.getEffect(MobEffects.STOP.get());
         if(e != null){

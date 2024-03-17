@@ -134,6 +134,8 @@ public class CameraEvents {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void Tick(TickEvent.ClientTickEvent event){
+        if(Minecraft.getInstance().isPaused()) return;
+
         if(event.phase == TickEvent.Phase.START){
             if (!isEnd) tick++;
             if (linking) linkTick++;

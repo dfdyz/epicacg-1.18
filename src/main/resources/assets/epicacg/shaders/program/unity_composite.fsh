@@ -1,6 +1,6 @@
 #version 150
 
-// https://github.com/Low-Drag-MC/Shimmer
+//copied https://github.com/Low-Drag-MC/Shimmer
 
 uniform sampler2D DiffuseSampler;
 uniform sampler2D DownTexture;

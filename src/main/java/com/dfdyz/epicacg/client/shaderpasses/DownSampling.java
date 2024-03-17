@@ -9,7 +9,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-public class DownSampling extends PostEffectBase{
+public class DownSampling extends PostPassBase {
     public DownSampling(EffectInstance effect) {
         super(effect);
     }

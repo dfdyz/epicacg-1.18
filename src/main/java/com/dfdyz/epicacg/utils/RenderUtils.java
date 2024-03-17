@@ -3,6 +3,8 @@ package com.dfdyz.epicacg.utils;
 import com.dfdyz.epicacg.EpicACG;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -10,6 +12,8 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
@@ -107,5 +111,68 @@ public class RenderUtils {
 
         }
     }
+
+    public static void RenderQuadFaceOnCamera(VertexConsumer vertexConsumer, Camera camera,
+                                              float posX, float posY, float posZ,
+                                              float r, float g, float b, float a,
+                                              float scale, float pt){
+        Vector3f[] avector3f = new Vector3f[]{
+                new Vector3f(-1.0F, -1.0F, 0.0F),
+                new Vector3f(-1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, -1.0F, 0.0F)};
+
+        Vec3 camPos =  camera.getPosition();
+        float x = (float) (posX - camPos.x());
+        float y = (float) (posY - camPos.y());
+        float z = (float) (posZ - camPos.z());
+
+        Quaternion camRot = camera.rotation();
+        for(int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            vector3f.mul(scale);
+            vector3f.add(0,0,-0.2f);
+            vector3f.transform(camRot);
+            vector3f.add(x, y, z);
+        }
+        int j = RenderUtils.DefaultLightColor;
+        vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(r,g,b,a).uv(0, 0).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(r,g,b,a).uv(0, 1).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).color(r,g,b,a).uv(1, 1).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).color(r,g,b,a).uv(1, 0).uv2(j).endVertex();
+
+    }
+
+    public static void RenderQuadFaceOnCamera2(VertexConsumer vertexConsumer, Camera camera,
+                                              float posX, float posY, float posZ,
+                                              float r, float g, float b, float a,
+                                              float scale){
+        Vector3f[] avector3f = new Vector3f[]{
+                new Vector3f(-1.0F, -1.0F, 0.0F),
+                new Vector3f(-1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, -1.0F, 0.0F)};
+
+        Vec3 camPos =  camera.getPosition();
+        float x = (float) (posX - camPos.x());
+        float y = (float) (posY - camPos.y());
+        float z = (float) (posZ - camPos.z());
+
+        Quaternion camRot = camera.rotation();
+        for(int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            vector3f.mul(scale);
+            vector3f.add(0,0,-0.2f);
+            vector3f.transform(camRot);
+            vector3f.add(x, y, z);
+        }
+        int j = RenderUtils.DefaultLightColor;
+        vertexConsumer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(0, 0).color(r,g,b,a).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(0, 1).color(r,g,b,a).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(1, 1).color(r,g,b,a).uv2(j).endVertex();
+        vertexConsumer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(1, 0).color(r,g,b,a).uv2(j).endVertex();
+
+    }
+
 
 }

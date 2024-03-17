@@ -47,7 +47,7 @@ public class EpicACGWorldEvent {
     public static final LinkedList<LivingEntity> DeathEntities = Lists.newLinkedList();
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void renderWorldLast(TickEvent.RenderTickEvent event) {
+    public static void clientTick(TickEvent.ClientTickEvent event) {
         if(FMLEnvironment.dist != Dist.CLIENT) return;
         if(event.phase == TickEvent.Phase.START) return;
         //GlobalVal.ANGInternal += 0.05f * ClientConfig.cfg.RotSpeed;
@@ -99,7 +99,6 @@ public class EpicACGWorldEvent {
             DeathParticleHandler.TransformPool.putIfAbsent(eid,
                     new DeathParticleHandler.ParticleTransformed(Vec3.ZERO, minVec, maxVec, rotation, DeathParticleHandler.config.default_density));
 
-            //System.out.format("put %s\n", pos.toString());
 
             level.addParticle(Particles.SAO_DEATH.get(),
                     pos.x,pos.y,pos.z,

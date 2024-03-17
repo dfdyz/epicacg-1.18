@@ -7,9 +7,8 @@ import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
-public class SpaceBroken extends PostEffectBase{
+public class SpaceBroken extends PostPassBase {
     public SpaceBroken(EffectInstance effect) {
         super(effect);
     }

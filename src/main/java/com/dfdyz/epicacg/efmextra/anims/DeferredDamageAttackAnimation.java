@@ -8,6 +8,7 @@ import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.Joint;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -19,7 +20,9 @@ import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.List;
 
-public class DeferredDamageAttackAnimation extends AttackAnimation {
+public class DeferredDamageAttackAnimation extends ScanAttackAnimation {
+
+
     public DeferredDamageAttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
         super(convertTime, antic, preDelay, contact, recovery, collider, colliderJoint, path, armature);
     }
@@ -32,9 +35,13 @@ public class DeferredDamageAttackAnimation extends AttackAnimation {
         super(convertTime, path, armature, phases);
     }
 
+    public DeferredDamageAttackAnimation(float convertTime, float antic, float contact, float recovery, InteractionHand hand, @Nullable Collider collider, Joint scanner, String path, Armature model) {
+        super(convertTime, antic, contact, recovery, hand, collider, scanner, path, model);
+        addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false);
+    }
 
     @Override
-    protected void attackTick(LivingEntityPatch<?> entitypatch) {
+    public void attackTick(LivingEntityPatch<?> entitypatch) {
         AnimationPlayer player = entitypatch.getAnimator().getPlayerFor(this);
         float elapsedTime = player.getElapsedTime();
         float prevElapsedTime = player.getPrevElapsedTime();
@@ -56,6 +63,29 @@ public class DeferredDamageAttackAnimation extends AttackAnimation {
     }
 
     @Override
+    protected void bindPhaseState(Phase phase) {
+
+        this.stateSpectrumBlueprint
+                .newTimePair(phase.start, phase.preDelay)
+                .addState(EntityState.PHASE_LEVEL, 1)
+                .newTimePair(phase.start, phase.recovery)
+                .addState(EntityState.MOVEMENT_LOCKED, true)
+                .addState(EntityState.UPDATE_LIVING_MOTION, false)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
+                .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                .newTimePair(phase.start, phase.end)
+                .addState(EntityState.INACTION, true)
+                .newTimePair(phase.preDelay, phase.contact + 0.01F)
+                .addState(EntityState.ATTACKING, true)
+                .addState(EntityState.PHASE_LEVEL, 2)
+                .newTimePair(phase.contact + 0.01F, phase.end)
+                .addState(EntityState.PHASE_LEVEL, 3)
+                .newTimePair(phase.start, phase.end)
+                .addState(EntityState.TURNING_LOCKED, true);
+
+    }
+
+    @Override
     public void begin(LivingEntityPatch<?> entitypatch) {
         super.begin(entitypatch);
         entitypatch.removeHurtEntities();
@@ -65,35 +95,5 @@ public class DeferredDamageAttackAnimation extends AttackAnimation {
     public void end(LivingEntityPatch<?> entitypatch, DynamicAnimation nextAnimation, boolean isEnd) {
         super.end(entitypatch, nextAnimation, isEnd);
         entitypatch.removeHurtEntities();
-    }
-
-    public void ScanTarget(LivingEntityPatch<?> entitypatch, float prevElapsedTime, float elapsedTime, EntityState prevState, EntityState state, Phase phase){
-        LivingEntity entity = entitypatch.getOriginal();
-        entitypatch.getArmature().initializeTransform();
-        float poseTime = state.attacking() ? elapsedTime : phase.contact;
-        List<Entity> list = phase.getCollidingEntities(entitypatch, this, prevElapsedTime, poseTime, this.getPlaySpeed(entitypatch));
-
-        if (list.size() > 0) {
-            HitEntityList hitEntities = new HitEntityList(entitypatch, list, HitEntityList.Priority.DISTANCE);
-            //int maxStrikes = 1;
-            entitypatch.getOriginal().setLastHurtMob(list.get(0));
-
-            while (entitypatch.getCurrenltyAttackedEntities().size() < getMaxStrikes(entitypatch, phase) && hitEntities.next()) {
-                Entity e = hitEntities.getEntity();
-                if(!e.isAlive()) continue;
-
-                LivingEntity trueEntity = this.getTrueEntity(e);
-                if (!entitypatch.isTeammate(e) && trueEntity != null) {
-                    if (e instanceof LivingEntity || e instanceof PartEntity) {
-                        if (entity.hasLineOfSight(e)) {
-                            entitypatch.getCurrenltyAttackedEntities().add(trueEntity);
-                        }
-                    }
-                }
-            }
-        }
-        if(!entitypatch.getCurrenltyAttackedEntities().contains(entitypatch.getOriginal())){
-            entitypatch.getCurrenltyAttackedEntities().add(entitypatch.getOriginal());
-        }
     }
 }

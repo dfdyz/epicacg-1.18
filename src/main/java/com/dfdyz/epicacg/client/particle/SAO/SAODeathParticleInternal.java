@@ -2,6 +2,7 @@ package com.dfdyz.epicacg.client.particle.SAO;
 
 import com.dfdyz.epicacg.client.render.pipeline.PostEffectPipelines;
 import com.dfdyz.epicacg.utils.GlobalVal;
+import com.dfdyz.epicacg.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -86,7 +87,7 @@ public class SAODeathParticleInternal extends Particle {
         float f8 = (c+1) * 0.25f;
         float f5 = r * 0.25f;
         float f6 = (r+1) * 0.25f;
-        int lightColor = this.getLightColor(pt);
+        int lightColor = RenderUtils.DefaultLightColor;
         vertexBuffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, this.alpha*s).uv(f8, f6).uv2(lightColor).endVertex();
         vertexBuffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, this.alpha*s).uv(f8, f5).uv2(lightColor).endVertex();
         vertexBuffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, this.alpha*s).uv(f7, f5).uv2(lightColor).endVertex();

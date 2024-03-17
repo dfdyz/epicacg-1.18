@@ -20,7 +20,6 @@ public class SpecialWeaponItem extends WeaponItem {
         return this.EnchantmentValue;
     }
 
-
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         return 0;

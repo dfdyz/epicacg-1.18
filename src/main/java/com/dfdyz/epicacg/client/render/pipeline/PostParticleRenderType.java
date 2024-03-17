@@ -45,6 +45,7 @@ public abstract class PostParticleRenderType implements ParticleRenderType {
         if(texture != null) RenderUtils.GLSetTexture(texture);
 
         getPipeline().start();
+
         setupBufferBuilder(bufferBuilder);
     }
 

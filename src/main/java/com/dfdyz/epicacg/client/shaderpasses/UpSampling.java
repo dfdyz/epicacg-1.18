@@ -7,9 +7,8 @@ import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
-public class UpSampling extends PostEffectBase{
+public class UpSampling extends PostPassBase {
     public UpSampling(EffectInstance effect) {
         super(effect);
     }

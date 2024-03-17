@@ -5,6 +5,7 @@ import com.dfdyz.epicacg.config.ClientConfig;
 import com.dfdyz.epicacg.efmextra.skills.EpicACGSkillCategories;
 import com.dfdyz.epicacg.efmextra.skills.EpicACGSkillSlot;
 import com.dfdyz.epicacg.event.ControllerEvent;
+import com.dfdyz.epicacg.event.LoadingEvents;
 import com.dfdyz.epicacg.network.Netmgr;
 import com.dfdyz.epicacg.registry.*;
 import com.mojang.logging.LogUtils;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -27,7 +29,7 @@ public class EpicACG
     public static final String MODID = "epicacg";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final String VERSION = "18.5.19.4";
+    public static final String VERSION = "18.5.21.2";
 
     public EpicACG()
     {
@@ -41,6 +43,8 @@ public class EpicACG
             bus.addListener(EventPriority.LOWEST, this::regClientReloader);
             bus.addListener(Particles::registryParticles);
             bus.addListener(PostEffects::register);
+            bus.addListener(this::setupClient);
+            bus.addListener(LoadingEvents::onModelBaked);
 
             fg_bus.addListener(ClientCommands::registerClientCommands);
         }
@@ -74,24 +78,22 @@ public class EpicACG
     {
         event.enqueueWork(Netmgr::register);
         MySkills.registerSkills();
+    }
 
-        if(FMLEnvironment.dist == Dist.CLIENT){
-            ControllerEvent.EpicAddonKeyMapping.Reg();
-            MyAnimations.LoadCamAnims();
 
-            MyModels.LoadOtherModel();
+    private void setupClient(final FMLClientSetupEvent event){
+        ControllerEvent.EpicAddonKeyMapping.Reg();
+        MyAnimations.LoadCamAnims();
 
-            try {
-                ClientConfig.Load(false);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        MyModels.LoadOtherModel();
+
+        event.enqueueWork(LoadingEvents::RegItemModelOverride);
+
+        try {
+            ClientConfig.Load(false);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        if(FMLEnvironment.dist == Dist.DEDICATED_SERVER){
-
-        }
-
     }
 
     @OnlyIn(Dist.CLIENT)

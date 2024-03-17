@@ -6,6 +6,7 @@ import com.dfdyz.epicacg.registry.MyModels;
 import com.dfdyz.epicacg.utils.RenderUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ibm.icu.impl.Pair;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -27,11 +28,14 @@ import java.util.List;
 public class SpaceBrokenParticle extends Particle {
 
     final int layer;
-    public SpaceBrokenParticle(ClientLevel level, double x, double y, double z, int lifetime, int layer) {
+    float yaw;
+
+    public SpaceBrokenParticle(ClientLevel level, double x, double y, double z, float yaw, int lifetime, int layer) {
         super(level, x, y, z);
         hasPhysics = false;
         this.lifetime = lifetime;
         this.layer = layer;
+        this.yaw = yaw;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class SpaceBrokenParticle extends Particle {
 
 
         float f = (float)(this.x - vec3.x());
-        float f1 = (float)(this.y - vec3.y() + (layer == 0 ? 0.1f : 0.4f));
+        float f1 = (float)(this.y - vec3.y() + (layer == 0 ? 0.2f : 0.4f));
         float f2 = (float)(this.z - vec3.z());
 
         float u0 = 0;
@@ -65,15 +69,12 @@ public class SpaceBrokenParticle extends Particle {
         float v1 = 1;
         int light = RenderUtils.DefaultLightColor;
 
-        float sss = layer == 0 ? 1.7f : 1.4f;
+        float sss = layer == 0 ? 1.2f : 1.3f;
 
         Vector3f camNormal = camera.getLookVector().copy();
         camNormal.normalize();
 
-        float camYaw = camera.getYRot() + (layer == 0 ? 0 : 90);
-        camYaw = (((camYaw % 360) + 360) % 360) / 360f;
-
-        camYaw = camYaw < 0.5 ? camYaw * 2 : - camYaw * 2 + 2;
+        float camYaw = camera.getYRot() + (layer == 0 ? 0 : 45);
 
         float camPitch = camera.getXRot();
         //System.out.println(camPitch);
@@ -81,8 +82,10 @@ public class SpaceBrokenParticle extends Particle {
         camPitch = camPitch / 90;
         camPitch = camPitch > 0 ? camPitch : -camPitch;
 
-        Quaternion rot = layer == 0 ? Quaternion.ONE : Quaternion.fromXYZDegrees(new Vector3f(45, 90, 45));
+        Quaternion rot = Quaternion.fromXYZ((layer == 0 ? 0 : 120), (float) ((yaw  + 30) / 180 * Math.PI) + (layer == 0 ? 0 : 75), 0);//
+        rot.mul(layer == 0 ? Quaternion.ONE : Quaternion.fromXYZDegrees(new Vector3f(45, 90, 45)));
 
+        float ya;
         for(int index = 0; index < MyModels.SpaceBrokenModel.Face.size(); ++index) {
             OBJ_JSON.Triangle triangle = MyModels.SpaceBrokenModel.Face.get(index);
             Vector3f vertex1 = MyModels.SpaceBrokenModel.Positions.get(triangle.x-1).toBugJumpFormat();
@@ -105,10 +108,13 @@ public class SpaceBrokenParticle extends Particle {
             col_normal.normalize();
             float offset = Math.abs(camNormal.dot(col_normal));
 
+            ya = (((camYaw % 360) + 360 + 180 * offset) % 360) / 360.f;
+            ya = ya < 0.5 ? ya * 2 : - ya * 2 + 2;
+
             //buffer.vertex(vertex1.x(), vertex1.y(), vertex1.z()).color(offset,camYaw,camPitch,1).uv(u1, v1).uv2(light).endVertex();
-            buffer.vertex(vertex1.x(), vertex1.y(), vertex1.z()).color(offset,camYaw,camPitch,1).uv(u1, v0).uv2(light).endVertex();
-            buffer.vertex(vertex2.x(), vertex2.y(), vertex2.z()).color(offset,camYaw,camPitch,1).uv(u0, v0).uv2(light).endVertex();
-            buffer.vertex(vertex3.x(), vertex3.y(), vertex3.z()).color(offset,camYaw,camPitch,1).uv(u0, v1).uv2(light).endVertex();
+            buffer.vertex(vertex1.x(), vertex1.y(), vertex1.z()).color(offset, ya, camPitch,1).uv(u1, v0).uv2(light).endVertex();
+            buffer.vertex(vertex2.x(), vertex2.y(), vertex2.z()).color(offset, ya, camPitch,1).uv(u0, v0).uv2(light).endVertex();
+            buffer.vertex(vertex3.x(), vertex3.y(), vertex3.z()).color(offset, ya, camPitch,1).uv(u0, v1).uv2(light).endVertex();
         }
 
     }
@@ -120,7 +126,33 @@ public class SpaceBrokenParticle extends Particle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return EpicACGRenderType.SpaceBroken1;
+        return layer == 0 ? EpicACGRenderType.SpaceBroken1 : EpicACGRenderType.SpaceBroken2;
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+
+        float lastAng = random.nextFloat(360);
+        float r;
+        for(int i =0; i < 12; ++i){
+            lastAng = random.nextFloat(120+lastAng-45,120+lastAng+45);
+            r = random.nextFloat(5);
+
+            double sx = Math.sin(lastAng/180*Math.PI)*r;
+            double sy = random.nextFloat(1, 6);
+            double sz = Math.cos(lastAng/180*Math.PI)*r;
+
+            SpaceBrokenEndParticle spaceBrokenEndParticle = new SpaceBrokenEndParticle(
+                    Minecraft.getInstance().level,
+                    sx + x,
+                    sy + y + 1,
+                    sz + z,
+                    30
+            );
+
+            RenderUtils.AddParticle(Minecraft.getInstance().level, spaceBrokenEndParticle);
+        }
     }
 
     public static class OBJ_JSON{
@@ -144,6 +176,7 @@ public class SpaceBrokenParticle extends Particle {
 
                 Normal = new vec3f(p1.x(), p2.y(), p3.z());
             }
+
         }
 
         public static class vec3f {

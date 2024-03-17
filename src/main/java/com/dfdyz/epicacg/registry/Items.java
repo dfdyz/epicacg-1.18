@@ -1,27 +1,16 @@
 package com.dfdyz.epicacg.registry;
 
 import com.dfdyz.epicacg.EpicACG;
-import com.dfdyz.epicacg.world.entity.projectile.GenShinArrow;
-import com.dfdyz.epicacg.world.entity.projectile.YoimiyaSAArrow;
+import com.dfdyz.epicacg.world.item.FireFlySwordItem;
 import com.dfdyz.epicacg.world.item.GenShinImpact.BowWeaponItem;
 import com.dfdyz.epicacg.world.item.SimpleWeaponItem;
 import com.dfdyz.epicacg.world.item.SpecialWeaponItem;
-import net.minecraft.client.renderer.entity.TippableArrowRenderer;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yesman.epicfight.world.item.WeaponItem;
 
 import java.util.function.Supplier;
 
@@ -39,6 +28,13 @@ public class Items {
     public static final RegistryObject<Item> Elucidator = ITEMS.register("elucidator", () -> new SpecialWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Special, 15));
     public static final RegistryObject<Item> DarkRepulsor = ITEMS.register("dark_repulsor", () -> new SimpleWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Normal, 15));
     public static final RegistryObject<Item> LambentLight = ITEMS.register("lambent_light", () -> new SimpleWeaponItem(new Item.Properties().tab(ITEM_TAB), EpicACGTier.SAO_Normal, 15));
+
+
+    public static final RegistryObject<Item> FireFlySword = ITEMS.register("firefly_sword",
+            () -> new FireFlySwordItem(
+                    new Item.Properties().tab(ITEM_TAB),
+                    EpicACGTier.SAO_Normal, 15)
+    );
 
     public static final RegistryObject<Item> DragonShitCrystal = ITEMS.register("dragon_shit_crystal", () -> new Item(new  Item.Properties().tab(ITEM_TAB)));
 
