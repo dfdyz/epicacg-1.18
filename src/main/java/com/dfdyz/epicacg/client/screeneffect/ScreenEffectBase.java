@@ -53,10 +53,11 @@ public abstract class ScreenEffectBase {
         return ID.hashCode();
     }
 
-    public abstract static class SE_Pipeline extends PostEffectPipelines.Pipeline{
-
-        public SE_Pipeline(ResourceLocation name) {
+    public abstract static class SE_Pipeline<E extends ScreenEffectBase> extends PostEffectPipelines.Pipeline{
+        public final E effect;
+        public SE_Pipeline(ResourceLocation name, E effect) {
             super(name);
+            this.effect = effect;
         }
 
         @Override

@@ -25,11 +25,9 @@ public class ColorDispersionEffect extends ScreenEffectBase {
     static ResourceLocation color_dispersion = new ResourceLocation(EpicACG.MODID, "color_dispersion");
     public final SE_Pipeline ppl;
 
-    public static class CD_Pipeline extends ScreenEffectBase.SE_Pipeline{
-        public final ColorDispersionEffect effect;
+    public static class CD_Pipeline extends ScreenEffectBase.SE_Pipeline<ColorDispersionEffect>{
         public CD_Pipeline(ColorDispersionEffect effect) {
-            super(color_dispersion);
-            this.effect = effect;
+            super(color_dispersion, effect);
             priority = 100;
         }
         static ResourceLocation color_dispersion_tmp = new ResourceLocation(EpicACG.MODID, "color_dispersion_tmp");

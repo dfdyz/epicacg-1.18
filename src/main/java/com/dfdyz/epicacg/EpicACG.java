@@ -29,7 +29,7 @@ public class EpicACG
     public static final String MODID = "epicacg";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final String VERSION = "18.5.21.2";
+    public static final String VERSION = "18.5.21.3";
 
     public EpicACG()
     {

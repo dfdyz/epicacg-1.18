@@ -5,6 +5,8 @@ import com.dfdyz.epicacg.client.camera.CameraAnimation;
 import com.dfdyz.epicacg.efmextra.anims.*;
 import com.dfdyz.epicacg.efmextra.anims.property.MyProperties;
 import com.dfdyz.epicacg.efmextra.skills.GenShinInternal.skillevents.YoimiyaSkillFunction;
+import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.DMC_V_JC_Client;
+import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.DMC_V_JC_Server;
 import com.dfdyz.epicacg.efmextra.skills.SAO.skillevents.SAOSkillAnimUtils;
 import com.dfdyz.epicacg.efmextra.weapon.WeaponCollider;
 import com.dfdyz.epicacg.event.CameraEvents;
@@ -806,23 +808,42 @@ public class MyAnimations {
                 .addProperty(MyProperties.INVISIBLE_PHASE, new MyProperties.SpecialPhase(0.85f,2.8f))
                 .addProperty(AnimationProperty.StaticAnimationProperty.TIME_STAMPED_EVENTS, new AnimationEvent.TimeStampedEvent[] {
                         AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.prev(ep);
-                        }, AnimationEvent.Side.BOTH),
+                            DMC_V_JC_Server.prev(ep);
+                        }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.4f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.HandleAtk1(ep);
-                        }, AnimationEvent.Side.BOTH),
+                            DMC_V_JC_Server.HandleAtk1(ep);
+                        }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.85f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.post1(ep);
-                        }, AnimationEvent.Side.BOTH),
+                            DMC_V_JC_Server.post1(ep);
+                        }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(1.0f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.post2(ep);
-                        }, AnimationEvent.Side.BOTH),
+                            DMC_V_JC_Server.post2(ep);
+                        }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(1.3f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.post3(ep);
-                        }, AnimationEvent.Side.BOTH),
+                            DMC_V_JC_Server.post3(ep);
+                        }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(3.733f, (ep, anim, objs) -> {
-                            SAOSkillAnimUtils.DMC5_V_JC.postAttack(ep);
-                        }, AnimationEvent.Side.BOTH)
+                            DMC_V_JC_Server.postAttack(ep);
+                        }, AnimationEvent.Side.SERVER),
+
+                        AnimationEvent.TimeStampedEvent.create(0f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.prev(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(0.4f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.HandleAtk1(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(0.85f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.post1(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(1.0f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.post2(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(1.3f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.post3(ep);
+                        }, AnimationEvent.Side.CLIENT),
+                        AnimationEvent.TimeStampedEvent.create(3.733f, (ep, anim, objs) -> {
+                            DMC_V_JC_Client.postAttack(ep);
+                        }, AnimationEvent.Side.CLIENT)
                 })
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, MSpeed(1));
 
